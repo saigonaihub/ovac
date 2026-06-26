@@ -78,8 +78,6 @@
 })();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.45.2/apexcharts.min.js"></script>
-<script src="data.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--bg:#f5f4f0;--surface:#fff;--surface2:#f0ede8;--border:#e0ddd6;--text:#1a1a1a;--text2:#555;--text3:#888;--accent:#e05a1e;--accent2:#f47340;--green:#1d9e75;--red:#e24b4a;--blue:#378add;--purple:#7f77dd;--yellow:#f59e0b;--sidebar:220px;--header:56px}
@@ -1150,6 +1148,11 @@ function toggleTheme(){var isDark=document.documentElement.getAttribute("data-th
 document.addEventListener("DOMContentLoaded", async function(){
   // Safety: if no role, reload to show login
   if (!ROLE) { location.reload(); return; }
+  // Load heavy scripts now that user is authenticated
+  await Promise.all([
+    new Promise(function(res){ var s=document.createElement("script");s.src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.45.2/apexcharts.min.js";s.onload=res;document.head.appendChild(s); }),
+    new Promise(function(res){ var s=document.createElement("script");s.src="data.js";s.onload=res;document.head.appendChild(s); })
+  ]);
   buildNav();
   var D=DATA.demographics;
   document.getElementById("m-total").textContent=D.total;
