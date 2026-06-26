@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OVAC 2026 — Login</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;display:flex;align-items:center;justify-content:center;background:#f5f4f0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding:16px}
+.card{background:#fff;border:1px solid #e0ddd6;border-radius:14px;padding:40px 32px;width:100%;max-width:400px;text-align:center}
+.icon{width:52px;height:52px;background:#e05a1e;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+h1{font-size:20px;font-weight:700;color:#1a1a1a;margin-bottom:4px}
+.sub{font-size:13px;color:#888;margin-bottom:28px}
+input[type=password]{width:100%;padding:10px 14px;border:1px solid #ddd;border-radius:8px;font-size:14px;outline:none;margin-bottom:10px;transition:border-color .15s}
+input[type=password]:focus{border-color:#e05a1e}
+.err{font-size:12px;color:#e24b4a;margin-bottom:8px;min-height:18px}
+button.enter{width:100%;padding:10px;background:#e05a1e;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;transition:opacity .15s}
+button.enter:hover{opacity:.85}
+.footer{font-size:11px;color:#bbb;margin-top:20px}
+.judge-list{display:none;text-align:left;margin-top:4px}
+.judge-list p{font-size:13px;color:#888;margin-bottom:14px}
+.judge-btn{display:block;width:100%;padding:12px 16px;margin-bottom:8px;background:#fff;border:1px solid #e0ddd6;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;text-align:left;transition:all .15s}
+.judge-btn:hover{border-color:#e05a1e;background:#fff8f5}
+.back{font-size:12px;color:#e05a1e;cursor:pointer;margin-bottom:16px;display:inline-block}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="icon">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+  </div>
+  <h1>OVAC 2026 Dashboard</h1>
+  <p class="sub">OneVoice AI Challenge &middot; Saigon AI Hub</p>
+
+  <div id="pw-section">
+    <input type="password" id="pw" placeholder="Enter password" autofocus/>
+    <div class="err" id="err"></div>
+    <button class="enter" id="enter-btn">Enter</button>
+  </div>
+
+  <div class="judge-list" id="judge-list">
+    <span class="back" onclick="showPw()">&larr; Back</span>
+    <p>Select your name to continue</p>
+    <button class="judge-btn" onclick="selectJudge('Dr. Chau Thanh Duc')">Dr. Chau Thanh Duc</button>
+    <button class="judge-btn" onclick="selectJudge('Mr. Vo Trong Thu')">Mr. Vo Trong Thu</button>
+    <button class="judge-btn" onclick="selectJudge('Prof. Dr. Quan Thanh Tho')">Prof. Dr. Quan Thanh Tho</button>
+    <button class="judge-btn" onclick="selectJudge('Mr. Hoang Ngoc Thuc')">Mr. Hoang Ngoc Thuc</button>
+    <button class="judge-btn" onclick="selectJudge('Ms. Nguyen Thanh Thao')">Ms. Nguyen Thanh Thao</button>
+  </div>
+
+  <p class="footer">Saigon AI Hub &middot; 2026</p>
+</div>
+
+<script>
+var ADMIN_PW = 'OVAC-Round1', JUDGE_PW = 'OVAC-Judge';
+
+function showPw(){
+  document.getElementById("pw-section").style.display="";
+  document.getElementById("judge-list").style.display="none";
+  document.getElementById("pw").value="";
+  document.getElementById("err").textContent="";
+  document.getElementById("pw").focus();
+}
+
+function selectJudge(name){
+  sessionStorage.setItem("ovac_role","judge");
+  sessionStorage.setItem("ovac_judge",name);
+  window.location.href="dashboard.html";
+}
+
+function attempt(){
+  var val=document.getElementById("pw").value;
+  if(val===ADMIN_PW){
+    sessionStorage.setItem("ovac_role","admin");
+    window.location.href="dashboard.html";
+  } else if(val===JUDGE_PW){
+    document.getElementById("pw-section").style.display="none";
+    document.getElementById("judge-list").style.display="block";
+  } else {
+    document.getElementById("err").textContent="Incorrect password.";
+    document.getElementById("pw").value="";
+    document.getElementById("pw").focus();
+  }
+}
+
+document.getElementById("enter-btn").addEventListener("click", attempt);
+document.getElementById("pw").addEventListener("keydown", function(e){ if(e.key==="Enter") attempt(); });
+
+// If already logged in, go straight to dashboard
+if(sessionStorage.getItem("ovac_role")){
+  window.location.href="dashboard.html";
+}
+</script>
+</body>
+</html>

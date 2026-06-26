@@ -1,82 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script>
+(function(){
+  if(!sessionStorage.getItem('ovac_role')){
+    window.location.replace('login.html');
+  }
+})();
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/png" href="data:image/png;base64,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">
 <title>OneVoice AI Challenge 2026 — Dashboard</title>
-<script>
-(function() {
-  var ADMIN_PW = 'OVAC-Round1', JUDGE_PW = 'OVAC-Judge';
-  var SK_ROLE = 'ovac_role', SK_JUDGE = 'ovac_judge';
-  var role = sessionStorage.getItem(SK_ROLE);
-  if (!role) {
-    document.documentElement.style.visibility = 'hidden';
-    document.addEventListener('DOMContentLoaded', function() {
-      document.documentElement.style.visibility = '';
-      document.body.innerHTML = '';
-      var wrap = document.createElement('div');
-      wrap.style.cssText = 'min-height:100vh;display:flex;align-items:center;justify-content:center;background:#f5f4f0;font-family:-apple-system,sans-serif;padding:16px';
-      var box = document.createElement('div');
-      box.style.cssText = 'background:#fff;border:1px solid #e0ddd6;border-radius:14px;padding:40px 32px;width:100%;max-width:400px;text-align:center';
-      var icon = document.createElement('div');
-      icon.style.cssText = 'width:52px;height:52px;background:#e05a1e;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px';
-      icon.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>';
-      var h1 = document.createElement('h1');
-      h1.style.cssText = 'font-size:20px;font-weight:700;color:#1a1a1a;margin-bottom:4px';
-      h1.textContent = 'OVAC 2026 Dashboard';
-      var sub = document.createElement('p');
-      sub.style.cssText = 'font-size:13px;color:#888;margin-bottom:28px';
-      sub.textContent = 'OneVoice AI Challenge · Saigon AI Hub';
-      var pw = document.createElement('input');
-      pw.id = 'pw'; pw.type = 'password'; pw.placeholder = 'Enter password'; pw.autofocus = true;
-      pw.style.cssText = 'width:100%;padding:10px 14px;border:1px solid #ddd;border-radius:8px;font-size:14px;outline:none;margin-bottom:10px;box-sizing:border-box';
-      var err = document.createElement('div');
-      err.id = 'pwe'; err.style.cssText = 'font-size:12px;color:#e24b4a;margin-bottom:8px;min-height:18px';
-      var btn = document.createElement('button');
-      btn.id = 'pwbtn'; btn.textContent = 'Enter';
-      btn.style.cssText = 'width:100%;padding:10px;background:#e05a1e;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer';
-      box.appendChild(icon); box.appendChild(h1); box.appendChild(sub);
-      box.appendChild(pw); box.appendChild(err); box.appendChild(btn);
-      wrap.appendChild(box);
-      document.body.appendChild(wrap);
-      function chk() {
-        var val = document.getElementById('pw').value;
-        if (val === ADMIN_PW) { sessionStorage.setItem(SK_ROLE,'admin'); location.reload(); }
-        else if (val === JUDGE_PW) { sessionStorage.setItem(SK_ROLE,'judge'); showJudgeSelect(); }
-        else { document.getElementById('pwe').textContent = 'Incorrect password.'; document.getElementById('pw').value = ''; document.getElementById('pw').focus(); }
-      }
-      btn.addEventListener('click', chk);
-      pw.addEventListener('keydown', function(e){ if(e.key==='Enter') chk(); });
-    });
-    return;
-  }
-  function showJudgeSelect() {
-    var judges = ['Dr. Chau Thanh Duc','Mr. Vo Trong Thu','Prof. Dr. Quan Thanh Tho','Mr. Hoang Ngoc Thuc','Ms. Nguyen Thanh Thao'];
-    document.body.innerHTML = '';
-    var wrap = document.createElement('div');
-    wrap.style.cssText = 'min-height:100vh;display:flex;align-items:center;justify-content:center;background:#f5f4f0;font-family:-apple-system,sans-serif;padding:16px';
-    var box = document.createElement('div');
-    box.style.cssText = 'background:#fff;border:1px solid #e0ddd6;border-radius:14px;padding:32px;width:100%;max-width:420px';
-    var h2 = document.createElement('h2');
-    h2.style.cssText = 'font-size:16px;font-weight:600;margin-bottom:4px'; h2.textContent = 'Welcome, Judge';
-    var p = document.createElement('p');
-    p.style.cssText = 'font-size:13px;color:#888;margin-bottom:20px'; p.textContent = 'Please select your name to continue';
-    box.appendChild(h2); box.appendChild(p);
-    judges.forEach(function(j) {
-      var btn = document.createElement('button');
-      btn.style.cssText = 'display:block;width:100%;padding:12px 16px;margin-bottom:8px;background:#fff;border:1px solid #e0ddd6;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;text-align:left;transition:all .15s';
-      btn.textContent = j;
-      btn.onmouseover = function(){ this.style.borderColor='#e05a1e'; this.style.background='#fff8f5'; };
-      btn.onmouseout = function(){ this.style.borderColor='#e0ddd6'; this.style.background='#fff'; };
-      btn.onclick = function(){ sessionStorage.setItem(SK_JUDGE, j); location.reload(); };
-      box.appendChild(btn);
-    });
-    wrap.appendChild(box);
-    document.body.appendChild(wrap);
-  }
-})();
-</script>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -508,8 +444,8 @@ var activePhase="Phase 1 - Registration";
 function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
 function ini(n){return (n||"?").split(" ").map(function(w){return w[0]||"";}).join("").slice(0,2).toUpperCase();}
 function markDirty(){isDirty=true;document.getElementById("modal-dirty").style.display="";}
-function switchJudge(){sessionStorage.removeItem("ovac_judge");sessionStorage.removeItem("ovac_role");location.reload();}
-function logout(){sessionStorage.removeItem("ovac_role");sessionStorage.removeItem("ovac_judge");location.reload();}
+function switchJudge(){sessionStorage.removeItem('ovac_judge');sessionStorage.removeItem('ovac_role');window.location.href='login.html';}
+function logout(){sessionStorage.removeItem('ovac_role');sessionStorage.removeItem('ovac_judge');window.location.href='login.html';}
 
 function changePhase(phase){
   activePhase=phase;
@@ -1147,7 +1083,7 @@ function toggleTheme(){var isDark=document.documentElement.getAttribute("data-th
 // Init
 document.addEventListener("DOMContentLoaded", async function(){
   // Safety: if no role, reload to show login
-  if (!ROLE) { location.reload(); return; }
+  if (!ROLE) { window.location.replace('login.html'); return; }
   // Load heavy scripts now that user is authenticated
   await Promise.all([
     new Promise(function(res){ var s=document.createElement("script");s.src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.45.2/apexcharts.min.js";s.onload=res;document.head.appendChild(s); }),
