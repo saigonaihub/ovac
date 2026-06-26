@@ -7,57 +7,73 @@
 <title>OneVoice AI Challenge 2026 — Dashboard</title>
 <script>
 (function() {
-  var ADMIN_PW = "OVAC-Round1", JUDGE_PW = "OVAC-Judge";
-  var SK_ROLE = "ovac_role", SK_JUDGE = "ovac_judge";
+  var ADMIN_PW = 'OVAC-Round1', JUDGE_PW = 'OVAC-Judge';
+  var SK_ROLE = 'ovac_role', SK_JUDGE = 'ovac_judge';
   var role = sessionStorage.getItem(SK_ROLE);
   if (!role) {
-    document.documentElement.style.visibility = "hidden";
-    document.addEventListener("DOMContentLoaded", function() {
-      document.documentElement.style.visibility = "";
-      showLoginScreen();
+    document.documentElement.style.visibility = 'hidden';
+    document.addEventListener('DOMContentLoaded', function() {
+      document.documentElement.style.visibility = '';
+      document.body.innerHTML = '';
+      var wrap = document.createElement('div');
+      wrap.style.cssText = 'min-height:100vh;display:flex;align-items:center;justify-content:center;background:#f5f4f0;font-family:-apple-system,sans-serif;padding:16px';
+      var box = document.createElement('div');
+      box.style.cssText = 'background:#fff;border:1px solid #e0ddd6;border-radius:14px;padding:40px 32px;width:100%;max-width:400px;text-align:center';
+      var icon = document.createElement('div');
+      icon.style.cssText = 'width:52px;height:52px;background:#e05a1e;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px';
+      icon.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>';
+      var h1 = document.createElement('h1');
+      h1.style.cssText = 'font-size:20px;font-weight:700;color:#1a1a1a;margin-bottom:4px';
+      h1.textContent = 'OVAC 2026 Dashboard';
+      var sub = document.createElement('p');
+      sub.style.cssText = 'font-size:13px;color:#888;margin-bottom:28px';
+      sub.textContent = 'OneVoice AI Challenge · Saigon AI Hub';
+      var pw = document.createElement('input');
+      pw.id = 'pw'; pw.type = 'password'; pw.placeholder = 'Enter password'; pw.autofocus = true;
+      pw.style.cssText = 'width:100%;padding:10px 14px;border:1px solid #ddd;border-radius:8px;font-size:14px;outline:none;margin-bottom:10px;box-sizing:border-box';
+      var err = document.createElement('div');
+      err.id = 'pwe'; err.style.cssText = 'font-size:12px;color:#e24b4a;margin-bottom:8px;min-height:18px';
+      var btn = document.createElement('button');
+      btn.id = 'pwbtn'; btn.textContent = 'Enter';
+      btn.style.cssText = 'width:100%;padding:10px;background:#e05a1e;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer';
+      box.appendChild(icon); box.appendChild(h1); box.appendChild(sub);
+      box.appendChild(pw); box.appendChild(err); box.appendChild(btn);
+      wrap.appendChild(box);
+      document.body.appendChild(wrap);
+      function chk() {
+        var val = document.getElementById('pw').value;
+        if (val === ADMIN_PW) { sessionStorage.setItem(SK_ROLE,'admin'); location.reload(); }
+        else if (val === JUDGE_PW) { sessionStorage.setItem(SK_ROLE,'judge'); showJudgeSelect(); }
+        else { document.getElementById('pwe').textContent = 'Incorrect password.'; document.getElementById('pw').value = ''; document.getElementById('pw').focus(); }
+      }
+      btn.addEventListener('click', chk);
+      pw.addEventListener('keydown', function(e){ if(e.key==='Enter') chk(); });
     });
-  }
-  function showLoginScreen() {
-    var d = document.createElement("div");
-    d.style.cssText = "min-height:100vh;display:flex;align-items:center;justify-content:center;background:#f5f4f0;font-family:-apple-system,sans-serif;padding:16px";
-    d.innerHTML = "<div style="background:#fff;border:1px solid #e0ddd6;border-radius:14px;padding:40px 32px;width:100%;max-width:400px;text-align:center">"
-      + "<h1 style="font-size:18px;font-weight:600;color:#1a1a1a;margin-bottom:4px">OVAC 2026 Dashboard</h1>"
-      + "<p style="font-size:13px;color:#888;margin-bottom:24px">OneVoice AI Challenge &middot; Saigon AI Hub</p>"
-      + "<input id="pw" type="password" placeholder="Enter password" autofocus style="width:100%;padding:10px 14px;border:1px solid #ddd;border-radius:8px;font-size:14px;outline:none;margin-bottom:10px;box-sizing:border-box"/>"
-      + "<div id="pwe" style="font-size:12px;color:#e24b4a;margin-bottom:8px;min-height:18px"></div>"
-      + "<button id="pwbtn" style="width:100%;padding:10px;background:#e05a1e;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer">Enter</button>"
-      + "</div>";
-    document.body.innerHTML = "";
-    document.body.appendChild(d);
-    function chk() {
-      var val = document.getElementById("pw").value;
-      if (val === ADMIN_PW) { sessionStorage.setItem(SK_ROLE,"admin"); location.reload(); }
-      else if (val === JUDGE_PW) { sessionStorage.setItem(SK_ROLE,"judge"); showJudgeSelect(); }
-      else { document.getElementById("pwe").textContent = "Incorrect password."; document.getElementById("pw").value = ""; }
-    }
-    document.getElementById("pwbtn").addEventListener("click", chk);
-    document.getElementById("pw").addEventListener("keydown", function(e){ if(e.key==="Enter") chk(); });
+    return;
   }
   function showJudgeSelect() {
-    var judges = ['Dr. Chau Thanh Duc', 'Mr. Vo Trong Thu', 'Prof. Dr. Quan Thanh Tho', 'Mr. Hoang Ngoc Thuc', 'Ms. Nguyen Thanh Thao'];
-    var d = document.createElement("div");
-    d.style.cssText = "min-height:100vh;display:flex;align-items:center;justify-content:center;background:#f5f4f0;font-family:-apple-system,sans-serif;padding:16px";
-    var cards = judges.map(function(j) {
-      return "<button onclick="window.selectJudge('"+j+"')""
-        + " style="display:block;width:100%;padding:12px 16px;margin-bottom:8px;background:#fff;border:1px solid #e0ddd6;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;text-align:left;transition:all .15s""
-        + " onmouseover="this.style.borderColor='#e05a1e'" onmouseout="this.style.borderColor='#e0ddd6'">"+j+"</button>";
-    }).join("");
-    d.innerHTML = "<div style="background:#fff;border:1px solid #e0ddd6;border-radius:14px;padding:32px;width:100%;max-width:420px">"
-      + "<h2 style="font-size:16px;font-weight:600;margin-bottom:4px">Welcome, Judge</h2>"
-      + "<p style="font-size:13px;color:#888;margin-bottom:20px">Please select your name to continue</p>"
-      + cards
-      + "</div>";
-    document.body.innerHTML = "";
-    document.body.appendChild(d);
-    window.selectJudge = function(name) {
-      sessionStorage.setItem(SK_JUDGE, name);
-      location.reload();
-    };
+    var judges = ['Dr. Chau Thanh Duc','Mr. Vo Trong Thu','Prof. Dr. Quan Thanh Tho','Mr. Hoang Ngoc Thuc','Ms. Nguyen Thanh Thao'];
+    document.body.innerHTML = '';
+    var wrap = document.createElement('div');
+    wrap.style.cssText = 'min-height:100vh;display:flex;align-items:center;justify-content:center;background:#f5f4f0;font-family:-apple-system,sans-serif;padding:16px';
+    var box = document.createElement('div');
+    box.style.cssText = 'background:#fff;border:1px solid #e0ddd6;border-radius:14px;padding:32px;width:100%;max-width:420px';
+    var h2 = document.createElement('h2');
+    h2.style.cssText = 'font-size:16px;font-weight:600;margin-bottom:4px'; h2.textContent = 'Welcome, Judge';
+    var p = document.createElement('p');
+    p.style.cssText = 'font-size:13px;color:#888;margin-bottom:20px'; p.textContent = 'Please select your name to continue';
+    box.appendChild(h2); box.appendChild(p);
+    judges.forEach(function(j) {
+      var btn = document.createElement('button');
+      btn.style.cssText = 'display:block;width:100%;padding:12px 16px;margin-bottom:8px;background:#fff;border:1px solid #e0ddd6;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;text-align:left;transition:all .15s';
+      btn.textContent = j;
+      btn.onmouseover = function(){ this.style.borderColor='#e05a1e'; this.style.background='#fff8f5'; };
+      btn.onmouseout = function(){ this.style.borderColor='#e0ddd6'; this.style.background='#fff'; };
+      btn.onclick = function(){ sessionStorage.setItem(SK_JUDGE, j); location.reload(); };
+      box.appendChild(btn);
+    });
+    wrap.appendChild(box);
+    document.body.appendChild(wrap);
   }
 })();
 </script>
@@ -100,9 +116,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 .sync-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}
 .sync-dot.syncing{background:var(--yellow);animation:pulse 1s infinite}
 .sync-dot.error{background:var(--red)}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+0%,100%{opacity:1}
+50%{opacity:.3}
 .content{padding:20px;flex:1}
-.page{display:none}.page.active{display:block}
+.page{display:none}
+.page.active{display:block}
 .metrics-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
 .metric-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 18px}
 .metric-val{font-size:26px;font-weight:600;line-height:1}
@@ -143,9 +161,12 @@ tbody td{padding:8px 10px;font-size:13px;vertical-align:middle}
 .col-filter-opt input{accent-color:var(--accent)}
 .col-filter-actions{padding:6px 10px;border-top:1px solid var(--border);display:flex;gap:6px}
 .badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500;white-space:nowrap}
-.badge-green{background:#d4edda;color:#155724}.badge-red{background:#f8d7da;color:#721c24}
-.badge-blue{background:#d1ecf1;color:#0c5460}.badge-gray{background:var(--surface2);color:var(--text2)}
-.badge-orange{background:#fff3cd;color:#856404}.badge-purple{background:#e9d5ff;color:#6b21a8}
+.badge-green{background:#d4edda;color:#155724}
+.badge-red{background:#f8d7da;color:#721c24}
+.badge-blue{background:#d1ecf1;color:#0c5460}
+.badge-gray{background:var(--surface2);color:var(--text2)}
+.badge-orange{background:#fff3cd;color:#856404}
+.badge-purple{background:#e9d5ff;color:#6b21a8}
 .badge-yellow{background:#fef9c3;color:#854d0e}
 .thin-badge{background:#fff3cd;color:#856404;border:1px solid #ffc107;border-radius:4px;padding:1px 6px;font-size:10px;font-weight:600}
 .tag-pill{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500;white-space:nowrap;margin:1px}
@@ -203,6 +224,22 @@ tbody td{padding:8px 10px;font-size:13px;vertical-align:middle}
 .tag-add-form input[type=text]{padding:5px 9px;border:1px solid var(--border);border-radius:6px;font-size:12px;background:var(--surface);color:var(--text);flex:1;min-width:120px}
 .tag-add-form input[type=color]{width:32px;height:28px;border:1px solid var(--border);border-radius:5px;padding:1px;cursor:pointer;background:var(--surface)}
 .info-strip{background:#fff8f0;border:1px solid #ffd8b0;border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:12px;color:#7a4a00;display:flex;align-items:center;gap:10px}
+.phase-bar{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 18px;margin-bottom:16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.phase-bar-label{font-size:12px;font-weight:600;color:var(--text2);white-space:nowrap}
+.phase-select{padding:6px 12px;border:1px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg);color:var(--text);cursor:pointer;font-weight:500}
+.phase-select:focus{outline:none;border-color:var(--accent)}
+.phase-pool-note{font-size:11px;color:var(--text3);margin-left:4px}
+.decision-badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:600;white-space:nowrap}
+.decision-badge.Advanced{background:#d4edda;color:#155724;border:1px solid #c3e6cb}
+.decision-badge.Eliminated{background:#f8d7da;color:#721c24;border:1px solid #f5c6cb}
+.decision-badge.Pending{background:#fff3cd;color:#856404;border:1px solid #ffeeba}
+.info-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:16px}
+.info-card h3{font-size:14px;font-weight:600;margin-bottom:6px}
+.info-card p{font-size:13px;color:var(--text2);line-height:1.6}
+.info-card .step{display:flex;gap:10px;margin-top:10px;font-size:12px;color:var(--text2)}
+.info-card .step-num{width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0}
+.btn-green{background:var(--green);color:#fff}
+.btn-red{background:var(--red);color:#fff}
 .footnote{padding:12px 20px;font-size:11px;color:var(--text3);border-top:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .col-list{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;max-height:280px;overflow-y:auto}
 .col-item{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--surface2);border-radius:8px;border:1px solid var(--border)}
@@ -211,19 +248,14 @@ tbody td{padding:8px 10px;font-size:13px;vertical-align:middle}
 .col-add-form{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:end}
 .col-add-form input,.col-add-form select{padding:7px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px;background:var(--surface);color:var(--text)}
 .lb-rank{font-size:18px;font-weight:700;width:36px;text-align:center}
-.lb-rank.gold{color:#f59e0b}.lb-rank.silver{color:#94a3b8}.lb-rank.bronze{color:#b45309}
-.score-bar{height:8px;background:var(--surface2);border-radius:4px;overflow:hidden;flex:1}
-.score-bar-fill{height:100%;background:linear-gradient(90deg,#e05a1e,#f47340);border-radius:4px;transition:width .5s}
-::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-thumb{background:#ccc;border-radius:3px}
-@media(max-width:768px){
-  .sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}
-  .sidebar-close{display:block}.sidebar-overlay.open{display:block}
-  .main{margin-left:0}.hamburger{display:flex}
-  .metrics-grid{grid-template-columns:1fr 1fr}.charts-grid{grid-template-columns:1fr}
-  .modal-body{grid-template-columns:1fr}.score-grid{grid-template-columns:1fr}
-  .topbar-right input{width:120px}.content{padding:14px}
-}
-@media(max-width:480px){.metrics-grid{grid-template-columns:1fr}.topbar-right input{display:none}}
+.lb-rank.gold{color:#f59e0b}
+.lb-rank.silver{color:#94a3b8}
+.lb-rank.bronze{color:#b45309}
+
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-thumb{background:#ccc;border-radius:3px}
+.sidebar.open{transform:translateX(0)}
+.sidebar-overlay.open{display:block}
 </style></head><body>
 <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
 <div class="layout">
@@ -238,6 +270,9 @@ tbody td{padding:8px 10px;font-size:13px;vertical-align:middle}
     </div>
     <nav class="sidebar-nav" id="sidebar-nav"></nav>
     <div class="sidebar-footer" id="sidebar-footer">Loading...<br>Replace data.js to update</div>
+    <div style="padding:10px 20px;border-top:1px solid #333;flex-shrink:0">
+      <button onclick="logout()" style="width:100%;padding:7px;background:none;border:1px solid #444;border-radius:6px;color:#888;font-size:12px;cursor:pointer;transition:all .15s" onmouseover="this.style.borderColor='#e05a1e';this.style.color='#e05a1e'" onmouseout="this.style.borderColor='#444';this.style.color='#888'">&#x2192; Log out</button>
+    </div>
   </aside>
   <main class="main">
     <div id="judge-banner" class="judge-banner" style="display:none">
@@ -317,11 +352,35 @@ tbody td{padding:8px 10px;font-size:13px;vertical-align:middle}
           </div>
         </div>
       </div>
-      <div class="page" id="page-advanced">
-        <div class="info-strip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Registrations tagged with Advanced, Shortlisted, or Winner tags.</div>
+      
+
+      <div class="page" id="page-decisions">
+        <div class="phase-bar">
+          <span class="phase-bar-label">Active phase:</span>
+          <select class="phase-select" id="pd-phase" onchange="changePdPhase(this.value)"><option value="Phase 1 - Registration">Phase 1 - Registration</option><option value="Phase 2 - Technical Specification">Phase 2 - Technical Specification</option><option value="Phase 3 - Prototype Submission">Phase 3 - Prototype Submission</option><option value="Phase 4 - Field Testing">Phase 4 - Field Testing</option><option value="Phase 5 - Finale">Phase 5 - Finale</option></select>
+          <span class="phase-pool-note" id="pd-phase-note"></span>
+        </div>
+        <div class="info-card">
+          <h3>&#x1F4CB; Phase Decisions &mdash; What is this?</h3>
+          <p>After judges have scored all registrants for a phase, the organizing team reviews the <strong>Leaderboard</strong> and makes the official call on who moves forward. This page records those decisions.</p>
+          <div class="step"><div class="step-num">1</div><div><strong>Select the phase</strong> you are deciding on (e.g. &ldquo;Phase 1 - Registration&rdquo; to decide who advances to Phase 2).</div></div>
+          <div class="step"><div class="step-num">2</div><div><strong>Mark each registrant</strong> as <span class="decision-badge Advanced" style="font-size:11px">Advanced</span>, <span class="decision-badge Eliminated" style="font-size:11px">Eliminated</span>, or leave as <span class="decision-badge Pending" style="font-size:11px">Pending</span>.</div></div>
+          <div class="step"><div class="step-num">3</div><div>The <strong>Leaderboard for the next phase</strong> will automatically show only registrants marked as <strong>Advanced</strong> here. The pool shrinks each round.</div></div>
+          <p style="margin-top:10px;font-size:12px;color:var(--text3)">Judges can see decisions but cannot make them. Only the organizing team (Admin login) can advance or eliminate.</p>
+        </div>
         <div class="table-card">
-          <div class="table-toolbar"><span class="filter-count" id="advanced-count">None yet</span><button class="btn btn-secondary" style="margin-left:auto" onclick="exportCSV()" id="adv-export">Export CSV</button></div>
-          <table><thead><tr><th>#</th><th>Project</th><th>Type</th><th>Tags</th><th style="text-align:center">Weighted Avg</th><th>Judge Notes</th></tr></thead><tbody id="advanced-tbody"></tbody></table>
+          <div class="table-toolbar">
+            <span class="filter-count" id="pd-count">Loading...</span>
+            <button class="btn btn-secondary" style="font-size:11px" onclick="exportDecisionsCSV()">Export CSV</button>
+            <button class="btn btn-secondary" style="font-size:11px;margin-left:4px" onclick="loadPhaseDecisions()">&#8635; Refresh</button>
+          </div>
+          <div style="overflow-x:auto"><table><thead><tr>
+            <th>#</th><th>Project / Team</th><th>Type</th><th>Tags</th>
+            <th style="text-align:center">Avg Score</th>
+            <th style="text-align:center">Decision</th>
+            <th>Decided by</th>
+            <th id="pd-actions-header"></th>
+          </tr></thead><tbody id="pd-tbody"></tbody></table></div>
         </div>
       </div>
       <div class="page" id="page-columns">
@@ -437,14 +496,14 @@ var SUPA_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJ
 var db = supabase.createClient(SUPA_URL, SUPA_KEY);
 
 // Role & judge identity
-var ROLE = sessionStorage.getItem("ovac_role") || "admin";
+var ROLE = sessionStorage.getItem("ovac_role") || "";
 var JUDGE_NAME = sessionStorage.getItem("ovac_judge") || "";
 var IS_ADMIN = ROLE === "admin";
 var IS_JUDGE = ROLE === "judge";
 
 // State
 var curFilter="all",curSearch="",curRegId=null;
-var custData={},custCols=[],globalTags=[],judgeScores={},isDirty=false,apexT=null;
+var custData={},custCols=[],globalTags=[],judgeScores={}, phaseDecisions={},isDirty=false,apexT=null;
 var sortCol=null,sortDir=1,colFilters={},regNums={};
 var activePhase="Phase 1 - Registration";
 
@@ -452,6 +511,7 @@ function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").
 function ini(n){return (n||"?").split(" ").map(function(w){return w[0]||"";}).join("").slice(0,2).toUpperCase();}
 function markDirty(){isDirty=true;document.getElementById("modal-dirty").style.display="";}
 function switchJudge(){sessionStorage.removeItem("ovac_judge");sessionStorage.removeItem("ovac_role");location.reload();}
+function logout(){sessionStorage.removeItem("ovac_role");sessionStorage.removeItem("ovac_judge");location.reload();}
 
 function changePhase(phase){
   activePhase=phase;
@@ -495,7 +555,7 @@ function buildNav(){
     {id:"overview",icon:"<rect x='3' y='3' width='7' height='7'/><rect x='14' y='3' width='7' height='7'/><rect x='3' y='14' width='7' height='7'/><rect x='14' y='14' width='7' height='7'/>",label:"Overview",roles:["admin","judge"]},
     {id:"registrations",icon:"<path d='M17 21H7a2 2 0 01-2-2V5a2 2 0 012-2h7l5 5v11a2 2 0 01-2 2z'/><polyline points='17 3 17 8 12 8'/>",label:"All Registrations",roles:["admin","judge"]},
     {id:"leaderboard",icon:"<polyline points='22 12 18 12 15 21 9 3 6 12 2 12'/>",label:"Leaderboard",badge:"lb-badge",roles:["admin","judge"]},
-    {id:"advanced",icon:"<path d='M22 11.08V12a10 10 0 11-5.93-9.14'/><polyline points='22 4 12 14.01 9 11.01'/>",label:"Advanced",badge:"advanced-badge",roles:["admin","judge"]},
+    
     {id:"columns",icon:"<line x1='8' y1='6' x2='21' y2='6'/><line x1='8' y1='12' x2='21' y2='12'/><line x1='8' y1='18' x2='21' y2='18'/><line x1='3' y1='6' x2='3.01' y2='6'/><line x1='3' y1='12' x2='3.01' y2='12'/><line x1='3' y1='18' x2='3.01' y2='18'/>",label:"Manage Columns",roles:["admin"]},
   ];
   nav.innerHTML=items.filter(function(i){return i.roles.includes(ROLE);}).map(function(item){
@@ -642,7 +702,7 @@ async function saveAll(){
   isDirty=false;
   document.getElementById("modal-dirty").style.display="none";
   setSyncStatus(ok?"ok":"error");
-  renderRegs();renderAdv();updateAdvBadge();
+  renderRegs();
   renderAllScores(r.email);
   if(!ok) alert("Some changes failed to save. Check console.");
 }
@@ -785,7 +845,7 @@ async function massBulkTag(add){
       custData[r.email]={tags:tags,judge_notes:c.judge_notes||"",custom_cols:cols,notes:c.notes||""};
     }catch(e){errors++;console.error(e);}
   }
-  setSyncStatus(errors>0?"error":"ok");renderRegs();renderAdv();updateAdvBadge();
+  setSyncStatus(errors>0?"error":"ok");renderRegs();
   document.getElementById("bulk-tag-val").value="";
   if(errors>0)alert(errors+" rows failed.");
 }
@@ -954,37 +1014,10 @@ function loadLeaderboard(){
 }
 
 // Advanced
-function isAdvanced(r){var c=getCust(r.email);var tags=c.tags||[];return globalTags.some(function(t){return tags.includes(t.col_key)&&(t.col_label.toLowerCase().indexOf("advanced")!==-1||t.col_label.toLowerCase().indexOf("winner")!==-1||t.col_label.toLowerCase().indexOf("shortlist")!==-1||t.col_label.toLowerCase().indexOf("finalist")!==-1);});}
-function updateAdvBadge(){var adv=DATA.registrations.filter(isAdvanced);var el=document.getElementById("advanced-badge");if(el)el.textContent=adv.length;return adv;}
-function renderAdv(){
-  var adv=updateAdvBadge();
-  var el=document.getElementById("advanced-count");if(el)el.textContent=adv.length?adv.length+" registrant"+(adv.length>1?"s":"")+" advanced":"None yet";
-  var tbody=document.getElementById("advanced-tbody");if(!tbody)return;
-  tbody.innerHTML=adv.map(function(r,i){
-    var c=getCust(r.email);var avg=getAvgScore(r.email);
-    // Collect all judge notes
-    var allNotes=[];
-    var js=judgeScores[r.email]||{};
-    Object.entries(js).forEach(function(kv){if(kv[1].notes)allNotes.push(kv[0].split(" ")[0]+": "+kv[1].notes);});
-    return "<tr onclick=\"openModal('"+r.id+"')\">"
-      +"<td style=\"color:var(--text3)\">"+i+1+"</td>"
-      +"<td><strong>"+esc(r.project_name||r.luma_team||r.luma_name)+"</strong><br><span style=\"font-size:11px;color:var(--text3)\">"+esc(r.luma_name)+"</span></td>"
-      +"<td><span class=\"badge "+(r.final_type==="Team"?"badge-blue":"badge-gray")+"\">"+esc(r.final_type||"")+"</span></td>"
-      +"<td>"+renderTagPills(c.tags||[])+"</td>"
-      +"<td style=\"text-align:center\"><strong style=\"color:"+scoreColor(avg)+";font-size:16px\">"+( avg!=null?avg.toFixed(1):"&#8212;")+"</strong></td>"
-      +"<td style=\"font-size:11px;color:var(--text3)\">"+esc(allNotes.join(" | "))+"</td>"
-      +"</tr>";
-  }).join("");
-}
+);}
 
-function exportCSV(){
-  var adv=DATA.registrations.filter(isAdvanced);
-  var lines=["Project,Name,Type,Members,Tags,Avg Score,Judge Notes"].concat(adv.map(function(r){var c=getCust(r.email);var avg=getAvgScore(r.email);var js=judgeScores[r.email]||{};var notes=Object.entries(js).filter(function(kv){return kv[1].notes;}).map(function(kv){return kv[0].split(" ")[0]+": "+kv[1].notes;}).join("; ");return "\""+esc(r.project_name||r.luma_team||r.luma_name)+"\"," +"\""+esc(r.luma_name)+"\"," +"\""+esc(r.final_type||"")+"\"," +(r.luma_members||"")+",\""+((c.tags||[]).map(tagLabel).join("; "))+"\"," +(avg!=null?avg.toFixed(1):"")+" ,\""+esc(notes)+"\"" ;}));
-  var blob=new Blob([lines.join("\n")],{type:"text/csv"});
-  var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="OVAC_Advanced.csv";a.click();
-}
 
-// All scores table in modal
+
 function renderAllScores(email){
   var tbody=document.getElementById("all-scores-body");if(!tbody)return;
   var js=judgeScores[email]||{};
@@ -1098,7 +1131,7 @@ function closeModal(){if(isDirty&&!confirm("Unsaved changes. Close?"))return;doc
 function closeModalOutside(e){if(e.target===document.getElementById("modal-overlay"))closeModal();}
 
 // Navigation
-var pageTitles={overview:"Overview",registrations:"All Registrations",leaderboard:"Leaderboard",advanced:"Advanced",columns:"Manage Columns"};
+var pageTitles={overview:"Overview",registrations:"All Registrations",leaderboard:"Leaderboard",decisions:"Phase Decisions",columns:"Manage Columns",decisions:"Phase Decisions"};
 function showPage(id){
   document.querySelectorAll(".page").forEach(function(p){p.classList.remove("active");});
   document.querySelectorAll(".nav-item").forEach(function(n){n.classList.remove("active");});
@@ -1107,7 +1140,8 @@ function showPage(id){
   document.getElementById("page-title").textContent=pageTitles[id]||id;
   if(id==="registrations")renderRegs();
   if(id==="leaderboard")loadLeaderboard();
-  if(id==="advanced")renderAdv();
+  if(id==="decisions"){loadPhaseDecisions();}
+  if(id==="decisions"){loadPhaseDecisions();}
   if(id==="columns")renderColMgr();
   closeSidebar();
 }
@@ -1116,6 +1150,8 @@ function toggleTheme(){var isDark=document.documentElement.getAttribute("data-th
 
 // Init
 document.addEventListener("DOMContentLoaded", async function(){
+  // Safety: if no role, reload to show login
+  if (!ROLE) { location.reload(); return; }
   buildNav();
   var D=DATA.demographics;
   document.getElementById("m-total").textContent=D.total;
@@ -1138,7 +1174,136 @@ document.addEventListener("DOMContentLoaded", async function(){
   await loadGlobalTags();
   await loadCustData();
   await loadJudgeScores();
-  renderRegs();renderAdv();loadLeaderboard();
+  renderRegs();
+  loadLeaderboard();
+  updatePhaseNotes();
+  await loadPhaseDecisions();
 });
+
+// ── Phase pool ─────────────────────────────────────────────────────────────
+var PHASE_PREV = {
+  "Phase 2 - Technical Specification": "Phase 1 - Registration",
+  "Phase 3 - Prototype Submission": "Phase 2 - Technical Specification",
+  "Phase 4 - Field Testing": "Phase 3 - Prototype Submission",
+  "Phase 5 - Finale": "Phase 4 - Field Testing"
+};
+
+var PHASE_POOL_NOTE_MAP = {'Phase 1 - Registration': 'Showing all 116 registrants', 'Phase 2 - Technical Specification': 'Showing teams advanced from Phase 1', 'Phase 3 - Prototype Submission': 'Showing teams advanced from Phase 2', 'Phase 4 - Field Testing': 'Showing teams advanced from Phase 3', 'Phase 5 - Finale': 'Showing finalists advanced from Phase 4'};
+
+function getPhasePool(phase) {
+  if (phase === "Phase 1 - Registration") return DATA.registrations.slice();
+  var prev = PHASE_PREV[phase];
+  if (!prev) return DATA.registrations.slice();
+  return DATA.registrations.filter(function(r) {
+    return getDecision(r.email, prev) === "Advanced";
+  });
+}
+
+function getDecision(email, phase) {
+  var ph = phase || activePhase;
+  return phaseDecisions[email] && phaseDecisions[email][ph] ? phaseDecisions[email][ph].decision : "Pending";
+}
+
+async function loadPhaseDecisions() {
+  try {
+    var res = await db.from("phase_decisions").select("*");
+    if (res.error) throw res.error;
+    phaseDecisions = {};
+    (res.data||[]).forEach(function(d) {
+      if (!phaseDecisions[d.email]) phaseDecisions[d.email] = {};
+      phaseDecisions[d.email][d.phase] = {decision: d.decision, decided_by: d.decided_by||"", notes: d.notes||""};
+    });
+    renderPdTable();
+  } catch(e) { console.error("decisions:", e); }
+}
+
+async function makeDecision(email, decision) {
+  if (!IS_ADMIN) { alert("Only Admin can make phase decisions."); return; }
+  setSyncStatus("syncing");
+  try {
+    var payload = {email: email, phase: activePhase, decision: decision, decided_by: "Admin", decided_at: new Date().toISOString()};
+    var res = await db.from("phase_decisions").upsert(payload, {onConflict: "email,phase"});
+    if (res.error) throw res.error;
+    if (!phaseDecisions[email]) phaseDecisions[email] = {};
+    phaseDecisions[email][activePhase] = {decision: decision, decided_by: "Admin", notes: ""};
+    setSyncStatus("ok");
+    renderPdTable();
+    renderRegs();
+    loadLeaderboard();
+  } catch(e) { console.error(e); setSyncStatus("error"); alert("Failed: " + e.message); }
+}
+
+function renderPdTable() {
+  var pool = getPhasePool(activePhase);
+  var adv = pool.filter(function(r){return getDecision(r.email,activePhase)==="Advanced";}).length;
+  var elim = pool.filter(function(r){return getDecision(r.email,activePhase)==="Eliminated";}).length;
+  var pend = pool.filter(function(r){return getDecision(r.email,activePhase)==="Pending";}).length;
+  var el = document.getElementById("pd-count");
+  if (el) el.innerHTML = pool.length + " in pool &nbsp;&#183;&nbsp; <span style=\"color:var(--green);font-weight:600\">" + adv + " Advanced</span> &nbsp;&#183;&nbsp; <span style=\"color:var(--red);font-weight:600\">" + elim + " Eliminated</span> &nbsp;&#183;&nbsp; " + pend + " Pending";
+  var ah = document.getElementById("pd-actions-header");
+  if (ah) ah.textContent = IS_ADMIN ? "Actions" : "";
+  var sorted = pool.slice().sort(function(a,b){return (getAvgScore(b.email)||0)-(getAvgScore(a.email)||0);});
+  var tbody = document.getElementById("pd-tbody"); if (!tbody) return;
+  tbody.innerHTML = sorted.map(function(r, i) {
+    var c = getCust(r.email);
+    var avg = getAvgScore(r.email);
+    var d = phaseDecisions[r.email] && phaseDecisions[r.email][activePhase] || {decision:"Pending",decided_by:"",notes:""};
+    var actions = "";
+    if (IS_ADMIN) {
+      actions = "<td style=\"white-space:nowrap\">"
+        + (d.decision!=="Advanced" ? "<button class=\"btn btn-green\" style=\"font-size:11px;padding:3px 8px;margin-right:4px\" onclick=\"event.stopPropagation();makeDecision('"+r.email+"\','Advanced')\">&#10003; Advance</button>" : "")
+        + (d.decision!=="Eliminated" ? "<button class=\"btn btn-red\" style=\"font-size:11px;padding:3px 8px\" onclick=\"event.stopPropagation();makeDecision('"+r.email+"\','Eliminated')\">&#10007; Eliminate</button>" : "")
+        + (d.decision!=="Pending" ? "<button class=\"btn btn-secondary\" style=\"font-size:11px;padding:3px 8px;margin-left:4px\" onclick=\"event.stopPropagation();makeDecision('"+r.email+"\','Pending')\">Reset</button>" : "")
+        + "</td>";
+    }
+    return "<tr onclick=\"openModal('"+r.id+"')\">"
+      + "<td style=\"color:var(--text3);font-size:12px\">" + (i+1) + "</td>"
+      + "<td><strong>" + esc(r.project_name||r.luma_team||r.luma_name) + "</strong><br><span style=\"font-size:11px;color:var(--text3)\">" + esc(r.luma_name) + "</span></td>"
+      + "<td><span class=\"badge " + (r.final_type==="Team"?"badge-blue":"badge-gray") + "\">" + esc(r.final_type||"") + "</span></td>"
+      + "<td>" + renderTagPills(c.tags||[]) + "</td>"
+      + "<td style=\"text-align:center\"><strong style=\"color:" + scoreColor(avg) + "\">" + (avg!=null?avg.toFixed(1):"&#8212;") + "</strong></td>"
+      + "<td><span class=\"decision-badge " + d.decision + "\">" + d.decision + "</span></td>"
+      + "<td style=\"font-size:11px;color:var(--text3)\">" + esc(d.decided_by||"&#8212;") + "</td>"
+      + actions + "</tr>";
+  }).join("");
+}
+
+function updatePhaseNotes() {
+  var note = PHASE_POOL_NOTE_MAP[activePhase] || "";
+  ["lb-phase-note","pd-phase-note"].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.textContent = note ? "• " + note : "";
+  });
+}
+
+function changeLbPhase(phase) { changePhase(phase); }
+function changePdPhase(phase) { changePhase(phase); }
+
+function changePhase(phase) {
+  activePhase = phase;
+  ["lb-phase","pd-phase","score-phase-select"].forEach(function(id){
+    var el = document.getElementById(id); if (el) el.value = phase;
+  });
+  updatePhaseNotes();
+  loadJudgeScores().then(function() {
+    renderRegs();
+    loadLeaderboard();
+    renderPdTable();
+  });
+}
+
+function exportDecisionsCSV() {
+  var pool = getPhasePool(activePhase);
+  var sorted = pool.slice().sort(function(a,b){return (getAvgScore(b.email)||0)-(getAvgScore(a.email)||0);});
+  var lines = ["Rank,Project,Name,Type,Avg Score,Decision,Decided By"];
+  sorted.forEach(function(r,i){
+    var avg = getAvgScore(r.email);
+    var d = phaseDecisions[r.email]&&phaseDecisions[r.email][activePhase]||{decision:"Pending",decided_by:""};
+    lines.push((i+1)+",\""+esc(r.project_name||r.luma_team||r.luma_name)+"\"," +"\""+esc(r.luma_name)+"\"," +"\""+esc(r.final_type||"")+"\"," +(avg!=null?avg.toFixed(1):"")+","+d.decision+","+esc(d.decided_by||""));
+  });
+  var blob = new Blob([lines.join("\n")],{type:"text/csv"});
+  var a = document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="OVAC_"+activePhase.replace(/ /g,"_")+"_Decisions.csv"; a.click();
+}
+
 </script>
 </body></html>
