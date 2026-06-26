@@ -221,7 +221,7 @@ tbody td{padding:8px 10px;font-size:13px;vertical-align:middle}
       <h2 id="page-title">Overview</h2>
       <div class="topbar-right">
         <div class="sync-indicator"><div class="sync-dot" id="sync-dot"></div><span id="sync-text">Connecting...</span></div>
-        <button class="icon-btn" onclick="toggleTheme()" id="theme-btn">&#127769;</button>
+        <button class="icon-btn" onclick="toggleTheme()" id="theme-btn">🌙</button>
         <input type="text" id="search-input" placeholder="Search..." oninput="onSearch(this.value)"/>
       </div>
     </div>
@@ -373,7 +373,7 @@ tbody td{padding:8px 10px;font-size:13px;vertical-align:middle}
           <tbody id="all-scores-body"></tbody>
         </table>
       </div>
-      <div id="my-score-section">
+      <div id="judge-score-input-wrap" style="display:none">
         <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:8px" id="my-score-label">Your scores:</div>
         <div class="score-grid">
           <div class="score-card">
@@ -462,7 +462,7 @@ function changePhase(phase){
         document.getElementById("score-innovation").value=myS?myS.innovation:"";
         document.getElementById("score-technical").value=myS?myS.technical:"";
         document.getElementById("score-business").value=myS?myS.business:"";
-        document.getElementById("score-total-display").textContent=myS?myS.weighted_total:"&#8212;";
+        document.getElementById("score-total-display").innerHTML=myS?myS.weighted_total:"&#8212;";
       }
     }
     renderRegs();
@@ -506,11 +506,16 @@ function buildNav(){
     document.getElementById("judge-banner").style.display="flex";
     document.getElementById("judge-name-banner").textContent="Logged in as: "+JUDGE_NAME;
   }
+  // Admin: hide score inputs, show read-only
+  if(IS_ADMIN){
+    var sw=document.getElementById("judge-score-input-wrap");if(sw)sw.style.display="none";
+  }
   // Hide admin-only UI
   if(IS_JUDGE){
     var at=document.getElementById("admin-toolbar");if(at)at.style.display="none";
     var ae=document.getElementById("adv-export");if(ae)ae.style.display="none";
     var an=document.getElementById("admin-notes-wrap");if(an)an.style.display="none";
+    var sw=document.getElementById("judge-score-input-wrap");if(sw)sw.style.display="block";
   }
 }
 
@@ -584,7 +589,7 @@ function updateScoreTotal(){
   var tech=parseFloat(document.getElementById("score-technical").value);
   var bus=parseFloat(document.getElementById("score-business").value);
   var el=document.getElementById("score-total-display");
-  if(isNaN(inn)||isNaN(tech)||isNaN(bus)){el.textContent="&#8212;";return;}
+  if(isNaN(inn)||isNaN(tech)||isNaN(bus)){el.innerHTML="&#8212;";return;}
   inn=Math.min(10,Math.max(1,inn));tech=Math.min(10,Math.max(1,tech));bus=Math.min(10,Math.max(1,bus));
   el.textContent=calcWeighted(inn,tech,bus).toFixed(1);
   markDirty();
@@ -1034,7 +1039,7 @@ function openModal(id){
   document.getElementById("score-innovation").value=myS?myS.innovation:"";
   document.getElementById("score-technical").value=myS?myS.technical:"";
   document.getElementById("score-business").value=myS?myS.business:"";
-  document.getElementById("score-total-display").textContent=myS?myS.weighted_total:"&#8212;";
+  document.getElementById("score-total-display").innerHTML=myS?myS.weighted_total:"&#8212;";
   // Tags
   var c=getCust(r.email);
   renderModalTags(Array.isArray(c.tags)?c.tags:[]);
@@ -1078,7 +1083,7 @@ function showPage(id){
   closeSidebar();
 }
 
-function toggleTheme(){var isDark=document.documentElement.getAttribute("data-theme")==="dark";document.documentElement.setAttribute("data-theme",isDark?"light":"dark");document.getElementById("theme-btn").textContent=isDark?"&#127769;":"&#9728;";}
+function toggleTheme(){var isDark=document.documentElement.getAttribute("data-theme")==="dark";document.documentElement.setAttribute("data-theme",isDark?"light":"dark");document.getElementById("theme-btn").textContent=isDark?"🌙":"☀️";}
 
 // Init
 document.addEventListener("DOMContentLoaded", async function(){
@@ -1106,7 +1111,7 @@ document.addEventListener("DOMContentLoaded", async function(){
   buildTeamChart();buildTrend();
   var lu=D.last_updated||"";
   if(lu){var el=document.getElementById("last-updated");if(el)el.textContent=lu;var sf=document.getElementById("sidebar-footer");if(sf)sf.innerHTML="Updated: "+lu+"<br>Replace data.js to refresh";}
-  if(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches){document.documentElement.setAttribute("data-theme","dark");var tb=document.getElementById("theme-btn");if(tb)tb.textContent="&#9728;";}
+  if(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches){document.documentElement.setAttribute("data-theme","dark");var tb=document.getElementById("theme-btn");if(tb)tb.textContent="☀️";}
   buildRegNums();
   await loadGlobalTags();
   await loadCustData();
