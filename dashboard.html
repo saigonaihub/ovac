@@ -7,31 +7,57 @@
 <title>OneVoice AI Challenge 2026 — Dashboard</title>
 <script>
 (function() {
-  var PW = 'OVAC-Round1', SK = 'ovac_auth';
-  if (sessionStorage.getItem(SK) !== '1') {
-    document.documentElement.style.visibility = 'hidden';
-    document.addEventListener('DOMContentLoaded', function() {
-      document.documentElement.style.visibility = '';
-      var d = document.createElement('div');
-      d.style.cssText = 'min-height:100vh;display:flex;align-items:center;justify-content:center;background:#f5f4f0;font-family:-apple-system,sans-serif;padding:16px';
-      d.innerHTML = '<div style="background:#fff;border:1px solid #e0ddd6;border-radius:14px;padding:40px 32px;width:100%;max-width:380px;text-align:center">'
-        + '<h1 style="font-size:18px;font-weight:600;color:#1a1a1a;margin-bottom:6px">OVAC 2026 Dashboard</h1>'
-        + '<p style="font-size:13px;color:#888;margin-bottom:28px">Enter the access password to continue</p>'
-        + '<input id="pw" type="password" placeholder="Password" autofocus style="width:100%;padding:10px 14px;border:1px solid #ddd;border-radius:8px;font-size:14px;outline:none;margin-bottom:10px;box-sizing:border-box"/>'
-        + '<div id="pwe" style="font-size:12px;color:#e24b4a;margin-bottom:8px;min-height:18px"></div>'
-        + '<button id="pwbtn" style="width:100%;padding:10px;background:#e05a1e;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer">Enter Dashboard</button>'
-        + '<p style="font-size:11px;color:#bbb;margin-top:20px">OneVoice AI Challenge &#183; Saigon AI Hub</p>'
-        + '</div>';
-      document.body.innerHTML = '';
-      document.body.appendChild(d);
-      function chk() {
-        var val = document.getElementById('pw').value;
-        if (val === PW) { sessionStorage.setItem(SK,'1'); location.reload(); }
-        else { document.getElementById('pwe').textContent='Incorrect password.'; document.getElementById('pw').value=''; }
-      }
-      document.getElementById('pwbtn').addEventListener('click', chk);
-      document.getElementById('pw').addEventListener('keydown', function(e){ if(e.key==='Enter') chk(); });
+  var ADMIN_PW = "OVAC-Round1", JUDGE_PW = "OVAC-Judge";
+  var SK_ROLE = "ovac_role", SK_JUDGE = "ovac_judge";
+  var role = sessionStorage.getItem(SK_ROLE);
+  if (!role) {
+    document.documentElement.style.visibility = "hidden";
+    document.addEventListener("DOMContentLoaded", function() {
+      document.documentElement.style.visibility = "";
+      showLoginScreen();
     });
+  }
+  function showLoginScreen() {
+    var d = document.createElement("div");
+    d.style.cssText = "min-height:100vh;display:flex;align-items:center;justify-content:center;background:#f5f4f0;font-family:-apple-system,sans-serif;padding:16px";
+    d.innerHTML = "<div style="background:#fff;border:1px solid #e0ddd6;border-radius:14px;padding:40px 32px;width:100%;max-width:400px;text-align:center">"
+      + "<h1 style="font-size:18px;font-weight:600;color:#1a1a1a;margin-bottom:4px">OVAC 2026 Dashboard</h1>"
+      + "<p style="font-size:13px;color:#888;margin-bottom:24px">OneVoice AI Challenge &middot; Saigon AI Hub</p>"
+      + "<input id="pw" type="password" placeholder="Enter password" autofocus style="width:100%;padding:10px 14px;border:1px solid #ddd;border-radius:8px;font-size:14px;outline:none;margin-bottom:10px;box-sizing:border-box"/>"
+      + "<div id="pwe" style="font-size:12px;color:#e24b4a;margin-bottom:8px;min-height:18px"></div>"
+      + "<button id="pwbtn" style="width:100%;padding:10px;background:#e05a1e;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer">Enter</button>"
+      + "</div>";
+    document.body.innerHTML = "";
+    document.body.appendChild(d);
+    function chk() {
+      var val = document.getElementById("pw").value;
+      if (val === ADMIN_PW) { sessionStorage.setItem(SK_ROLE,"admin"); location.reload(); }
+      else if (val === JUDGE_PW) { sessionStorage.setItem(SK_ROLE,"judge"); showJudgeSelect(); }
+      else { document.getElementById("pwe").textContent = "Incorrect password."; document.getElementById("pw").value = ""; }
+    }
+    document.getElementById("pwbtn").addEventListener("click", chk);
+    document.getElementById("pw").addEventListener("keydown", function(e){ if(e.key==="Enter") chk(); });
+  }
+  function showJudgeSelect() {
+    var judges = ['Dr. Chau Thanh Duc', 'Mr. Vo Trong Thu', 'Prof. Dr. Quan Thanh Tho', 'Mr. Hoang Ngoc Thuc', 'Ms. Nguyen Thanh Thao'];
+    var d = document.createElement("div");
+    d.style.cssText = "min-height:100vh;display:flex;align-items:center;justify-content:center;background:#f5f4f0;font-family:-apple-system,sans-serif;padding:16px";
+    var cards = judges.map(function(j) {
+      return "<button onclick="window.selectJudge('"+j+"')""
+        + " style="display:block;width:100%;padding:12px 16px;margin-bottom:8px;background:#fff;border:1px solid #e0ddd6;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;text-align:left;transition:all .15s""
+        + " onmouseover="this.style.borderColor='#e05a1e'" onmouseout="this.style.borderColor='#e0ddd6'">"+j+"</button>";
+    }).join("");
+    d.innerHTML = "<div style="background:#fff;border:1px solid #e0ddd6;border-radius:14px;padding:32px;width:100%;max-width:420px">"
+      + "<h2 style="font-size:16px;font-weight:600;margin-bottom:4px">Welcome, Judge</h2>"
+      + "<p style="font-size:13px;color:#888;margin-bottom:20px">Please select your name to continue</p>"
+      + cards
+      + "</div>";
+    document.body.innerHTML = "";
+    document.body.appendChild(d);
+    window.selectJudge = function(name) {
+      sessionStorage.setItem(SK_JUDGE, name);
+      location.reload();
+    };
   }
 })();
 </script>
@@ -41,14 +67,17 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--bg:#f5f4f0;--surface:#fff;--surface2:#f0ede8;--border:#e0ddd6;--text:#1a1a1a;--text2:#555;--text3:#888;--accent:#e05a1e;--accent2:#f47340;--green:#1d9e75;--red:#e24b4a;--blue:#378add;--purple:#7f77dd;--yellow:#f59e0b;--sidebar:220px;--header:56px}
-[data-theme="dark"]{--bg:#111110;--surface:#1a1916;--surface2:#222120;--border:#333;--text:#e8e4dc;--text2:#aaa;--text3:#666;--accent:#f47340;--green:#1d9e75;--red:#e24b4a;--blue:#378add}
+[data-theme="dark"]{--bg:#111110;--surface:#1a1916;--surface2:#222120;--border:#333;--text:#e8e4dc;--text2:#aaa;--text3:#666;--accent:#f47340;--green:#1d9e75;--red:#e24b4a;--blue:#5ba3e8}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);font-size:14px;min-height:100vh}
 .layout{display:flex;min-height:100vh}
 .sidebar{width:var(--sidebar);background:#1a1814;color:#e8e4dc;position:fixed;top:0;left:0;height:100vh;display:flex;flex-direction:column;z-index:100;overflow-y:auto;transition:transform .25s}
-.sidebar-logo{padding:18px 20px 14px;border-bottom:1px solid #333;flex-shrink:0;display:flex;align-items:center;justify-content:space-between}
+.sidebar-logo{padding:18px 20px 14px;border-bottom:1px solid #333;flex-shrink:0;display:flex;align-items:flex-start;justify-content:space-between}
 .sidebar-logo h1{font-size:13px;font-weight:600;color:var(--accent2);letter-spacing:.03em;line-height:1.4}
 .sidebar-logo p{font-size:11px;color:#888;margin-top:2px}
-.sidebar-close{display:none;background:none;border:none;color:#888;font-size:20px;cursor:pointer;padding:2px}
+.sidebar-close{display:none;background:none;border:none;color:#888;font-size:20px;cursor:pointer;padding:2px;flex-shrink:0}
+.role-badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:600;margin-top:4px}
+.role-badge.admin{background:#e05a1e22;color:var(--accent2)}
+.role-badge.judge{background:#1d9e7522;color:#1d9e75}
 .sidebar-nav{flex:1;padding:12px 0}
 .nav-item{display:flex;align-items:center;gap:10px;padding:9px 20px;font-size:13px;color:#aaa;cursor:pointer;transition:all .15s;border-left:2px solid transparent}
 .nav-item:hover{color:#e8e4dc;background:rgba(255,255,255,.04)}
@@ -63,17 +92,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 .topbar h2{font-size:15px;font-weight:600;white-space:nowrap}
 .hamburger{display:none;background:none;border:none;cursor:pointer;color:var(--text2);padding:4px;flex-shrink:0}
 .topbar-right{margin-left:auto;display:flex;align-items:center;gap:8px}
-.topbar-right input{padding:6px 12px;border:1px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg);color:var(--text);width:200px}
+.topbar-right input{padding:6px 12px;border:1px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg);color:var(--text);width:180px}
 .topbar-right input:focus{outline:none;border-color:var(--accent)}
 .icon-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:5px 9px;cursor:pointer;color:var(--text2);font-size:14px;line-height:1}
+.judge-banner{background:linear-gradient(135deg,#1d9e7511,#1d9e7522);border-bottom:1px solid #1d9e7544;padding:8px 20px;font-size:12px;color:var(--green);display:flex;align-items:center;gap:8px}
 .sync-indicator{font-size:11px;color:var(--text3);display:flex;align-items:center;gap:4px;white-space:nowrap}
 .sync-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}
 .sync-dot.syncing{background:var(--yellow);animation:pulse 1s infinite}
 .sync-dot.error{background:var(--red)}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 .content{padding:20px;flex:1}
-.page{display:none}
-.page.active{display:block}
+.page{display:none}.page.active{display:block}
 .metrics-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
 .metric-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 18px}
 .metric-val{font-size:26px;font-weight:600;line-height:1}
@@ -114,12 +143,9 @@ tbody td{padding:8px 10px;font-size:13px;vertical-align:middle}
 .col-filter-opt input{accent-color:var(--accent)}
 .col-filter-actions{padding:6px 10px;border-top:1px solid var(--border);display:flex;gap:6px}
 .badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500;white-space:nowrap}
-.badge-green{background:#d4edda;color:#155724}
-.badge-red{background:#f8d7da;color:#721c24}
-.badge-blue{background:#d1ecf1;color:#0c5460}
-.badge-gray{background:var(--surface2);color:var(--text2)}
-.badge-orange{background:#fff3cd;color:#856404}
-.badge-purple{background:#e9d5ff;color:#6b21a8}
+.badge-green{background:#d4edda;color:#155724}.badge-red{background:#f8d7da;color:#721c24}
+.badge-blue{background:#d1ecf1;color:#0c5460}.badge-gray{background:var(--surface2);color:var(--text2)}
+.badge-orange{background:#fff3cd;color:#856404}.badge-purple{background:#e9d5ff;color:#6b21a8}
 .badge-yellow{background:#fef9c3;color:#854d0e}
 .thin-badge{background:#fff3cd;color:#856404;border:1px solid #ffc107;border-radius:4px;padding:1px 6px;font-size:10px;font-weight:600}
 .tag-pill{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500;white-space:nowrap;margin:1px}
@@ -130,7 +156,7 @@ tbody td{padding:8px 10px;font-size:13px;vertical-align:middle}
 .exp-btn{font-size:10px;color:var(--accent);cursor:pointer;display:block;margin-top:2px}
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none;align-items:flex-start;justify-content:center;padding:20px 12px;overflow-y:auto}
 .modal-overlay.open{display:flex}
-.modal{background:var(--surface);border-radius:12px;width:100%;max-width:900px;box-shadow:0 8px 40px rgba(0,0,0,.2);overflow:hidden}
+.modal{background:var(--surface);border-radius:12px;width:100%;max-width:960px;box-shadow:0 8px 40px rgba(0,0,0,.2);overflow:hidden}
 .modal-header{display:flex;align-items:center;gap:12px;padding:18px 20px 14px;border-bottom:1px solid var(--border)}
 .modal-avatar{width:40px;height:40px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:15px;flex-shrink:0}
 .modal-title h3{font-size:15px;font-weight:600}
@@ -146,6 +172,23 @@ tbody td{padding:8px 10px;font-size:13px;vertical-align:middle}
 .members-table{width:100%;border-collapse:collapse;font-size:12px}
 .members-table th{padding:5px 7px;text-align:left;color:var(--text3);border-bottom:1px solid var(--border);font-weight:500}
 .members-table td{padding:5px 7px;border-bottom:1px solid var(--border)}
+.score-section{padding:16px 20px;border-top:1px solid var(--border);background:var(--surface)}
+.score-section h4{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:14px}
+.score-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px}
+.score-card{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:12px}
+.score-card-label{font-size:11px;font-weight:600;color:var(--text2);margin-bottom:2px}
+.score-card-weight{font-size:10px;color:var(--text3);margin-bottom:8px}
+.score-input{width:100%;padding:6px 8px;border:1px solid var(--border);border-radius:6px;font-size:18px;font-weight:600;text-align:center;background:var(--surface);color:var(--text);outline:none}
+.score-input:focus{border-color:var(--accent)}
+.score-input::-webkit-inner-spin-button{opacity:1}
+.score-total{background:linear-gradient(135deg,#e05a1e11,#e05a1e22);border:1px solid #e05a1e33;border-radius:8px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.score-total-label{font-size:12px;font-weight:600;color:var(--accent)}
+.score-total-val{font-size:24px;font-weight:700;color:var(--accent)}
+.all-scores-table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:12px}
+.all-scores-table th{padding:5px 8px;text-align:left;color:var(--text3);border-bottom:1px solid var(--border);font-weight:500;font-size:11px}
+.all-scores-table td{padding:5px 8px;border-bottom:1px solid var(--border)}
+.all-scores-table tr.mine td{background:rgba(224,90,30,.05);font-weight:500}
+.avg-row td{font-weight:700;color:var(--accent);border-top:2px solid var(--border)}
 .modal-custom{padding:14px 20px;border-top:1px solid var(--border);background:var(--surface2)}
 .modal-custom h4{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
 .cf{display:flex;flex-direction:column;gap:4px}
@@ -153,20 +196,12 @@ tbody td{padding:8px 10px;font-size:13px;vertical-align:middle}
 .cf input,.cf select,.cf textarea{padding:6px 9px;border:1px solid var(--border);border-radius:6px;font-size:12px;background:var(--surface);color:var(--text);width:100%}
 .cf input:focus,.cf select:focus,.cf textarea:focus{outline:none;border-color:var(--accent)}
 .modal-footer{padding:12px 20px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.tag-manager{padding:10px 0}
+.tag-assigned{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
 .tag-list-edit{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;min-height:32px}
 .tag-edit-item{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer}
-.tag-edit-item .tag-remove{opacity:.6;font-size:14px;line-height:1;margin-left:2px}
-.tag-edit-item .tag-remove:hover{opacity:1}
 .tag-add-form{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
 .tag-add-form input[type=text]{padding:5px 9px;border:1px solid var(--border);border-radius:6px;font-size:12px;background:var(--surface);color:var(--text);flex:1;min-width:120px}
 .tag-add-form input[type=color]{width:32px;height:28px;border:1px solid var(--border);border-radius:5px;padding:1px;cursor:pointer;background:var(--surface)}
-.tag-assigned{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
-.incomplete-list{display:flex;flex-direction:column;gap:10px}
-.inc-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;cursor:pointer;transition:all .15s}
-.inc-card:hover{border-color:var(--accent)}
-.missing-fields{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
-.missing-tag{font-size:11px;padding:2px 8px;background:#fff3cd;color:#856404;border-radius:20px}
 .info-strip{background:#fff8f0;border:1px solid #ffd8b0;border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:12px;color:#7a4a00;display:flex;align-items:center;gap:10px}
 .footnote{padding:12px 20px;font-size:11px;color:var(--text3);border-top:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .col-list{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;max-height:280px;overflow-y:auto}
@@ -175,69 +210,43 @@ tbody td{padding:8px 10px;font-size:13px;vertical-align:middle}
 .col-item-type{font-size:11px;color:var(--text3);padding:2px 6px;background:var(--surface);border-radius:4px}
 .col-add-form{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:end}
 .col-add-form input,.col-add-form select{padding:7px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px;background:var(--surface);color:var(--text)}
-::-webkit-scrollbar{width:5px;height:5px}
-::-webkit-scrollbar-thumb{background:#ccc;border-radius:3px}
-@media (max-width:768px){
-  .sidebar{transform:translateX(-100%)}
-  .sidebar.open{transform:translateX(0)}
-  .sidebar-close{display:block}
-  .sidebar-overlay.open{display:block}
-  .main{margin-left:0}
-  .hamburger{display:flex}
-  .topbar-right input{width:140px}
-  .sync-indicator span{display:none}
-  .metrics-grid{grid-template-columns:1fr 1fr}
-  .charts-grid{grid-template-columns:1fr}
-  .modal-body{grid-template-columns:1fr}
-  .modal{border-radius:10px}
-  .modal-overlay{padding:10px 6px}
-  .content{padding:14px}
-  .table-toolbar{gap:4px}
-  .filter-btn{font-size:11px;padding:3px 8px}
-  thead th{font-size:10px;padding:6px 8px}
-  tbody td{padding:6px 8px;font-size:12px}
-  .topbar{padding:0 14px}
-  .col-add-form{grid-template-columns:1fr}
+.lb-rank{font-size:18px;font-weight:700;width:36px;text-align:center}
+.lb-rank.gold{color:#f59e0b}.lb-rank.silver{color:#94a3b8}.lb-rank.bronze{color:#b45309}
+.score-bar{height:8px;background:var(--surface2);border-radius:4px;overflow:hidden;flex:1}
+.score-bar-fill{height:100%;background:linear-gradient(90deg,#e05a1e,#f47340);border-radius:4px;transition:width .5s}
+::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-thumb{background:#ccc;border-radius:3px}
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}
+  .sidebar-close{display:block}.sidebar-overlay.open{display:block}
+  .main{margin-left:0}.hamburger{display:flex}
+  .metrics-grid{grid-template-columns:1fr 1fr}.charts-grid{grid-template-columns:1fr}
+  .modal-body{grid-template-columns:1fr}.score-grid{grid-template-columns:1fr}
+  .topbar-right input{width:120px}.content{padding:14px}
 }
-@media (max-width:480px){
-  .metrics-grid{grid-template-columns:1fr}
-  .metric-val{font-size:22px}
-  .topbar-right input{display:none}
-}
-</style>
-</head>
-<body>
+@media(max-width:480px){.metrics-grid{grid-template-columns:1fr}.topbar-right input{display:none}}
+</style></head><body>
 <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
 <div class="layout">
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-logo">
-      <div><h1>OneVoice AI Challenge</h1><p>2026 Admin Dashboard</p></div>
+      <div>
+        <h1>OneVoice AI Challenge</h1>
+        <p>2026 Admin Dashboard</p>
+        <span class="role-badge" id="role-badge"></span>
+      </div>
       <button class="sidebar-close" onclick="closeSidebar()">&#x2715;</button>
     </div>
-    <nav class="sidebar-nav">
-      <div class="nav-item active" onclick="showPage('overview')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Overview
-      </div>
-      <div class="nav-item" onclick="showPage('registrations')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21H7a2 2 0 01-2-2V5a2 2 0 012-2h7l5 5v11a2 2 0 01-2 2z"/><polyline points="17 3 17 8 12 8"/></svg>All Registrations
-      </div>
-      <div class="nav-item" onclick="showPage('incomplete')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Incomplete
-        <span id="incomplete-badge" class="nav-badge" style="background:var(--red);color:#fff;display:none">0</span>
-      </div>
-      <div class="nav-item" onclick="showPage('advanced')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Advanced
-        <span id="advanced-badge" class="nav-badge" style="background:var(--green);color:#fff">0</span>
-      </div>
-      <div class="nav-item" onclick="showPage('columns')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>Manage Columns
-      </div>
-    </nav>
+    <nav class="sidebar-nav" id="sidebar-nav"></nav>
     <div class="sidebar-footer" id="sidebar-footer">Loading...<br>Replace data.js to update</div>
   </aside>
   <main class="main">
+    <div id="judge-banner" class="judge-banner" style="display:none">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      <span id="judge-name-banner"></span>
+      <span style="margin-left:auto;cursor:pointer;opacity:.7;font-size:11px" onclick="switchJudge()">Switch judge</span>
+    </div>
     <div class="topbar">
-      <button class="hamburger" onclick="openSidebar()" aria-label="Menu">
+      <button class="hamburger" onclick="openSidebar()">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
       </button>
       <h2 id="page-title">Overview</h2>
@@ -274,11 +283,10 @@ tbody td{padding:8px 10px;font-size:13px;vertical-align:middle}
             <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
             <button class="filter-btn" onclick="setFilter('Team',this)">Teams</button>
             <button class="filter-btn" onclick="setFilter('Individual',this)">Individuals</button>
-            <button class="filter-btn" onclick="setFilter('incomplete',this)">Blanks</button>
             <button class="filter-btn" onclick="setFilter('thin',this)">Thin</button>
             <span class="filter-count" id="filter-count" style="margin-left:4px"></span>
           </div>
-          <div class="table-toolbar" style="border-top:none;padding-top:6px">
+          <div class="table-toolbar" id="admin-toolbar" style="padding-top:6px">
             <span id="bulk-cb-wrap" style="display:none;gap:5px;align-items:center">
               <span style="font-size:11px;color:var(--text3)">Checkbox:</span>
               <button class="btn btn-secondary" style="font-size:11px;padding:3px 8px" onclick="bulkCheck(true)">&#10003; All</button>
@@ -295,18 +303,25 @@ tbody td{padding:8px 10px;font-size:13px;vertical-align:middle}
           <div style="overflow-x:auto"><table><thead><tr id="reg-thead"></tr></thead><tbody id="reg-tbody"></tbody></table></div>
         </div>
       </div>
-      <div class="page" id="page-incomplete">
-        <div class="info-strip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Registrants with one or more required fields left blank.</div>
-        <div class="incomplete-list" id="incomplete-list"></div>
+      <div class="page" id="page-leaderboard">
+        <div class="table-card">
+          <div class="table-toolbar">
+            <span style="font-size:12px;font-weight:600;color:var(--text2)">Ranked by weighted average score across all judges</span><select id="lb-phase-selector" onchange="activePhase=this.value;loadLeaderboard()" style="padding:5px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;background:var(--surface);color:var(--text);margin-left:12px"><option value="Phase 1 - Registration">Phase 1 - Registration</option><option value="Phase 2 - Technical Specification">Phase 2 - Technical Specification</option><option value="Phase 3 - Prototype Submission">Phase 3 - Prototype Submission</option><option value="Phase 4 - Field Testing">Phase 4 - Field Testing</option><option value="Phase 5 - Finale">Phase 5 - Finale</option></select>
+            <button class="btn btn-secondary" style="margin-left:auto;font-size:11px" onclick="loadLeaderboard()">&#8635; Refresh</button>
+          </div>
+          <div style="overflow-x:auto">
+            <table>
+              <thead><tr><th>#</th><th>Project</th><th>Type</th><th>Tags</th><th style="text-align:center">&#x1F680; Innovation<br><span style="font-weight:400;font-size:10px">25%</span></th><th style="text-align:center">&#x2699;&#xFE0F; Technical<br><span style="font-weight:400;font-size:10px">50%</span></th><th style="text-align:center">&#x1F30D; Business<br><span style="font-weight:400;font-size:10px">25%</span></th><th style="text-align:center">Weighted<br>Avg</th><th>Judges scored</th></tr></thead>
+              <tbody id="lb-tbody"></tbody>
+            </table>
+          </div>
+        </div>
       </div>
       <div class="page" id="page-advanced">
         <div class="info-strip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Registrations tagged with Advanced, Shortlisted, or Winner tags.</div>
         <div class="table-card">
-          <div class="table-toolbar">
-            <span class="filter-count" id="advanced-count">None yet</span>
-            <button class="btn btn-secondary" style="margin-left:auto" onclick="exportCSV()">Export CSV</button>
-          </div>
-          <table><thead><tr><th>#</th><th>Name</th><th>Email</th><th>Project</th><th>Type</th><th>Tags</th><th>Judge Notes</th></tr></thead><tbody id="advanced-tbody"></tbody></table>
+          <div class="table-toolbar"><span class="filter-count" id="advanced-count">None yet</span><button class="btn btn-secondary" style="margin-left:auto" onclick="exportCSV()" id="adv-export">Export CSV</button></div>
+          <table><thead><tr><th>#</th><th>Project</th><th>Type</th><th>Tags</th><th style="text-align:center">Weighted Avg</th><th>Judge Notes</th></tr></thead><tbody id="advanced-tbody"></tbody></table>
         </div>
       </div>
       <div class="page" id="page-columns">
@@ -319,16 +334,14 @@ tbody td{padding:8px 10px;font-size:13px;vertical-align:middle}
             <div class="col-add-form">
               <input type="text" id="new-col-label" placeholder="Column name" aria-label="Column name"/>
               <select id="new-col-type" aria-label="Column type"><option value="checkbox">Checkbox</option><option value="text">Text</option><option value="select">Select</option></select>
-              <button class="btn btn-primary" onclick="addColumn()">Add Column</button>
+              <button class="btn btn-primary" onclick="addColumn()">Add</button>
             </div>
-            <div id="new-col-options-wrap" style="display:none;margin-top:8px">
-              <input type="text" id="new-col-options" placeholder="Options separated by commas" aria-label="Select options" style="width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px;background:var(--surface);color:var(--text)"/>
-            </div>
+            <div id="new-col-options-wrap" style="display:none;margin-top:8px"><input type="text" id="new-col-options" placeholder="Options separated by commas" aria-label="Select options" style="width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px;background:var(--surface);color:var(--text)"/></div>
           </div>
         </div>
         <div class="table-card" style="padding:20px">
           <h3 style="font-size:15px;font-weight:600;margin-bottom:4px">Tags</h3>
-          <p style="font-size:13px;color:var(--text3);margin-bottom:14px">Create custom tags with colors. Assign multiple tags per registrant. Stored in Supabase.</p>
+          <p style="font-size:13px;color:var(--text3);margin-bottom:14px">Create custom tags with colors. Assign multiple per registrant.</p>
           <div class="tag-list-edit" id="global-tag-list"></div>
           <div class="tag-add-form">
             <input type="text" id="new-tag-label" placeholder="Tag name (e.g. Finalist)" aria-label="Tag name"/>
@@ -351,7 +364,7 @@ tbody td{padding:8px 10px;font-size:13px;vertical-align:middle}
       <div class="modal-title"><h3 id="m-name">&#8212;</h3><p id="m-meta">&#8212;</p></div>
       <button class="modal-close" onclick="closeModal()">&#x2715;</button>
     </div>
-    <div class="modal-body">
+    <div class="modal-body" id="modal-body">
       <div class="modal-section" id="modal-left"></div>
       <div class="modal-section" id="modal-right"></div>
     </div>
@@ -359,28 +372,61 @@ tbody td{padding:8px 10px;font-size:13px;vertical-align:middle}
       <h4 style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--border)">Team members</h4>
       <div style="overflow-x:auto"><table class="members-table" id="modal-members-table"></table></div>
     </div>
+    <div class="score-section">
+      <h4>&#x2B50; Judge Scores <span style="font-size:10px;font-weight:400;color:var(--text3)">(synced to Supabase &middot; all judges can see)</span></h4><div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;padding:8px 12px;background:var(--surface2);border-radius:8px;border:1px solid var(--border)"><span style="font-size:12px;font-weight:500;color:var(--text2)">Scoring phase:</span><select id="phase-selector" onchange="changePhase(this.value)" style="padding:5px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;background:var(--surface);color:var(--text);flex:1"><option value="Phase 1 - Registration">Phase 1 - Registration</option><option value="Phase 2 - Technical Specification">Phase 2 - Technical Specification</option><option value="Phase 3 - Prototype Submission">Phase 3 - Prototype Submission</option><option value="Phase 4 - Field Testing">Phase 4 - Field Testing</option><option value="Phase 5 - Finale">Phase 5 - Finale</option></select></div>
+      <div style="overflow-x:auto;margin-bottom:12px">
+        <table class="all-scores-table" id="all-scores-table">
+          <thead><tr><th>Judge</th><th style="text-align:center">&#x1F680; Innovation /10</th><th style="text-align:center">&#x2699; Technical /10</th><th style="text-align:center">&#x1F30D; Business /10</th><th style="text-align:center">Weighted Total</th></tr></thead>
+          <tbody id="all-scores-body"></tbody>
+        </table>
+      </div>
+      <div id="my-score-section">
+        <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:8px" id="my-score-label">Your scores:</div>
+        <div class="score-grid">
+          <div class="score-card">
+            <div class="score-card-label">&#x1F680; Innovation &amp; Novelty</div>
+            <div class="score-card-weight">Weight: 25%</div>
+            <input class="score-input" type="number" id="score-innovation" min="1" max="10" placeholder="1-10" oninput="updateScoreTotal()"/>
+          </div>
+          <div class="score-card">
+            <div class="score-card-label">&#x2699;&#xFE0F; Technical Excellence</div>
+            <div class="score-card-weight">Weight: 50%</div>
+            <input class="score-input" type="number" id="score-technical" min="1" max="10" placeholder="1-10" oninput="updateScoreTotal()"/>
+          </div>
+          <div class="score-card">
+            <div class="score-card-label">&#x1F30D; Business Impact</div>
+            <div class="score-card-weight">Weight: 25%</div>
+            <input class="score-input" type="number" id="score-business" min="1" max="10" placeholder="1-10" oninput="updateScoreTotal()"/>
+          </div>
+        </div>
+        <div class="score-total">
+          <div class="score-total-label">Your Weighted Total (out of 100)</div>
+          <div class="score-total-val" id="score-total-display">&#8212;</div>
+        </div>
+      </div>
+    </div>
     <div class="modal-custom">
       <h4>Tags &amp; Notes <span style="font-size:10px;font-weight:400;color:var(--text3)">(synced to Supabase)</span></h4>
       <div style="margin-bottom:10px">
         <div class="cf"><label>Assigned Tags</label>
-          <div id="modal-tags-assigned" class="tag-assigned" style="min-height:28px;padding:4px;border:1px solid var(--border);border-radius:6px;background:var(--surface);cursor:text"></div>
+          <div id="modal-tags-assigned" class="tag-assigned" style="min-height:28px;padding:4px;border:1px solid var(--border);border-radius:6px;background:var(--surface)"></div>
         </div>
-        <div style="margin-top:6px">
-          <div class="cf"><label>Add tag</label>
-            <select id="modal-tag-add" aria-label="Add tag" style="padding:5px 9px;border:1px solid var(--border);border-radius:6px;font-size:12px;background:var(--surface);color:var(--text);width:100%">
-              <option value="">&#8212; select tag to add &#8212;</option>
-            </select>
-          </div>
-        </div>
+        <div style="margin-top:6px"><div class="cf"><label>Add tag</label>
+          <select id="modal-tag-add" aria-label="Add tag" style="padding:5px 9px;border:1px solid var(--border);border-radius:6px;font-size:12px;background:var(--surface);color:var(--text);width:100%">
+            <option value="">&#8212; select tag to add &#8212;</option></select>
+        </div></div>
       </div>
       <div id="modal-custom-cols" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:10px"></div>
-      <div class="cf"><label for="modal-judge-notes">Judge Notes</label>
-        <textarea id="modal-judge-notes" rows="2" style="resize:vertical" oninput="markDirty()" placeholder="Internal notes..."></textarea>
+      <div class="cf"><label for="modal-judge-notes">Judge Notes <span id="modal-notes-judge-label" style="color:var(--text3);font-weight:400"></span></label>
+        <textarea id="modal-judge-notes" rows="2" style="resize:vertical" oninput="markDirty()" placeholder="Your notes visible to all judges and admin..."></textarea>
+      </div>
+      <div class="cf" id="admin-notes-wrap" style="margin-top:8px"><label>Admin Notes (editable)</label>
+        <input type="text" id="modal-notes-input" oninput="markDirty()" placeholder="Internal admin notes..."/>
       </div>
     </div>
     <div class="modal-footer">
       <span id="modal-dirty" style="font-size:12px;color:var(--yellow);display:none">&#9679; Unsaved changes</span>
-      <button class="btn btn-primary" onclick="saveCustom()">Save to Supabase</button>
+      <button class="btn btn-primary" onclick="saveAll()">Save to Supabase</button>
       <button class="btn btn-secondary" onclick="closeModal()">Close</button>
     </div>
   </div>
@@ -390,23 +436,51 @@ var SUPA_URL = "https://phgpdwiaccgalevbockn.supabase.co";
 var SUPA_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBoZ3Bkd2lhY2NnYWxldmJvY2tuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIzNzcxMzMsImV4cCI6MjA5Nzk1MzEzM30.17hR_N7iP7_CAH5vzwP5SRBFoxTbqO-lbr3lbVySwwY";
 var db = supabase.createClient(SUPA_URL, SUPA_KEY);
 
-// State
-var curFilter = "all", curSearch = "", curRegId = null;
-var custData = {}, custCols = [], globalTags = [], isDirty = false, apexT = null;
-var sortCol = null, sortDir = 1;
-var colFilters = {}; // {colName: Set of selected values}
-var regNums = {}; // email -> registration number (fixed by date)
+// Role & judge identity
+var ROLE = sessionStorage.getItem("ovac_role") || "admin";
+var JUDGE_NAME = sessionStorage.getItem("ovac_judge") || "";
+var IS_ADMIN = ROLE === "admin";
+var IS_JUDGE = ROLE === "judge";
 
-// ── Helpers ────────────────────────────────────────────────────────────
+// State
+var curFilter="all",curSearch="",curRegId=null;
+var custData={},custCols=[],globalTags=[],judgeScores={},isDirty=false,apexT=null;
+var sortCol=null,sortDir=1,colFilters={},regNums={};
+var activePhase="Phase 1 - Registration";
+
 function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
 function ini(n){return (n||"?").split(" ").map(function(w){return w[0]||"";}).join("").slice(0,2).toUpperCase();}
 function markDirty(){isDirty=true;document.getElementById("modal-dirty").style.display="";}
+function switchJudge(){sessionStorage.removeItem("ovac_judge");sessionStorage.removeItem("ovac_role");location.reload();}
 
-// ── Sidebar (mobile) ───────────────────────────────────────────────────
+function changePhase(phase){
+  activePhase=phase;
+  // Sync leaderboard phase selector if open
+  var lbSel=document.getElementById("lb-phase-selector");
+  if(lbSel)lbSel.value=phase;
+  // Reload scores for this phase and refresh modal scores
+  loadJudgeScores().then(function(){
+    if(curRegId){
+      var r=DATA.registrations.find(function(x){return x.id===curRegId;});
+      if(r){
+        renderAllScores(r.email);
+        var myS=getMyScore(r.email);
+        document.getElementById("score-innovation").value=myS?myS.innovation:"";
+        document.getElementById("score-technical").value=myS?myS.technical:"";
+        document.getElementById("score-business").value=myS?myS.business:"";
+        document.getElementById("score-total-display").textContent=myS?myS.weighted_total:"&#8212;";
+      }
+    }
+    renderRegs();
+    loadLeaderboard();
+  });
+}
+
+// Sidebar
 function openSidebar(){document.getElementById("sidebar").classList.add("open");document.getElementById("sidebar-overlay").classList.add("open");}
 function closeSidebar(){document.getElementById("sidebar").classList.remove("open");document.getElementById("sidebar-overlay").classList.remove("open");}
 
-// ── Sync status ────────────────────────────────────────────────────────
+// Sync status
 function setSyncStatus(s){
   var dot=document.getElementById("sync-dot"),txt=document.getElementById("sync-text");
   if(s==="syncing"){dot.className="sync-dot syncing";txt.textContent="Syncing...";}
@@ -414,16 +488,46 @@ function setSyncStatus(s){
   else{dot.className="sync-dot";txt.textContent="Connected";}
 }
 
-// ── Registration number assignment (by registration date) ──────────────
+// Build nav based on role
+function buildNav(){
+  var nav=document.getElementById("sidebar-nav");
+  var items=[
+    {id:"overview",icon:"<rect x='3' y='3' width='7' height='7'/><rect x='14' y='3' width='7' height='7'/><rect x='3' y='14' width='7' height='7'/><rect x='14' y='14' width='7' height='7'/>",label:"Overview",roles:["admin","judge"]},
+    {id:"registrations",icon:"<path d='M17 21H7a2 2 0 01-2-2V5a2 2 0 012-2h7l5 5v11a2 2 0 01-2 2z'/><polyline points='17 3 17 8 12 8'/>",label:"All Registrations",roles:["admin","judge"]},
+    {id:"leaderboard",icon:"<polyline points='22 12 18 12 15 21 9 3 6 12 2 12'/>",label:"Leaderboard",badge:"lb-badge",roles:["admin","judge"]},
+    {id:"advanced",icon:"<path d='M22 11.08V12a10 10 0 11-5.93-9.14'/><polyline points='22 4 12 14.01 9 11.01'/>",label:"Advanced",badge:"advanced-badge",roles:["admin","judge"]},
+    {id:"columns",icon:"<line x1='8' y1='6' x2='21' y2='6'/><line x1='8' y1='12' x2='21' y2='12'/><line x1='8' y1='18' x2='21' y2='18'/><line x1='3' y1='6' x2='3.01' y2='6'/><line x1='3' y1='12' x2='3.01' y2='12'/><line x1='3' y1='18' x2='3.01' y2='18'/>",label:"Manage Columns",roles:["admin"]},
+  ];
+  nav.innerHTML=items.filter(function(i){return i.roles.includes(ROLE);}).map(function(item){
+    var badge=item.badge?"<span id='"+item.badge+"' class='nav-badge' style='background:var(--green);color:#fff'>0</span>":"";
+    return "<div class='nav-item' onclick='showPage(\""+item.id+"\")' id='nav-"+item.id+"'>"
+      +"<svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'>"+item.icon+"</svg>"
+      +esc(item.label)+badge+"</div>";
+  }).join("");
+  // Role badge
+  var rb=document.getElementById("role-badge");
+  if(rb){rb.textContent=IS_ADMIN?"Admin":"Judge: "+JUDGE_NAME;rb.className="role-badge "+(IS_ADMIN?"admin":"judge");}
+  // Judge banner
+  if(IS_JUDGE){
+    document.getElementById("judge-banner").style.display="flex";
+    document.getElementById("judge-name-banner").textContent="Logged in as: "+JUDGE_NAME;
+  }
+  // Hide admin-only UI
+  if(IS_JUDGE){
+    var at=document.getElementById("admin-toolbar");if(at)at.style.display="none";
+    var ae=document.getElementById("adv-export");if(ae)ae.style.display="none";
+    var an=document.getElementById("admin-notes-wrap");if(an)an.style.display="none";
+  }
+}
+
+// Registration numbers (fixed by date)
 function buildRegNums(){
-  var sorted = DATA.registrations.slice().sort(function(a,b){
-    return a.registered_at.localeCompare(b.registered_at) || a.luma_name.localeCompare(b.luma_name);
-  });
+  var sorted=DATA.registrations.slice().sort(function(a,b){return a.registered_at.localeCompare(b.registered_at)||a.luma_name.localeCompare(b.luma_name);});
   sorted.forEach(function(r,i){regNums[r.email]=i+1;});
 }
 
-// ── Custom data ────────────────────────────────────────────────────────
-function getCust(email){return custData[email]||{tags:[],judge_notes:"",custom_cols:{}};}
+// Custom data
+function getCust(email){return custData[email]||{tags:[],judge_notes:"",custom_cols:{},notes:""};}
 
 async function loadCustData(){
   setSyncStatus("syncing");
@@ -433,53 +537,117 @@ async function loadCustData(){
     custData={};
     (res.data||[]).forEach(function(r){
       custData[r.email]={
-        tags: Array.isArray(r.custom_cols&&r.custom_cols.tags)?r.custom_cols.tags:[],
+        tags:Array.isArray(r.custom_cols&&r.custom_cols.tags)?r.custom_cols.tags:[],
         judge_notes:r.judge_notes||"",
-        custom_cols:r.custom_cols||{}
+        custom_cols:r.custom_cols||{},
+        notes:r.custom_cols&&r.custom_cols._admin_notes||""
       };
     });
     setSyncStatus("ok");
   }catch(e){console.error(e);setSyncStatus("error");}
 }
 
-async function saveCustom(){
+// Judge scores
+async function loadJudgeScores(){
+  try{
+    var res=await db.from("judge_scores").select("*").eq("phase",activePhase);
+    if(res.error) throw res.error;
+    judgeScores={};
+    (res.data||[]).forEach(function(s){
+      if(!judgeScores[s.email]) judgeScores[s.email]={};
+      judgeScores[s.email][s.judge_name]={
+        innovation:s.innovation,technical:s.technical,business:s.business,
+        weighted_total:s.weighted_total,notes:s.notes||""
+      };
+    });
+  }catch(e){console.error("scores:",e);}
+}
+
+function getMyScore(email){
+  if(!judgeScores[email]) return null;
+  return judgeScores[email][JUDGE_NAME]||null;
+}
+
+function getAvgScore(email){
+  if(!judgeScores[email]) return null;
+  var scores=Object.values(judgeScores[email]).filter(function(s){return s.weighted_total!=null;});
+  if(!scores.length) return null;
+  return scores.reduce(function(a,b){return a+b.weighted_total;},0)/scores.length;
+}
+
+function getJudgeCount(email){
+  if(!judgeScores[email]) return 0;
+  return Object.values(judgeScores[email]).filter(function(s){return s.weighted_total!=null;}).length;
+}
+
+function calcWeighted(inn,tech,bus){
+  if(inn==null||tech==null||bus==null) return null;
+  return Math.round((inn*2.5+tech*5+bus*2.5)*10)/10;
+}
+
+function updateScoreTotal(){
+  var inn=parseFloat(document.getElementById("score-innovation").value);
+  var tech=parseFloat(document.getElementById("score-technical").value);
+  var bus=parseFloat(document.getElementById("score-business").value);
+  var el=document.getElementById("score-total-display");
+  if(isNaN(inn)||isNaN(tech)||isNaN(bus)){el.textContent="&#8212;";return;}
+  inn=Math.min(10,Math.max(1,inn));tech=Math.min(10,Math.max(1,tech));bus=Math.min(10,Math.max(1,bus));
+  el.textContent=calcWeighted(inn,tech,bus).toFixed(1);
+  markDirty();
+}
+
+async function saveAll(){
   if(!curRegId) return;
   var r=DATA.registrations.find(function(x){return x.id===curRegId;});
   if(!r) return;
   setSyncStatus("syncing");
+  var ok=true;
+  // Save scores (judge or admin with judge name)
+  var inn=parseFloat(document.getElementById("score-innovation").value);
+  var tech=parseFloat(document.getElementById("score-technical").value);
+  var bus=parseFloat(document.getElementById("score-business").value);
+  var judgeNameToUse=IS_JUDGE?JUDGE_NAME:"Admin";
+  if(!isNaN(inn)&&!isNaN(tech)&&!isNaN(bus)){
+    inn=Math.min(10,Math.max(1,inn));tech=Math.min(10,Math.max(1,tech));bus=Math.min(10,Math.max(1,bus));
+    var wt=calcWeighted(inn,tech,bus);
+    var scoreNotes=document.getElementById("modal-judge-notes").value;
+    try{
+      var sr=await db.from("judge_scores").upsert({email:r.email,judge_name:judgeNameToUse,phase:activePhase,innovation:inn,technical:tech,business:bus,weighted_total:wt,notes:scoreNotes,updated_at:new Date().toISOString()},{onConflict:"email,judge_name,phase"});
+      if(sr.error) throw sr.error;
+      if(!judgeScores[r.email]) judgeScores[r.email]={};
+      judgeScores[r.email][judgeNameToUse]={innovation:inn,technical:tech,business:bus,weighted_total:wt,notes:scoreNotes};
+    }catch(e){console.error(e);ok=false;}
+  }
+  // Save tags & custom cols (both roles)
   var cols=Object.assign({},getCust(r.email).custom_cols||{});
   custCols.forEach(function(col){
     var el=document.getElementById("custom-col-"+col.col_key);
     if(el) cols[col.col_key]=col.col_type==="checkbox"?el.checked:el.value;
   });
-  // Get assigned tags
   var assignedTags=[];
-  document.querySelectorAll("#modal-tags-assigned .tag-pill").forEach(function(p){
-    assignedTags.push(p.dataset.tag);
-  });
+  document.querySelectorAll("#modal-tags-assigned .tag-pill").forEach(function(p){assignedTags.push(p.dataset.tag);});
   cols.tags=assignedTags;
-  var notesEl=document.getElementById("modal-notes-input");
-  var payload={
-    email:r.email,
-    status:"",
-    phase_tag:"",
-    judge_notes:document.getElementById("modal-judge-notes").value,
-    custom_cols:cols,
-    updated_at:new Date().toISOString()
-  };
+  if(IS_ADMIN){
+    var notesEl=document.getElementById("modal-notes-input");
+    if(notesEl) cols._admin_notes=notesEl.value;
+  }
+  // Judge notes stored separately in judge_scores table above
+  // For custData, just store tags and custom cols
   try{
-    var res=await db.from("registrant_custom").upsert(payload,{onConflict:"email"});
-    if(res.error) throw res.error;
-    custData[r.email]={tags:assignedTags,judge_notes:payload.judge_notes,custom_cols:cols};
-    if(notesEl) r.notes=notesEl.value;
-    isDirty=false;
-    document.getElementById("modal-dirty").style.display="none";
-    setSyncStatus("ok");
-    renderRegs();renderAdv();updateAdvBadge();
-  }catch(e){console.error(e);setSyncStatus("error");alert("Save failed: "+e.message);}
+    var cr=await db.from("registrant_custom").upsert({email:r.email,status:"",phase_tag:"",judge_notes:"",custom_cols:cols,updated_at:new Date().toISOString()},{onConflict:"email"});
+    if(cr.error) throw cr.error;
+    custData[r.email]={tags:assignedTags,judge_notes:"",custom_cols:cols,notes:cols._admin_notes||""};
+    if(IS_ADMIN){var robj=DATA.registrations.find(function(x){return x.id===curRegId;});if(robj)robj.notes=cols._admin_notes||"";}
+  }catch(e){console.error(e);ok=false;}
+  isDirty=false;
+  document.getElementById("modal-dirty").style.display="none";
+  setSyncStatus(ok?"ok":"error");
+  renderRegs();renderAdv();updateAdvBadge();
+  renderAllScores(r.email);
+  if(!ok) alert("Some changes failed to save. Check console.");
 }
 
-// ── Global tags (stored in custom_columns table as type="global_tag") ──
+// Tags
 async function loadGlobalTags(){
   try{
     var res=await db.from("custom_columns").select("*").order("col_order");
@@ -497,67 +665,44 @@ async function addGlobalTag(){
   var key="tag_"+label.toLowerCase().replace(/[^a-z0-9]/g,"_");
   setSyncStatus("syncing");
   try{
-    var res=await db.from("custom_columns").insert({col_key:key,col_label:label,col_type:"global_tag",col_options:[color],col_order:999});
-    if(res.error) throw res.error;
+    await db.from("custom_columns").insert({col_key:key,col_label:label,col_type:"global_tag",col_options:[color],col_order:999});
     document.getElementById("new-tag-label").value="";
-    await loadGlobalTags();
-    setSyncStatus("ok");
+    await loadGlobalTags();setSyncStatus("ok");
   }catch(e){console.error(e);setSyncStatus("error");alert("Failed: "+e.message);}
 }
 
 async function deleteGlobalTag(key){
-  if(!confirm("Delete this tag? It will be removed from all registrants.")) return;
+  if(!confirm("Delete this tag?")) return;
   setSyncStatus("syncing");
-  try{
-    await db.from("custom_columns").delete().eq("col_key",key);
-    await loadGlobalTags();
-    setSyncStatus("ok");
-  }catch(e){console.error(e);setSyncStatus("error");}
+  try{await db.from("custom_columns").delete().eq("col_key",key);await loadGlobalTags();setSyncStatus("ok");}
+  catch(e){console.error(e);setSyncStatus("error");}
 }
 
 function renderGlobalTagList(){
-  var el=document.getElementById("global-tag-list");
-  if(!el) return;
-  if(globalTags.length===0){el.innerHTML="<span style=\"font-size:12px;color:var(--text3)\">No tags yet. Add one below.</span>";return;}
+  var el=document.getElementById("global-tag-list");if(!el)return;
+  if(!globalTags.length){el.innerHTML="<span style=\"font-size:12px;color:var(--text3)\">No tags yet.</span>";return;}
   el.innerHTML=globalTags.map(function(t){
-    var color=t.col_options&&t.col_options[0]||"#888";
-    var textColor=isLight(color)?"#222":"#fff";
-    return "<span class=\"tag-edit-item\" style=\"background:"+color+";color:"+textColor+"\">"
-      +esc(t.col_label)
-      +"<span class=\"tag-remove\" onclick=\"deleteGlobalTag('"+esc(t.col_key)+"')\">&#x2715;</span>"
-      +"</span>";
+    var c=t.col_options&&t.col_options[0]||"#888",tc=isLight(c)?"#222":"#fff";
+    return "<span class=\"tag-edit-item\" style=\"background:"+c+";color:"+tc+"\">"+esc(t.col_label)
+      +"<span onclick=\"deleteGlobalTag('"+esc(t.col_key)+"')\">&#x2715;</span></span>";
   }).join("");
 }
 
 function updateBulkTagDropdown(){
-  var sel=document.getElementById("bulk-tag-val");
-  if(!sel) return;
+  var sel=document.getElementById("bulk-tag-val");if(!sel)return;
   sel.innerHTML="<option value=\"\">&#8212; select tag &#8212;</option>"
     +globalTags.map(function(t){return "<option value=\""+esc(t.col_key)+"\">"+esc(t.col_label)+"</option>";}).join("");
 }
 
-function tagColor(key){
-  var t=globalTags.find(function(x){return x.col_key===key;});
-  return t&&t.col_options&&t.col_options[0]||"#888";
-}
-function tagLabel(key){
-  var t=globalTags.find(function(x){return x.col_key===key;});
-  return t?t.col_label:key;
-}
-function isLight(hex){
-  var c=hex.replace("#","");
-  var r=parseInt(c.substr(0,2),16),g=parseInt(c.substr(2,2),16),b=parseInt(c.substr(4,2),16);
-  return (r*299+g*587+b*114)/1000>150;
-}
+function tagColor(key){var t=globalTags.find(function(x){return x.col_key===key;});return t&&t.col_options&&t.col_options[0]||"#888";}
+function tagLabel(key){var t=globalTags.find(function(x){return x.col_key===key;});return t?t.col_label:key;}
+function isLight(hex){var c=hex.replace("#","");var r=parseInt(c.substr(0,2),16),g=parseInt(c.substr(2,2),16),b=parseInt(c.substr(4,2),16);return(r*299+g*587+b*114)/1000>150;}
 function renderTagPills(tags){
   if(!tags||!tags.length) return "<span style=\"font-size:11px;color:var(--text3)\">&#8212;</span>";
-  return tags.map(function(key){
-    var color=tagColor(key),textColor=isLight(color)?"#222":"#fff";
-    return "<span class=\"tag-pill\" style=\"background:"+color+";color:"+textColor+"\">"+esc(tagLabel(key))+"</span>";
-  }).join("");
+  return tags.map(function(key){var c=tagColor(key),tc=isLight(c)?"#222":"#fff";return "<span class=\"tag-pill\" style=\"background:"+c+";color:"+tc+"\">"+esc(tagLabel(key))+"</span>";}).join("");
 }
 
-// ── Custom columns ──────────────────────────────────────────────────────
+// Columns
 async function addColumn(){
   var label=document.getElementById("new-col-label").value.trim();
   var type=document.getElementById("new-col-type").value;
@@ -566,185 +711,107 @@ async function addColumn(){
   var options=type==="select"?(document.getElementById("new-col-options").value.split(",").map(function(s){return s.trim();}).filter(Boolean)):[];
   setSyncStatus("syncing");
   try{
-    var res=await db.from("custom_columns").insert({col_key:key,col_label:label,col_type:type,col_options:options,col_order:custCols.length+1});
-    if(res.error) throw res.error;
-    await loadGlobalTags();
-    document.getElementById("new-col-label").value="";
-    document.getElementById("new-col-options").value="";
-    document.getElementById("new-col-options-wrap").style.display="none";
-    setSyncStatus("ok");
+    await db.from("custom_columns").insert({col_key:key,col_label:label,col_type:type,col_options:options,col_order:custCols.length+1});
+    await loadGlobalTags();document.getElementById("new-col-label").value="";setSyncStatus("ok");
   }catch(e){console.error(e);setSyncStatus("error");alert("Failed: "+e.message);}
 }
-
 async function deleteColumn(key){
   if(!confirm("Delete this column?")) return;
-  setSyncStatus("syncing");
-  try{
-    await db.from("custom_columns").delete().eq("col_key",key);
-    await loadGlobalTags();
-    setSyncStatus("ok");
-  }catch(e){console.error(e);setSyncStatus("error");}
+  try{await db.from("custom_columns").delete().eq("col_key",key);await loadGlobalTags();}
+  catch(e){console.error(e);}
 }
-
-document.getElementById("new-col-type").addEventListener("change",function(){
-  document.getElementById("new-col-options-wrap").style.display=this.value==="select"?"":"none";
-});
-
+document.getElementById("new-col-type").addEventListener("change",function(){document.getElementById("new-col-options-wrap").style.display=this.value==="select"?"":"none";});
 function renderColMgr(){
-  var list=document.getElementById("col-list");
-  if(!list) return;
-  if(custCols.length===0){list.innerHTML="<div style=\"font-size:13px;color:var(--text3);padding:8px 0\">No custom columns yet.</div>";return;}
+  var list=document.getElementById("col-list");if(!list)return;
+  if(!custCols.length){list.innerHTML="<div style=\"font-size:13px;color:var(--text3);padding:8px 0\">No custom columns yet.</div>";return;}
   list.innerHTML=custCols.map(function(col){
-    return "<div class=\"col-item\"><span class=\"col-item-label\">"+esc(col.col_label)+"</span>"
-      +"<span class=\"col-item-type\">"+esc(col.col_type)+"</span>"
-      +"<button class=\"btn btn-danger\" style=\"padding:3px 8px;font-size:11px\" onclick=\"deleteColumn('"+esc(col.col_key)+"')\">Delete</button></div>";
+    return "<div class=\"col-item\"><span class=\"col-item-label\">"+esc(col.col_label)+"</span><span class=\"col-item-type\">"+esc(col.col_type)+"</span>"
+      +(IS_ADMIN?"<button class=\"btn btn-danger\" style=\"padding:3px 8px;font-size:11px\" onclick=\"deleteColumn('"+esc(col.col_key)+"')\">Delete</button>":"")+"</div>";
   }).join("");
 }
 
-// ── Sort & filter ───────────────────────────────────────────────────────
-function sortBy(col){
-  if(sortCol===col){sortDir=-sortDir;}
-  else{sortCol=col;sortDir=1;}
-  closeAllFilters();
-  renderRegs();
-}
-
-function sortIcon(col){
-  if(sortCol!==col) return " <span style=\"opacity:.3;font-size:9px\">&#8597;</span>";
-  return sortDir===1?" <span style=\"font-size:9px\">&#9650;</span>":" <span style=\"font-size:9px\">&#9660;</span>";
-}
-
+// Sort & filter
+function sortBy(col){if(sortCol===col){sortDir=-sortDir;}else{sortCol=col;sortDir=1;}closeAllFilters();renderRegs();}
+function sortIcon(col){if(sortCol!==col)return " <span style=\"opacity:.3;font-size:9px\">&#8597;</span>";return sortDir===1?" <span style=\"font-size:9px\">&#9650;</span>":" <span style=\"font-size:9px\">&#9660;</span>";}
 function hasFilter(col){return colFilters[col]&&colFilters[col].size>0;}
 function filterIcon(col){return hasFilter(col)?" <span style=\"font-size:10px;color:var(--accent)\">&#9660;</span>":" <span style=\"opacity:.3;font-size:10px\">&#9660;</span>";}
-
-function openColFilter(col,el,event){
-  event.stopPropagation();
-  closeAllFilters();
-  var existing=document.getElementById("cfp-"+col);
-  if(existing){existing.remove();return;}
-  // Build unique values for this column
-  var vals=new Set();
-  DATA.registrations.forEach(function(r){
-    var v=getColVal(r,col);
-    if(v!==null&&v!=="") vals.add(String(v));
-  });
-  var popup=document.createElement("div");
-  popup.className="col-filter-popup open";
-  popup.id="cfp-"+col;
-  popup.onclick=function(e){e.stopPropagation();};
-  var active=colFilters[col]||new Set();
-  var opts=Array.from(vals).sort().map(function(v){
-    return "<label class=\"col-filter-opt\"><input type=\"checkbox\" value=\""+esc(v)+"\" "+(active.has(v)?"checked":"")+" onchange=\"toggleColFilter('"+col+"',this)\"/>"+esc(v.length>30?v.slice(0,28)+"...":v)+"</label>";
-  }).join("");
-  popup.innerHTML="<div class=\"col-filter-search\"><input placeholder=\"Search values...\" oninput=\"filterPopupSearch(this,'"+col+"')\" aria-label=\"Search filter values\"/></div>"
-    +"<div class=\"col-filter-options\" id=\"cfo-"+col+"\">"+opts+"</div>"
-    +"<div class=\"col-filter-actions\"><button class=\"btn btn-secondary\" style=\"font-size:11px;padding:3px 8px\" onclick=\"clearColFilter('"+col+"')\" >Clear</button>"
-    +"<button class=\"btn btn-primary\" style=\"font-size:11px;padding:3px 8px\" onclick=\"closeAllFilters();renderRegs()\">Apply</button></div>";
-  el.appendChild(popup);
-}
-
-function filterPopupSearch(input,col){
-  var q=input.value.toLowerCase();
-  var opts=document.querySelectorAll("#cfo-"+col+" .col-filter-opt");
-  opts.forEach(function(o){o.style.display=o.textContent.toLowerCase().includes(q)?"":"none";});
-}
-
-function toggleColFilter(col,cb){
-  if(!colFilters[col]) colFilters[col]=new Set();
-  if(cb.checked) colFilters[col].add(cb.value);
-  else colFilters[col].delete(cb.value);
-  if(colFilters[col].size===0) delete colFilters[col];
-}
-
-function clearColFilter(col){
-  delete colFilters[col];
-  closeAllFilters();
-  renderRegs();
-}
-
-function closeAllFilters(){
-  document.querySelectorAll(".col-filter-popup").forEach(function(p){p.remove();});
-}
-
-document.addEventListener("click",function(){closeAllFilters();});
-
 function getColVal(r,col){
   var c=getCust(r.email);
   if(col==="name") return r.luma_name||"";
   if(col==="type") return r.final_type||"";
-  if(col==="status") return (c.tags&&c.tags.length)?c.tags.map(tagLabel).join(", "):"";
+  if(col==="status") return(c.tags&&c.tags.length)?c.tags.map(tagLabel).join(", "):"";
   if(col==="date") return r.registered_at||"";
   if(col==="blanks") return r.blank_fields.length;
   if(col==="members") return parseInt(r.luma_members)||0;
-  // custom col
+  if(col==="avg_score"){var a=getAvgScore(r.email);return a!=null?a:"";}
   return c.custom_cols&&c.custom_cols[col]!=null?c.custom_cols[col]:"";
 }
+function openColFilter(col,el,event){
+  event.stopPropagation();closeAllFilters();
+  var existing=document.getElementById("cfp-"+col);if(existing){existing.remove();return;}
+  var vals=new Set();
+  DATA.registrations.forEach(function(r){var v=getColVal(r,col);if(v!==null&&v!=="")vals.add(String(v));});
+  var popup=document.createElement("div");
+  popup.className="col-filter-popup open";popup.id="cfp-"+col;
+  popup.onclick=function(e){e.stopPropagation();};
+  var active=colFilters[col]||new Set();
+  var opts=Array.from(vals).sort().map(function(v){return "<label class=\"col-filter-opt\"><input type=\"checkbox\" value=\""+esc(v)+"\" "+(active.has(v)?"checked":"")+" onchange=\"toggleColFilter('"+col+"',this)\"/>"+esc(v.length>30?v.slice(0,28)+"...":v)+"</label>";}).join("");
+  popup.innerHTML="<div class=\"col-filter-search\"><input placeholder=\"Search...\" oninput=\"filterPopupSearch(this,'"+col+"')\" aria-label=\"Search\"/></div><div class=\"col-filter-options\" id=\"cfo-"+col+"\">"+opts+"</div><div class=\"col-filter-actions\"><button class=\"btn btn-secondary\" style=\"font-size:11px;padding:3px 8px\" onclick=\"clearColFilter('"+col+"')\" >Clear</button><button class=\"btn btn-primary\" style=\"font-size:11px;padding:3px 8px\" onclick=\"closeAllFilters();renderRegs()\">Apply</button></div>";
+  el.appendChild(popup);
+}
+function filterPopupSearch(input,col){var q=input.value.toLowerCase();document.querySelectorAll("#cfo-"+col+" .col-filter-opt").forEach(function(o){o.style.display=o.textContent.toLowerCase().includes(q)?"":"none";});}
+function toggleColFilter(col,cb){if(!colFilters[col])colFilters[col]=new Set();if(cb.checked)colFilters[col].add(cb.value);else colFilters[col].delete(cb.value);if(colFilters[col].size===0)delete colFilters[col];}
+function clearColFilter(col){delete colFilters[col];closeAllFilters();renderRegs();}
+function closeAllFilters(){document.querySelectorAll(".col-filter-popup").forEach(function(p){p.remove();});}
+document.addEventListener("click",function(){closeAllFilters();});
 
-// ── Bulk tag operations ─────────────────────────────────────────────────
+// Bulk tag operations
 async function massBulkTag(add){
   var key=document.getElementById("bulk-tag-val").value;
   if(!key){alert("Select a tag first.");return;}
   var label=tagLabel(key);
   var rows=getSortedFiltered();
-  var action=add?"add to":"remove from";
   if(!confirm((add?"Add":"Remove")+" tag \""+label+"\" "+(add?"to":"from")+" "+rows.length+" visible registrants?")) return;
   setSyncStatus("syncing");
   var errors=0;
   for(var i=0;i<rows.length;i++){
-    var r=rows[i];
-    var c=getCust(r.email);
+    var r=rows[i];var c=getCust(r.email);
     var tags=Array.from(c.tags||[]);
-    if(add){if(!tags.includes(key)) tags.push(key);}
-    else{tags=tags.filter(function(t){return t!==key;});}
+    if(add){if(!tags.includes(key))tags.push(key);}else{tags=tags.filter(function(t){return t!==key;});}
     var cols=Object.assign({},c.custom_cols||{},{tags:tags});
-    var payload={email:r.email,status:"",phase_tag:"",judge_notes:c.judge_notes||"",custom_cols:cols,updated_at:new Date().toISOString()};
     try{
-      var res=await db.from("registrant_custom").upsert(payload,{onConflict:"email"});
-      if(res.error) throw res.error;
-      custData[r.email]={tags:tags,judge_notes:c.judge_notes||"",custom_cols:cols};
+      var res=await db.from("registrant_custom").upsert({email:r.email,status:"",phase_tag:"",judge_notes:"",custom_cols:cols,updated_at:new Date().toISOString()},{onConflict:"email"});
+      if(res.error)throw res.error;
+      custData[r.email]={tags:tags,judge_notes:c.judge_notes||"",custom_cols:cols,notes:c.notes||""};
     }catch(e){errors++;console.error(e);}
   }
-  setSyncStatus(errors>0?"error":"ok");
-  renderRegs();renderAdv();updateAdvBadge();
+  setSyncStatus(errors>0?"error":"ok");renderRegs();renderAdv();updateAdvBadge();
   document.getElementById("bulk-tag-val").value="";
-  if(errors>0) alert(errors+" rows failed.");
+  if(errors>0)alert(errors+" rows failed.");
 }
 function massAddTag(){massBulkTag(true);}
 function massRemoveTag(){massBulkTag(false);}
 
 async function bulkCheck(checked){
   var activeCols=custCols.filter(function(c){return c.col_type==="checkbox";});
-  if(activeCols.length===0){alert("No checkbox columns.");return;}
+  if(!activeCols.length){alert("No checkbox columns.");return;}
   var targetCol=activeCols[0];
-  if(activeCols.length>1){
-    var names=activeCols.map(function(c,i){return (i+1)+". "+c.col_label;}).join("\n");
-    var choice=prompt("Which column?\n"+names+"\n\nEnter number:");
-    if(!choice) return;
-    targetCol=activeCols[parseInt(choice)-1]||activeCols[0];
-  }
+  if(activeCols.length>1){var names=activeCols.map(function(c,i){return (i+1)+". "+c.col_label;}).join("\n");var choice=prompt("Which column?\n"+names+"\n\nEnter number:");if(!choice)return;targetCol=activeCols[parseInt(choice)-1]||activeCols[0];}
   var rows=getSortedFiltered();
-  if(!confirm((checked?"Check":"Uncheck")+" all "+rows.length+" visible for \""+targetCol.col_label+"\"?")) return;
-  setSyncStatus("syncing");
-  var errors=0;
+  if(!confirm((checked?"Check":"Uncheck")+" all "+rows.length+" visible for \""+targetCol.col_label+"\"?"))return;
+  setSyncStatus("syncing");var errors=0;
   for(var i=0;i<rows.length;i++){
     var r=rows[i];var c=getCust(r.email);
-    var cols=Object.assign({},c.custom_cols||{});
-    cols[targetCol.col_key]=checked;
-    var payload={email:r.email,status:"",phase_tag:"",judge_notes:c.judge_notes||"",custom_cols:cols,updated_at:new Date().toISOString()};
-    try{
-      var res=await db.from("registrant_custom").upsert(payload,{onConflict:"email"});
-      if(res.error) throw res.error;
-      custData[r.email]={tags:c.tags||[],judge_notes:c.judge_notes||"",custom_cols:cols};
-    }catch(e){errors++;console.error(e);}
+    var cols=Object.assign({},c.custom_cols||{});cols[targetCol.col_key]=checked;
+    try{var res=await db.from("registrant_custom").upsert({email:r.email,status:"",phase_tag:"",judge_notes:"",custom_cols:cols,updated_at:new Date().toISOString()},{onConflict:"email"});if(res.error)throw res.error;custData[r.email]={tags:c.tags||[],judge_notes:"",custom_cols:cols,notes:c.notes||""};}
+    catch(e){errors++;console.error(e);}
   }
-  setSyncStatus(errors>0?"error":"ok");
-  renderRegs();
-  if(errors>0) alert(errors+" rows failed.");
+  setSyncStatus(errors>0?"error":"ok");renderRegs();
 }
 
-// ── Charts ──────────────────────────────────────────────────────────────
+// Charts
 function buildBarList(id,obj,order,maxItems){
-  var el=document.getElementById(id);if(!el) return;
+  var el=document.getElementById(id);if(!el)return;
   var entries=order?order.filter(function(k){return obj[k];}).map(function(k){return [k,obj[k]];}):Object.entries(obj).sort(function(a,b){return b[1]-a[1];});
   var max=Math.max.apply(null,entries.map(function(e){return e[1];}));
   var colors=["#e05a1e","#f47340","#378add","#1d9e75","#7f77dd","#e24b4a","#ba7517","#1D9E75"];
@@ -752,125 +819,97 @@ function buildBarList(id,obj,order,maxItems){
     return "<div class=\"bar-row\"><span class=\"bar-label\" title=\""+esc(e[0])+"\">"+esc(e[0])+"</span><div class=\"bar-track\"><div class=\"bar-fill\" style=\"width:"+Math.round(e[1]/max*100)+"%;background:"+colors[i%colors.length]+"\">" + "</div></div><span class=\"bar-val\">"+e[1]+"</span></div>";
   }).join("");
 }
-
 function buildTeamChart(){
-  var el=document.getElementById("teamSizeChart");if(!el) return;
+  var el=document.getElementById("teamSizeChart");if(!el)return;
   var ts=DATA.demographics.team_sizes,entries=Object.entries(ts);
   var max=Math.max.apply(null,entries.map(function(e){return e[1];}));
-  el.innerHTML=entries.map(function(e){
-    return "<div style=\"display:flex;align-items:center;gap:8px;margin-bottom:7px;font-size:12px\">"
-      +"<span style=\"min-width:20px;text-align:right;color:#888\">"+esc(e[0])+"</span>"
-      +"<div style=\"flex:1;background:var(--surface2);border-radius:3px;height:18px;overflow:hidden\">"
-      +"<div style=\"width:"+Math.round(e[1]/max*100)+"%;background:#1d9e75;height:100%;border-radius:3px;display:flex;align-items:center;padding-left:6px\">"
-      +"<span style=\"color:#fff;font-size:11px;font-weight:500\">"+e[1]+"</span></div></div>"
-      +"<span style=\"font-size:11px;color:#888\">teams</span></div>";
-  }).join("");
+  el.innerHTML=entries.map(function(e){return "<div style=\"display:flex;align-items:center;gap:8px;margin-bottom:7px;font-size:12px\"><span style=\"min-width:20px;text-align:right;color:#888\">"+esc(e[0])+"</span><div style=\"flex:1;background:var(--surface2);border-radius:3px;height:18px;overflow:hidden\"><div style=\"width:"+Math.round(e[1]/max*100)+"%;background:#1d9e75;height:100%;border-radius:3px;display:flex;align-items:center;padding-left:6px\"><span style=\"color:#fff;font-size:11px;font-weight:500\">"+e[1]+"</span></div></div><span style=\"font-size:11px;color:#888\">teams</span></div>";}).join("");
 }
-
 function buildTrend(){
-  var el=document.getElementById("trendChart");if(!el) return;
+  var el=document.getElementById("trendChart");if(!el)return;
   if(apexT){apexT.destroy();apexT=null;}
   var rd=DATA.demographics.reg_by_date,entries=Object.entries(rd);
-  var opts={
-    series:[{name:"Registrations",data:entries.map(function(e){return e[1];})}],
-    chart:{type:"area",height:180,toolbar:{show:false},animations:{speed:600}},
-    stroke:{curve:"smooth",width:2,colors:["#e05a1e"]},
-    fill:{type:"gradient",gradient:{opacityFrom:0.35,opacityTo:0.02,colorStops:[{offset:0,color:"#e05a1e",opacity:0.35},{offset:100,color:"#e05a1e",opacity:0.02}]}},
-    markers:{size:3,colors:["#e05a1e"],strokeColors:"#fff",strokeWidth:1,hover:{size:5}},
-    xaxis:{categories:entries.map(function(e){return e[0].slice(5);}),tickAmount:6,labels:{style:{colors:"#888",fontSize:"10px"},rotate:-30},axisBorder:{show:false},axisTicks:{show:false}},
-    yaxis:{labels:{style:{colors:"#888",fontSize:"10px"}},min:0},
-    grid:{borderColor:"rgba(0,0,0,0.05)",strokeDashArray:3},
-    tooltip:{theme:"light",y:{formatter:function(v){return v+" registrations";}}},
-    dataLabels:{enabled:false}
-  };
+  var opts={series:[{name:"Registrations",data:entries.map(function(e){return e[1];})}],chart:{type:"area",height:180,toolbar:{show:false},animations:{speed:600}},stroke:{curve:"smooth",width:2,colors:["#e05a1e"]},fill:{type:"gradient",gradient:{opacityFrom:0.35,opacityTo:0.02,colorStops:[{offset:0,color:"#e05a1e",opacity:0.35},{offset:100,color:"#e05a1e",opacity:0.02}]}},markers:{size:3,colors:["#e05a1e"],strokeColors:"#fff",strokeWidth:1,hover:{size:5}},xaxis:{categories:entries.map(function(e){return e[0].slice(5);}),tickAmount:6,labels:{style:{colors:"#888",fontSize:"10px"},rotate:-30},axisBorder:{show:false},axisTicks:{show:false}},yaxis:{labels:{style:{colors:"#888",fontSize:"10px"}},min:0},grid:{borderColor:"rgba(0,0,0,0.05)",strokeDashArray:3},tooltip:{theme:"light",y:{formatter:function(v){return v+" registrations";}}},dataLabels:{enabled:false}};
   apexT=new ApexCharts(el,opts);apexT.render();
 }
 
-// ── Table ───────────────────────────────────────────────────────────────
+// Table
 function renderRegHead(){
-  var thead=document.getElementById("reg-thead");if(!thead) return;
+  var thead=document.getElementById("reg-thead");if(!thead)return;
   function sh(label,col,withFilter){
     var fi=withFilter?" <span onclick=\"openColFilter('"+col+"',this.closest('th'),event)\" style=\"cursor:pointer\">"+filterIcon(col)+"</span>":"";
     return "<th class=\"sortable\" onclick=\"sortBy('"+col+"')\" style=\"position:relative\">"+label+sortIcon(col)+fi+"</th>";
   }
-  var h="<th onclick=\"sortBy('num')\" class=\"sortable\" style=\"position:relative;\">#"+sortIcon("num")+"</th>"
+  var h="<th onclick=\"sortBy('num')\" class=\"sortable\" style=\"position:relative\">#"+sortIcon("num")+"</th>"
     +sh("Name","name",true)
-    +"<th>Email</th>"
+    +(IS_ADMIN?"<th>Email</th>":"")
     +"<th>Project / Team</th>"
     +sh("Type","type",true)
     +sh("Members","members",false)
     +"<th>Tags <span onclick=\"openColFilter('status',this.closest('th'),event)\" style=\"cursor:pointer\">"+filterIcon("status")+"</span></th>"
-    +sh("Blanks","blanks",false)
-    +"<th>Content</th>";
+    +sh("Avg Score","avg_score",false)
+    +(IS_ADMIN?""+sh("Blanks","blanks",false):"")
+    +(IS_ADMIN?"<th>Content</th>":"");
   h+=custCols.map(function(col){
-    if(col.col_type==="checkbox")
-      return "<th class=\"sortable\" onclick=\"sortBy('"+col.col_key+"')\" style=\"position:relative\">"+esc(col.col_label)+sortIcon(col.col_key)+"</th>";
+    if(col.col_type==="checkbox")return "<th class=\"sortable\" onclick=\"sortBy('"+col.col_key+"')\" style=\"position:relative\">"+esc(col.col_label)+sortIcon(col.col_key)+"</th>";
     return "<th style=\"position:relative\">"+esc(col.col_label)+"<span onclick=\"openColFilter('"+col.col_key+"',this.closest('th'),event)\" style=\"cursor:pointer\">"+filterIcon(col.col_key)+"</span></th>";
   }).join("");
   thead.innerHTML=h;
   var hasCB=custCols.some(function(c){return c.col_type==="checkbox";});
-  var bw=document.getElementById("bulk-cb-wrap");
-  if(bw) bw.style.display=hasCB?"flex":"none";
+  var bw=document.getElementById("bulk-cb-wrap");if(bw)bw.style.display=hasCB?"flex":"none";
 }
 
 function getFiltered(){
   return DATA.registrations.filter(function(r){
-    if(curFilter==="Team"&&r.final_type!=="Team") return false;
-    if(curFilter==="Individual"&&r.final_type!=="Individual") return false;
-    if(curFilter==="incomplete"&&r.blank_fields.length===0) return false;
-    if(curFilter==="thin"&&!r.thin_content) return false;
-    if(curSearch){var q=curSearch.toLowerCase();if(![r.luma_name,r.email,r.project_name,r.team_name].some(function(f){return (f||"").toLowerCase().indexOf(q)!==-1;})) return false;}
-    // Column filters
-    for(var col in colFilters){
-      if(!colFilters[col]||colFilters[col].size===0) continue;
-      var v=String(getColVal(r,col));
-      if(!colFilters[col].has(v)) return false;
-    }
+    if(curFilter==="Team"&&r.final_type!=="Team")return false;
+    if(curFilter==="Individual"&&r.final_type!=="Individual")return false;
+    if(curFilter==="thin"&&!r.thin_content)return false;
+    if(curSearch){var q=curSearch.toLowerCase();if(![r.luma_name,r.project_name,r.team_name,IS_ADMIN?r.email:""].some(function(f){return (f||"").toLowerCase().indexOf(q)!==-1;}))return false;}
+    for(var col in colFilters){if(!colFilters[col]||colFilters[col].size===0)continue;var v=String(getColVal(r,col));if(!colFilters[col].has(v))return false;}
     return true;
   });
 }
 
 function getSortedFiltered(){
   var rows=getFiltered();
-  if(!sortCol) return rows;
+  if(!sortCol)return rows;
   return rows.slice().sort(function(a,b){
     var va,vb;
     if(sortCol==="num"){va=regNums[a.email]||9999;vb=regNums[b.email]||9999;}
     else{va=getColVal(a,sortCol);vb=getColVal(b,sortCol);}
-    if(typeof va==="number") return (va-vb)*sortDir;
+    if(typeof va==="number")return(va-vb)*sortDir;
     return String(va).localeCompare(String(vb))*sortDir;
   });
 }
 
-function trunc(text,maxLen){
-  if(!text||text.length<=maxLen) return "<span style=\"font-size:12px\">"+esc(text||"&#8212;")+"</span>";
-  return "<div class=\"cell-trunc\"><span style=\"font-size:12px\">"+esc(text)+"</span><span class=\"exp-btn\" onclick=\"expCell(this,event)\">&#9660; more</span></div>";
-}
+function trunc(text,maxLen){if(!text||text.length<=maxLen)return "<span style=\"font-size:12px\">"+esc(text||"&#8212;")+"</span>";return "<div class=\"cell-trunc\"><span style=\"font-size:12px\">"+esc(text)+"</span><span class=\"exp-btn\" onclick=\"expCell(this,event)\">&#9660; more</span></div>";}
 function expCell(el,event){event.stopPropagation();var w=el.closest(".cell-trunc");el.textContent=w.classList.toggle("exp")?"&#9650; less":"&#9660; more";}
+
+function scoreColor(s){if(s==null)return "var(--text3)";if(s>=80)return "var(--green)";if(s>=60)return "var(--accent)";return "var(--red)";}
 
 function renderRegs(){
   renderRegHead();
   var rows=getSortedFiltered();
   var tbody=document.getElementById("reg-tbody");
-  tbody.innerHTML=rows.map(function(r,i){
-    var c=getCust(r.email);
-    var tags=c.tags||[];
-    var blanks=r.blank_fields.length;
-    var num=regNums[r.email]||"";
-    var cc=custCols.map(function(col){
-      var val=c.custom_cols&&c.custom_cols[col.col_key];
-      return col.col_type==="checkbox"?"<td style=\"text-align:center\">"+(val?"&#10003;":"&#9633;")+"</td>":"<td style=\"font-size:12px\">"+esc(val||"")+"</td>";
-    }).join("");
+  tbody.innerHTML=rows.map(function(r){
+    var c=getCust(r.email);var tags=c.tags||[];
+    var blanks=r.blank_fields.length;var num=regNums[r.email]||"";
+    var avg=getAvgScore(r.email);var cnt=getJudgeCount(r.email);
+    var avgDisplay=avg!=null?"<strong style=\"color:"+scoreColor(avg)+"\">"+avg.toFixed(1)+"</strong> <span style=\"font-size:10px;color:var(--text3)\">/ 5 judged</span>".replace("5",cnt):"<span style=\"color:var(--text3)\">&#8212;</span>";
+    var myS=getMyScore(r.email);
+    var myScore=myS?"<span style=\"font-size:10px;color:var(--text3)\">Yours: "+myS.weighted_total+"</span>":"";
+    var cc=custCols.map(function(col){var val=c.custom_cols&&c.custom_cols[col.col_key];return col.col_type==="checkbox"?"<td style=\"text-align:center\">"+(val?"&#10003;":"&#9633;")+"</td>":"<td style=\"font-size:12px\">"+esc(val||"")+"</td>";}).join("");
     var row="<tr onclick=\"openModal('"+r.id+"')\">";
     row+="<td style=\"color:var(--text3);font-size:12px\">"+num+"</td>";
     row+="<td><strong>"+esc(r.luma_name)+"</strong><br><span style=\"font-size:11px;color:var(--text3)\">"+esc(r.registered_at)+"</span></td>";
-    row+="<td style=\"font-size:12px;color:var(--text2)\">"+esc(r.email)+"</td>";
+    if(IS_ADMIN)row+="<td style=\"font-size:12px;color:var(--text2)\">"+esc(r.email)+"</td>";
     row+="<td style=\"max-width:160px\">"+trunc(r.project_name||r.luma_team||"&#8212;",45)+"</td>";
     row+="<td><span class=\"badge "+(r.final_type==="Team"?"badge-blue":"badge-gray")+"\">"+esc(r.final_type||"&#8212;")+"</span></td>";
     row+="<td style=\"text-align:center\">"+(r.luma_members||(r.final_type==="Individual"?"1":"&#8212;"))+"</td>";
     row+="<td>"+renderTagPills(tags)+"</td>";
-    row+="<td>"+(blanks>0?"<span class=\"thin-badge\" style=\"background:#f8d7da;color:#721c24;border-color:#f5c6cb\">"+blanks+"</span>":"<span style=\"color:var(--green)\">&#10003;</span>")+"</td>";
-    row+="<td>"+(r.thin_content?"<span class=\"thin-badge\">&#9888; Thin</span>":"<span style=\"color:var(--green)\">&#10003;</span>")+"</td>";
+    row+="<td style=\"white-space:nowrap\">"+avgDisplay+"<br>"+myScore+"</td>";
+    if(IS_ADMIN){row+="<td>"+(blanks>0?"<span class=\"thin-badge\" style=\"background:#f8d7da;color:#721c24;border-color:#f5c6cb\">"+blanks+"</span>":"<span style=\"color:var(--green)\">&#10003;</span>")+"</td>";}
+    if(IS_ADMIN){row+="<td>"+(r.thin_content?"<span class=\"thin-badge\">&#9888; Thin</span>":"<span style=\"color:var(--green)\">&#10003;</span>")+"</td>";}
     row+=cc+"</tr>";
     return row;
   }).join("");
@@ -880,193 +919,204 @@ function renderRegs(){
 function setFilter(f,btn){curFilter=f;document.querySelectorAll(".filter-btn").forEach(function(b){b.classList.remove("active");});btn.classList.add("active");renderRegs();}
 function onSearch(val){curSearch=val;renderRegs();}
 
-// ── Incomplete ──────────────────────────────────────────────────────────
-function renderInc(){
-  var inc=DATA.registrations.filter(function(r){return r.blank_fields.length>0;});
-  var badge=document.getElementById("incomplete-badge");
-  badge.textContent=inc.length;badge.style.display=inc.length>0?"":"none";
-  document.getElementById("incomplete-list").innerHTML=inc.map(function(r){
-    var link=r.link?"<a href=\""+esc(r.link)+"\" target=\"_blank\" onclick=\"event.stopPropagation()\" style=\"font-size:12px;color:var(--blue);text-decoration:none\">Open &#8599;</a>":"<span style=\"font-size:12px;color:var(--text3)\">No link</span>";
-    var tags=r.blank_fields.map(function(f){return "<span class=\"missing-tag\">"+esc(f)+"</span>";}).join("");
-    return "<div class=\"inc-card\" onclick=\"openModal('"+r.id+"')\">"
-      +"<div style=\"display:flex;align-items:center;gap:10px;margin-bottom:8px\">"
-      +"<div style=\"width:30px;height:30px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:600;flex-shrink:0\">"+ini(r.luma_name)+"</div>"
-      +"<div><div style=\"font-size:14px;font-weight:500\">"+esc(r.luma_name)+"</div>"
-      +"<div style=\"font-size:12px;color:var(--text3)\">"+esc(r.email)+" &#183; "+r.blank_fields.length+" blank</div></div>"
-      +"<div style=\"margin-left:auto\">"+link+"</div></div>"
-      +"<div class=\"missing-fields\">"+tags+"</div></div>";
+// Leaderboard
+function loadLeaderboard(){
+  var rows=DATA.registrations.slice().map(function(r){
+    return {r:r,avg:getAvgScore(r.email),cnt:getJudgeCount(r.email)};
+  }).filter(function(x){return x.avg!=null;}).sort(function(a,b){return b.avg-a.avg;});
+  var total=DATA.registrations.length;
+  var judgesScored=new Set();
+  Object.values(judgeScores).forEach(function(js){Object.keys(js).forEach(function(j){if(js[j].weighted_total!=null)judgesScored.add(j);});});
+  var all=DATA.registrations.slice().sort(function(a,b){var sa=getAvgScore(a.email)||0,sb=getAvgScore(b.email)||0;return sb-sa;});
+  var tbody=document.getElementById("lb-tbody");
+  tbody.innerHTML=all.map(function(r,i){
+    var scores=judgeScores[r.email]||{};
+    var scored=Object.values(scores).filter(function(s){return s.weighted_total!=null;});
+    var avg=scored.length?scored.reduce(function(a,b){return a+b.weighted_total;},0)/scored.length:null;
+    var avInn=scored.length?scored.reduce(function(a,b){return a+(b.innovation||0);},0)/scored.length:null;
+    var avTech=scored.length?scored.reduce(function(a,b){return a+(b.technical||0);},0)/scored.length:null;
+    var avBus=scored.length?scored.reduce(function(a,b){return a+(b.business||0);},0)/scored.length:null;
+    var rank=avg!=null?i+1:"-";
+    var rankClass=rank===1?"gold":rank===2?"silver":rank===3?"bronze":"";
+    var c=getCust(r.email);
+    return "<tr onclick=\"openModal('"+r.id+"')\">"
+      +"<td><span class=\"lb-rank "+rankClass+"\">"+rank+"</span></td>"
+      +"<td><strong>"+esc(r.project_name||r.luma_team||r.luma_name)+"</strong><br><span style=\"font-size:11px;color:var(--text3)\">"+esc(r.luma_name)+"</span></td>"
+      +"<td><span class=\"badge "+(r.final_type==="Team"?"badge-blue":"badge-gray")+"\">"+esc(r.final_type||"")+"</span></td>"
+      +"<td>"+renderTagPills(c.tags||[])+"</td>"
+      +"<td style=\"text-align:center\">"+( avInn!=null?avInn.toFixed(1):"&#8212;")+"</td>"
+      +"<td style=\"text-align:center\">"+( avTech!=null?avTech.toFixed(1):"&#8212;")+"</td>"
+      +"<td style=\"text-align:center\">"+( avBus!=null?avBus.toFixed(1):"&#8212;")+"</td>"
+      +"<td style=\"text-align:center\"><strong style=\"color:"+scoreColor(avg)+";font-size:16px\">"+( avg!=null?avg.toFixed(1):"&#8212;")+"</strong></td>"
+      +"<td style=\"font-size:12px;color:var(--text3)\">"+scored.length+" / 5</td>"
+      +"</tr>";
   }).join("");
 }
 
-// ── Advanced ────────────────────────────────────────────────────────────
-var ADV_TAGS=["tag_advanced_round_2","tag_advanced_finals","tag_winner","tag_shortlisted","tag_finalist"];
-function isAdvanced(r){
-  var c=getCust(r.email);var tags=c.tags||[];
-  return globalTags.some(function(t){
-    return tags.includes(t.col_key)&&(t.col_label.toLowerCase().indexOf("advanced")!==-1||t.col_label.toLowerCase().indexOf("winner")!==-1||t.col_label.toLowerCase().indexOf("shortlist")!==-1||t.col_label.toLowerCase().indexOf("finalist")!==-1);
-  });
-}
-
-function updateAdvBadge(){
-  var adv=DATA.registrations.filter(isAdvanced);
-  document.getElementById("advanced-badge").textContent=adv.length;
-  return adv;
-}
-
+// Advanced
+function isAdvanced(r){var c=getCust(r.email);var tags=c.tags||[];return globalTags.some(function(t){return tags.includes(t.col_key)&&(t.col_label.toLowerCase().indexOf("advanced")!==-1||t.col_label.toLowerCase().indexOf("winner")!==-1||t.col_label.toLowerCase().indexOf("shortlist")!==-1||t.col_label.toLowerCase().indexOf("finalist")!==-1);});}
+function updateAdvBadge(){var adv=DATA.registrations.filter(isAdvanced);var el=document.getElementById("advanced-badge");if(el)el.textContent=adv.length;return adv;}
 function renderAdv(){
   var adv=updateAdvBadge();
-  document.getElementById("advanced-count").textContent=adv.length?adv.length+" registrant"+(adv.length>1?"s":"")+" advanced":"None yet";
-  document.getElementById("advanced-tbody").innerHTML=adv.map(function(r,i){
-    var c=getCust(r.email);
+  var el=document.getElementById("advanced-count");if(el)el.textContent=adv.length?adv.length+" registrant"+(adv.length>1?"s":"")+" advanced":"None yet";
+  var tbody=document.getElementById("advanced-tbody");if(!tbody)return;
+  tbody.innerHTML=adv.map(function(r,i){
+    var c=getCust(r.email);var avg=getAvgScore(r.email);
+    // Collect all judge notes
+    var allNotes=[];
+    var js=judgeScores[r.email]||{};
+    Object.entries(js).forEach(function(kv){if(kv[1].notes)allNotes.push(kv[0].split(" ")[0]+": "+kv[1].notes);});
     return "<tr onclick=\"openModal('"+r.id+"')\">"
       +"<td style=\"color:var(--text3)\">"+i+1+"</td>"
-      +"<td><strong>"+esc(r.luma_name)+"</strong></td>"
-      +"<td style=\"font-size:12px;color:var(--text2)\">"+esc(r.email)+"</td>"
-      +"<td style=\"font-size:12px\">"+esc(r.project_name||r.luma_team||"&#8212;")+"</td>"
-      +"<td><span class=\"badge "+(r.final_type==="Team"?"badge-blue":"badge-gray")+"\">"+esc(r.final_type||"&#8212;")+"</span></td>"
+      +"<td><strong>"+esc(r.project_name||r.luma_team||r.luma_name)+"</strong><br><span style=\"font-size:11px;color:var(--text3)\">"+esc(r.luma_name)+"</span></td>"
+      +"<td><span class=\"badge "+(r.final_type==="Team"?"badge-blue":"badge-gray")+"\">"+esc(r.final_type||"")+"</span></td>"
       +"<td>"+renderTagPills(c.tags||[])+"</td>"
-      +"<td style=\"font-size:12px;color:var(--text3)\">"+esc(c.judge_notes||"")+"</td>"
+      +"<td style=\"text-align:center\"><strong style=\"color:"+scoreColor(avg)+";font-size:16px\">"+( avg!=null?avg.toFixed(1):"&#8212;")+"</strong></td>"
+      +"<td style=\"font-size:11px;color:var(--text3)\">"+esc(allNotes.join(" | "))+"</td>"
       +"</tr>";
   }).join("");
 }
 
 function exportCSV(){
   var adv=DATA.registrations.filter(isAdvanced);
-  var lines=["Name,Email,Project,Type,Members,Tags,Judge Notes"].concat(adv.map(function(r){
-    var c=getCust(r.email);
-    return "\""+r.luma_name+"\",\""+r.email+"\",\""+((r.project_name||r.luma_team)||"")+"\"," +(r.final_type||"")+","+(r.luma_members||"")+",\""+((c.tags||[]).map(tagLabel).join("; "))+"\"," +"\""+((c.judge_notes||""))+"\"";
-  }));
+  var lines=["Project,Name,Type,Members,Tags,Avg Score,Judge Notes"].concat(adv.map(function(r){var c=getCust(r.email);var avg=getAvgScore(r.email);var js=judgeScores[r.email]||{};var notes=Object.entries(js).filter(function(kv){return kv[1].notes;}).map(function(kv){return kv[0].split(" ")[0]+": "+kv[1].notes;}).join("; ");return "\""+esc(r.project_name||r.luma_team||r.luma_name)+"\"," +"\""+esc(r.luma_name)+"\"," +"\""+esc(r.final_type||"")+"\"," +(r.luma_members||"")+",\""+((c.tags||[]).map(tagLabel).join("; "))+"\"," +(avg!=null?avg.toFixed(1):"")+" ,\""+esc(notes)+"\"" ;}));
   var blob=new Blob([lines.join("\n")],{type:"text/csv"});
   var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="OVAC_Advanced.csv";a.click();
 }
 
-// ── Modal ────────────────────────────────────────────────────────────────
-function fv(v){var s=String(v||"").trim();return (s&&s!=="nan"&&s!=="None")?"<span class=\"field-val\">"+esc(s)+"</span>":"<span class=\"field-val empty\">&#8212;</span>";}
-function fvLink(v){var s=String(v||"").trim();return (s&&s.indexOf("http")===0)?"<span class=\"field-val\"><a href=\""+esc(s)+"\" target=\"_blank\">"+esc(s.length>55?s.slice(0,52)+"...":s)+"</a></span>":fv(v);}
-function mExpand(text){
-  if(!text||text.length<=180) return esc(text);
-  var id="mx"+Math.random().toString(36).slice(2,7);
-  return "<span id=\""+id+"-s\">"+esc(text.slice(0,177))+"&#8230; <span style=\"color:var(--accent);cursor:pointer;font-size:11px\" onclick=\"document.getElementById('"+id+"-s').style.display='none';document.getElementById('"+id+"-f').style.display=''\">Show more</span></span>"
-    +"<span id=\""+id+"-f\" style=\"display:none\">"+esc(text)+" <span style=\"color:var(--accent);cursor:pointer;font-size:11px\" onclick=\"document.getElementById('"+id+"-f').style.display='none';document.getElementById('"+id+"-s').style.display=''\">Show less</span></span>";
+// All scores table in modal
+function renderAllScores(email){
+  var tbody=document.getElementById("all-scores-body");if(!tbody)return;
+  var js=judgeScores[email]||{};
+  var judgeNames=['Dr. Chau Thanh Duc', 'Mr. Vo Trong Thu', 'Prof. Dr. Quan Thanh Tho', 'Mr. Hoang Ngoc Thuc', 'Ms. Nguyen Thanh Thao'];
+  var rows=judgeNames.map(function(name){
+    var s=js[name];
+    var isMine=(IS_JUDGE&&name===JUDGE_NAME)||(IS_ADMIN&&name==="Admin");
+    if(!s) return "<tr class=\"" + (isMine?"mine":"") + "\"><td>"+esc(name.split(" ").slice(-1)[0])+"</td><td style=\"text-align:center;color:var(--text3)\">&#8212;</td><td style=\"text-align:center;color:var(--text3)\">&#8212;</td><td style=\"text-align:center;color:var(--text3)\">&#8212;</td><td style=\"text-align:center;color:var(--text3)\">&#8212;</td></tr>";
+    return "<tr class=\"" + (isMine?"mine":"") + "\"><td>"+esc(name.split(" ").slice(-1)[0])+(isMine?" &#9654;":"")+"</td><td style=\"text-align:center\">"+s.innovation+"</td><td style=\"text-align:center\">"+s.technical+"</td><td style=\"text-align:center\">"+s.business+"</td><td style=\"text-align:center;font-weight:600;color:"+scoreColor(s.weighted_total)+"\">"+s.weighted_total+"</td></tr>";
+  });
+  // Average row
+  var scored=Object.values(js).filter(function(s){return s.weighted_total!=null;});
+  var avgRow="";
+  if(scored.length>0){
+    var avgInn=scored.reduce(function(a,b){return a+(b.innovation||0);},0)/scored.length;
+    var avgTech=scored.reduce(function(a,b){return a+(b.technical||0);},0)/scored.length;
+    var avgBus=scored.reduce(function(a,b){return a+(b.business||0);},0)/scored.length;
+    var avgTotal=scored.reduce(function(a,b){return a+(b.weighted_total||0);},0)/scored.length;
+    avgRow="<tr class=\"avg-row\"><td>Avg ("+scored.length+"/5)</td><td style=\"text-align:center\">"+avgInn.toFixed(1)+"</td><td style=\"text-align:center\">"+avgTech.toFixed(1)+"</td><td style=\"text-align:center\">"+avgBus.toFixed(1)+"</td><td style=\"text-align:center;color:"+scoreColor(avgTotal)+"\">"+avgTotal.toFixed(1)+"</td></tr>";
+  }
+  tbody.innerHTML=rows.join("")+avgRow;
 }
 
+// Modal helpers
+function fv(v){var s=String(v||"").trim();return(s&&s!=="nan"&&s!=="None")?"<span class=\"field-val\">"+esc(s)+"</span>":"<span class=\"field-val empty\">&#8212;</span>";}
+function fvLink(v){var s=String(v||"").trim();return(s&&s.indexOf("http")===0)?"<span class=\"field-val\"><a href=\""+esc(s)+"\" target=\"_blank\">"+esc(s.length>55?s.slice(0,52)+"...":s)+"</a></span>":fv(v);}
+function mExpand(text){if(!text||text.length<=200)return esc(text);var id="mx"+Math.random().toString(36).slice(2,7);return "<span id=\""+id+"-s\">"+esc(text.slice(0,197))+"&#8230; <span style=\"color:var(--accent);cursor:pointer;font-size:11px\" onclick=\"document.getElementById('"+id+"-s').style.display='none';document.getElementById('"+id+"-f').style.display=''\">Show more</span></span><span id=\""+id+"-f\" style=\"display:none\">"+esc(text)+" <span style=\"color:var(--accent);cursor:pointer;font-size:11px\" onclick=\"document.getElementById('"+id+"-f').style.display='none';document.getElementById('"+id+"-s').style.display=''\">Show less</span></span>";}
+
 function openModal(id){
-  var r=DATA.registrations.find(function(x){return x.id===id;});if(!r) return;
+  var r=DATA.registrations.find(function(x){return x.id===id;});if(!r)return;
   curRegId=id;isDirty=false;
   document.getElementById("modal-dirty").style.display="none";
   document.getElementById("m-avatar").textContent=ini(r.luma_name);
-  document.getElementById("m-name").textContent=r.luma_name+(r.project_name?" &#8212; "+r.project_name:"");
-  document.getElementById("m-meta").textContent=r.email+" &#183; "+(r.final_type||"")+(r.luma_members?" &#183; "+r.luma_members+" members":"")+" &#183; #"+regNums[r.email]+" &#183; "+r.registered_at;
-  var lh="<h4>Registration (Luma)</h4>";
+  document.getElementById("m-name").innerHTML=esc(r.project_name||r.luma_name)+(r.project_name?"<br><span style=\"font-size:12px;font-weight:400;color:var(--text3)\">"+esc(r.luma_name)+"</span>":"");
+  document.getElementById("m-meta").innerHTML=
+    (IS_ADMIN?esc(r.email)+" &middot; ":"")+(r.final_type||"")+(r.luma_members?" &middot; "+r.luma_members+" members":"")+" &middot; #"+regNums[r.email]+" &middot; "+r.registered_at;
+  // Luma answers (all roles see project info)
+  var lh="<h4>Project info (Luma)</h4>";
   Object.entries(r.luma_answers).forEach(function(kv){
     var k=kv[0],v=kv[1],vh;
-    if(!v||!v.trim()||v==="nan") vh="<span class=\"field-val empty\" style=\"color:var(--red)\">&#9888; Blank</span>";
-    else if(v.indexOf("http")===0) vh="<div class=\"field-val\"><a href=\""+esc(v)+"\" target=\"_blank\">"+esc(v.length>60?v.slice(0,57)+"...":v)+"</a></div>";
+    if(!v||!v.trim()||v==="nan")vh="<span class=\"field-val empty\" style=\"color:var(--red)\">&#9888; Blank</span>";
+    else if(v.indexOf("http")===0)vh="<div class=\"field-val\"><a href=\""+esc(v)+"\" target=\"_blank\">"+esc(v.length>60?v.slice(0,57)+"...":v)+"</a></div>";
     else vh="<div class=\"field-val\">"+mExpand(v)+"</div>";
     lh+="<div class=\"field-row\"><span class=\"field-lbl\">"+esc(k)+"</span>"+vh+"</div>";
   });
-  if(r.link) lh+="<div class=\"field-row\"><span class=\"field-lbl\">Details link</span>"+fvLink(r.link)+"</div>";
+  if(r.link)lh+="<div class=\"field-row\"><span class=\"field-lbl\">Details link</span>"+fvLink(r.link)+"</div>";
   document.getElementById("modal-left").innerHTML=lh;
-  var rh="<h4>Template info</h4>"
-    +"<div class=\"field-row\"><span class=\"field-lbl\">Full name</span>"+fv(r.full_name)+"</div>"
-    +"<div class=\"field-row\"><span class=\"field-lbl\">Location</span>"+fv(r.location)+"</div>"
-    +"<div class=\"field-row\"><span class=\"field-lbl\">Organization</span>"+fv(r.org)+"</div>"
-    +"<div class=\"field-row\"><span class=\"field-lbl\">Role</span>"+fv(r.role)+"</div>"
-    +"<div class=\"field-row\"><span class=\"field-lbl\">Expertise</span>"+fv(r.expertise)+"</div>"
-    +"<div class=\"field-row\"><span class=\"field-lbl\">Years exp</span>"+fv(r.years_exp)+"</div>"
-    +"<div class=\"field-row\"><span class=\"field-lbl\">LinkedIn/GitHub</span>"+fvLink(r.linkedin)+"</div>"
-    +(r.team_name?"<div class=\"field-row\"><span class=\"field-lbl\">Team name</span>"+fv(r.team_name)+"</div>":"")
-    +"<div class=\"field-row\" style=\"margin-top:4px\"><span class=\"field-lbl\">Notes (editable)</span>"    +"<input type=\"text\" id=\"modal-notes-input\" value=\""+esc(r.notes||"")+"\" oninput=\"markDirty()\" placeholder=\"Internal notes...\" style=\"padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:12px;background:var(--surface);color:var(--text);width:100%\"/></div>";
-  if(r.blank_fields.length) rh+="<div class=\"field-row\" style=\"margin-top:6px\"><span class=\"field-lbl\" style=\"color:var(--red)\">Missing ("+r.blank_fields.length+")</span><div class=\"missing-fields\" style=\"margin-top:4px\">"+r.blank_fields.map(function(f){return "<span class=\"missing-tag\">"+esc(f)+"</span>";}).join("")+"</div></div>";
+  // Right column - admin sees full info, judge sees limited
+  var rh;
+  if(IS_ADMIN){
+    rh="<h4>Template info</h4>"
+      +"<div class=\"field-row\"><span class=\"field-lbl\">Full name</span>"+fv(r.full_name)+"</div>"
+      +"<div class=\"field-row\"><span class=\"field-lbl\">Location</span>"+fv(r.location)+"</div>"
+      +"<div class=\"field-row\"><span class=\"field-lbl\">Organization</span>"+fv(r.org)+"</div>"
+      +"<div class=\"field-row\"><span class=\"field-lbl\">Role</span>"+fv(r.role)+"</div>"
+      +"<div class=\"field-row\"><span class=\"field-lbl\">Expertise</span>"+fv(r.expertise)+"</div>"
+      +"<div class=\"field-row\"><span class=\"field-lbl\">Years exp</span>"+fv(r.years_exp)+"</div>"
+      +"<div class=\"field-row\"><span class=\"field-lbl\">LinkedIn/GitHub</span>"+fvLink(r.linkedin)+"</div>"
+      +(r.team_name?"<div class=\"field-row\"><span class=\"field-lbl\">Team name</span>"+fv(r.team_name)+"</div>":"")
+      +(r.notes?"<div class=\"field-row\"><span class=\"field-lbl\">Admin Notes</span><span class=\"field-val\" style=\"color:var(--accent)\">"+esc(r.notes)+"</span></div>":"");
+    if(r.blank_fields.length)rh+="<div class=\"field-row\" style=\"margin-top:6px\"><span class=\"field-lbl\" style=\"color:var(--red)\">Missing ("+r.blank_fields.length+")</span><div class=\"missing-fields\" style=\"margin-top:4px;display:flex;flex-wrap:wrap;gap:5px\">"+r.blank_fields.map(function(f){return "<span style=\"font-size:11px;padding:2px 8px;background:#fff3cd;color:#856404;border-radius:20px\">"+esc(f)+"</span>";}).join("")+"</div></div>";
+  } else {
+    rh="<h4>Team / Applicant</h4>"
+      +"<div class=\"field-row\"><span class=\"field-lbl\">Type</span>"+fv(r.final_type)+"</div>"
+      +(r.luma_members?"<div class=\"field-row\"><span class=\"field-lbl\">Members</span>"+fv(r.luma_members)+"</div>":"")
+      +(r.luma_team||r.team_name?"<div class=\"field-row\"><span class=\"field-lbl\">Team name</span>"+fv(r.team_name||r.luma_team)+"</div>":"")
+      +"<div class=\"field-row\"><span class=\"field-lbl\">Registered</span>"+fv(r.registered_at)+"</div>";
+  }
   document.getElementById("modal-right").innerHTML=rh;
+  // Members table - admin only
   var mw=document.getElementById("modal-members-wrap");
-  if(r.members&&r.members.length>0){
+  if(IS_ADMIN&&r.members&&r.members.length>0){
     mw.style.display="block";
     document.getElementById("modal-members-table").innerHTML="<tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>Location</th><th>Org</th><th>Role</th><th>Expertise</th><th>Years</th><th>Link</th></tr>"
-      +r.members.map(function(m){var li=(m.linkedin&&m.linkedin.indexOf("http")===0)?"<a href=\""+esc(m.linkedin)+"\" target=\"_blank\" style=\"color:var(--blue);font-size:11px\">&#8599; Link</a>":(m.linkedin&&m.linkedin.trim()&&m.linkedin!=="nan"?esc(m.linkedin):"<span style=\"color:var(--text3)\">&#8212;</span>");
-        return "<tr><td>"+esc(m.num)+"</td><td>"+esc(m.name)+"</td><td>"+esc(m.email)+"</td><td>"+esc(m.phone)+"</td><td>"+esc(m.location)+"</td><td>"+esc(m.org)+"</td><td>"+esc(m.role)+"</td><td>"+esc(m.expertise)+"</td><td>"+esc(m.years)+"</td><td>"+li+"</td></tr>";}).join("");
+      +r.members.map(function(m){var li=(m.linkedin&&m.linkedin.indexOf("http")===0)?"<a href=\""+esc(m.linkedin)+"\" target=\"_blank\" style=\"color:var(--blue);font-size:11px\">&#8599; Link</a>":(m.linkedin&&m.linkedin.trim()&&m.linkedin!=="nan"?esc(m.linkedin):"<span style=\"color:var(--text3)\">&#8212;</span>");return "<tr><td>"+esc(m.num)+"</td><td>"+esc(m.name)+"</td><td>"+esc(m.email)+"</td><td>"+esc(m.phone)+"</td><td>"+esc(m.location)+"</td><td>"+esc(m.org)+"</td><td>"+esc(m.role)+"</td><td>"+esc(m.expertise)+"</td><td>"+esc(m.years)+"</td><td>"+li+"</td></tr>";}).join("");
   }else{mw.style.display="none";}
+  // Scoring
+  renderAllScores(r.email);
+  var myS=getMyScore(r.email);
+  var scoreLabel=IS_JUDGE?JUDGE_NAME:"Admin";
+  document.getElementById("my-score-label").textContent="Your scores ("+(IS_JUDGE?JUDGE_NAME:"Admin")+" · "+activePhase+"):";
+  document.getElementById("score-innovation").value=myS?myS.innovation:"";
+  document.getElementById("score-technical").value=myS?myS.technical:"";
+  document.getElementById("score-business").value=myS?myS.business:"";
+  document.getElementById("score-total-display").textContent=myS?myS.weighted_total:"&#8212;";
   // Tags
   var c=getCust(r.email);
-  var assignedTags=Array.isArray(c.tags)?c.tags:[];
-  renderModalTags(assignedTags);
-  // Tag add dropdown
+  renderModalTags(Array.isArray(c.tags)?c.tags:[]);
   var sel=document.getElementById("modal-tag-add");
-  sel.innerHTML="<option value=\"\">&#8212; select tag &#8212;</option>"
-    +globalTags.map(function(t){return "<option value=\""+esc(t.col_key)+"\">"+esc(t.col_label)+"</option>";}).join("");
-  sel.onchange=function(){
-    if(!this.value) return;
-    var pills=document.querySelectorAll("#modal-tags-assigned .tag-pill");
-    var existing=Array.from(pills).map(function(p){return p.dataset.tag;});
-    if(!existing.includes(this.value)){
-      var t=globalTags.find(function(x){return x.col_key===sel.value;});
-      if(t) addModalTagPill(t.col_key,t.col_label,t.col_options&&t.col_options[0]||"#888");
-    }
-    this.value="";
-    markDirty();
-  };
+  sel.innerHTML="<option value=\"\">&#8212; select tag &#8212;</option>"+globalTags.map(function(t){return "<option value=\""+esc(t.col_key)+"\">"+esc(t.col_label)+"</option>";}).join("");
+  sel.onchange=function(){if(!this.value)return;var t=globalTags.find(function(x){return x.col_key===sel.value;});if(t){var pills=document.querySelectorAll("#modal-tags-assigned .tag-pill");var existing=Array.from(pills).map(function(p){return p.dataset.tag;});if(!existing.includes(t.col_key))addModalTagPill(t.col_key,t.col_label,t.col_options&&t.col_options[0]||"#888");}this.value="";markDirty();};
   // Custom cols
   var cc=document.getElementById("modal-custom-cols");
-  if(custCols.length===0){cc.innerHTML="<span style=\"font-size:12px;color:var(--text3)\">No custom columns yet.</span>";}
-  else{cc.innerHTML=custCols.map(function(col){
-    var val=c.custom_cols&&c.custom_cols[col.col_key];
-    var inp;
-    if(col.col_type==="checkbox") inp="<input type=\"checkbox\" id=\"custom-col-"+esc(col.col_key)+"\" "+(val?"checked":"")+" style=\"width:18px;height:18px;accent-color:var(--accent);cursor:pointer\" onchange=\"markDirty()\">";
-    else if(col.col_type==="select"){var opts=(col.col_options||[]).map(function(o){return "<option value=\""+esc(o)+"\">"+(val===o?" selected":"")+esc(o)+"</option>";}).join("");inp="<select id=\"custom-col-"+esc(col.col_key)+"\" onchange=\"markDirty()\" style=\"padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:12px;background:var(--surface);color:var(--text);width:100%\"><option value=\"\">&#8212;</option>"+opts+"</select>";}
-    else inp="<input type=\"text\" id=\"custom-col-"+esc(col.col_key)+"\" value=\""+esc(val||"")+"\" oninput=\"markDirty()\" style=\"padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:12px;background:var(--surface);color:var(--text);width:100%\">";
-    return "<div class=\"cf\"><label>"+esc(col.col_label)+"</label>"+inp+"</div>";
-  }).join("");}
-  document.getElementById("modal-judge-notes").value=c.judge_notes||"";
+  if(!custCols.length){cc.innerHTML="<span style=\"font-size:12px;color:var(--text3)\">No custom columns yet.</span>";}
+  else{cc.innerHTML=custCols.map(function(col){var val=c.custom_cols&&c.custom_cols[col.col_key];var inp;if(col.col_type==="checkbox")inp="<input type=\"checkbox\" id=\"custom-col-"+esc(col.col_key)+"\" "+(val?"checked":"")+" style=\"width:18px;height:18px;accent-color:var(--accent);cursor:pointer\" onchange=\"markDirty()\">";else if(col.col_type==="select"){var opts=(col.col_options||[]).map(function(o){return "<option value=\""+esc(o)+"\">"+(val===o?" selected":"")+esc(o)+"</option>";}).join("");inp="<select id=\"custom-col-"+esc(col.col_key)+"\" onchange=\"markDirty()\" style=\"padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:12px;background:var(--surface);color:var(--text);width:100%\"><option value=\"\">&#8212;</option>"+opts+"</select>";}else inp="<input type=\"text\" id=\"custom-col-"+esc(col.col_key)+"\" value=\""+esc(val||"")+"\" oninput=\"markDirty()\" style=\"padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:12px;background:var(--surface);color:var(--text);width:100%\">";return "<div class=\"cf\"><label>"+esc(col.col_label)+"</label>"+inp+"</div>";}).join("");}
+  // Judge notes (per judge)
+  var judgeNoteLabel=document.getElementById("modal-notes-judge-label");
+  if(judgeNoteLabel)judgeNoteLabel.textContent=IS_JUDGE?"("+JUDGE_NAME+")":"(Admin)";
+  document.getElementById("modal-judge-notes").value=myS?myS.notes||"":"";
+  // Admin notes
+  if(IS_ADMIN){var ni=document.getElementById("modal-notes-input");if(ni)ni.value=c.notes||"";}
+  // Sync phase selector
+  var ps=document.getElementById("phase-selector");
+  if(ps)ps.value=activePhase;
   document.getElementById("modal-overlay").classList.add("open");
 }
 
-function renderModalTags(tags){
-  var el=document.getElementById("modal-tags-assigned");
-  el.innerHTML="";
-  tags.forEach(function(key){
-    var t=globalTags.find(function(x){return x.col_key===key;});
-    if(!t) return;
-    addModalTagPill(key,t.col_label,t.col_options&&t.col_options[0]||"#888");
-  });
-}
+function renderModalTags(tags){var el=document.getElementById("modal-tags-assigned");el.innerHTML="";tags.forEach(function(key){var t=globalTags.find(function(x){return x.col_key===key;});if(t)addModalTagPill(key,t.col_label,t.col_options&&t.col_options[0]||"#888");});}
+function addModalTagPill(key,label,color){var tc=isLight(color)?"#222":"#fff";var el=document.getElementById("modal-tags-assigned");var span=document.createElement("span");span.className="tag-pill";span.dataset.tag=key;span.style.cssText="background:"+color+";color:"+tc+";cursor:default";span.innerHTML=esc(label)+' <span style="opacity:.7;cursor:pointer;font-size:13px;margin-left:2px" onclick="this.parentElement.remove();markDirty()">&#x2715;</span>';el.appendChild(span);}
+function closeModal(){if(isDirty&&!confirm("Unsaved changes. Close?"))return;document.getElementById("modal-overlay").classList.remove("open");}
+function closeModalOutside(e){if(e.target===document.getElementById("modal-overlay"))closeModal();}
 
-function addModalTagPill(key,label,color){
-  var textColor=isLight(color)?"#222":"#fff";
-  var el=document.getElementById("modal-tags-assigned");
-  var span=document.createElement("span");
-  span.className="tag-pill";
-  span.dataset.tag=key;
-  span.style.cssText="background:"+color+";color:"+textColor+";cursor:default";
-  span.innerHTML=esc(label)+' <span style="opacity:.7;cursor:pointer;font-size:13px;margin-left:2px" onclick="this.parentElement.remove();markDirty()">&#x2715;</span>';
-  el.appendChild(span);
-}
-
-function closeModal(){if(isDirty&&!confirm("Unsaved changes. Close?")) return;document.getElementById("modal-overlay").classList.remove("open");}
-function closeModalOutside(e){if(e.target===document.getElementById("modal-overlay")) closeModal();}
-
-// ── Navigation ──────────────────────────────────────────────────────────
-var pageTitles={overview:"Overview",registrations:"All Registrations",incomplete:"Incomplete Forms",advanced:"Advanced",columns:"Manage Columns"};
+// Navigation
+var pageTitles={overview:"Overview",registrations:"All Registrations",leaderboard:"Leaderboard",advanced:"Advanced",columns:"Manage Columns"};
 function showPage(id){
   document.querySelectorAll(".page").forEach(function(p){p.classList.remove("active");});
   document.querySelectorAll(".nav-item").forEach(function(n){n.classList.remove("active");});
-  document.getElementById("page-"+id).classList.add("active");
-  document.querySelector(".nav-item[onclick=\"showPage('"+id+"')\"").classList.add("active");
+  var pg=document.getElementById("page-"+id);if(pg)pg.classList.add("active");
+  var ni=document.getElementById("nav-"+id);if(ni)ni.classList.add("active");
   document.getElementById("page-title").textContent=pageTitles[id]||id;
-  if(id==="registrations") renderRegs();
-  if(id==="incomplete") renderInc();
-  if(id==="advanced") renderAdv();
-  if(id==="columns") renderColMgr();
+  if(id==="registrations")renderRegs();
+  if(id==="leaderboard")loadLeaderboard();
+  if(id==="advanced")renderAdv();
+  if(id==="columns")renderColMgr();
   closeSidebar();
 }
 
-function toggleTheme(){
-  var isDark=document.documentElement.getAttribute("data-theme")==="dark";
-  document.documentElement.setAttribute("data-theme",isDark?"light":"dark");
-  document.getElementById("theme-btn").textContent=isDark?"&#127769;":"&#9728;";
-}
+function toggleTheme(){var isDark=document.documentElement.getAttribute("data-theme")==="dark";document.documentElement.setAttribute("data-theme",isDark?"light":"dark");document.getElementById("theme-btn").textContent=isDark?"&#127769;":"&#9728;";}
 
-// ── Init ────────────────────────────────────────────────────────────────
+// Init
 document.addEventListener("DOMContentLoaded", async function(){
+  buildNav();
   var D=DATA.demographics;
   document.getElementById("m-total").textContent=D.total;
   document.getElementById("m-participants").textContent="~"+D.est_participants;
@@ -1079,19 +1129,16 @@ document.addEventListener("DOMContentLoaded", async function(){
   buildBarList("exp-bars",D.experience,["No exp yet","1–3 years","3–5 years","5–10 years","10+ years"]);
   buildBarList("org-bars",D.orgs);
   buildBarList("country-bars",D.countries,null,20);
-  if(D.cities&&D.cities["Vietnam"]) buildBarList("city-bars",D.cities["Vietnam"],null,20);
-  buildTeamChart();
-  buildTrend();
+  if(D.cities&&D.cities["Vietnam"])buildBarList("city-bars",D.cities["Vietnam"],null,20);
+  buildTeamChart();buildTrend();
   var lu=D.last_updated||"";
   if(lu){var el=document.getElementById("last-updated");if(el)el.textContent=lu;var sf=document.getElementById("sidebar-footer");if(sf)sf.innerHTML="Updated: "+lu+"<br>Replace data.js to refresh";}
   if(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches){document.documentElement.setAttribute("data-theme","dark");var tb=document.getElementById("theme-btn");if(tb)tb.textContent="&#9728;";}
   buildRegNums();
   await loadGlobalTags();
   await loadCustData();
-  renderRegs();
-  renderInc();
-  renderAdv();
+  await loadJudgeScores();
+  renderRegs();renderAdv();loadLeaderboard();
 });
 </script>
-</body>
-</html>
+</body></html>
