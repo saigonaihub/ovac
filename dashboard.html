@@ -252,7 +252,6 @@ tbody td{padding:8px 10px;font-size:13px;vertical-align:middle}
             <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
             <button class="filter-btn" onclick="setFilter('Team',this)">Teams</button>
             <button class="filter-btn" onclick="setFilter('Individual',this)">Individuals</button>
-            <button class="filter-btn" onclick="setFilter('thin',this)">Thin</button>
             <span class="filter-count" id="filter-count" style="margin-left:4px"></span>
           </div>
           <div class="table-toolbar" id="admin-toolbar" style="padding-top:6px">
@@ -626,6 +625,7 @@ async function saveAll(){
   var assignedTags=[];
   document.querySelectorAll("#modal-tags-assigned .tag-pill").forEach(function(p){assignedTags.push(p.dataset.tag);});
   cols.tags=assignedTags;
+  if(IS_ADMIN){var ni=document.getElementById('modal-notes-input');if(ni)cols._admin_notes=ni.value;}
   if(IS_ADMIN){
     var notesEl=document.getElementById("modal-notes-input");
     if(notesEl) cols._admin_notes=notesEl.value;
@@ -636,6 +636,7 @@ async function saveAll(){
     var cr=await db.from("registrant_custom").upsert({email:r.email,status:"",phase_tag:"",judge_notes:"",custom_cols:cols,updated_at:new Date().toISOString()},{onConflict:"email"});
     if(cr.error) throw cr.error;
     custData[r.email]={tags:assignedTags,judge_notes:"",custom_cols:cols,notes:cols._admin_notes||""};
+    var robj=DATA.registrations.find(function(x){return x.id===curRegId;});if(robj&&IS_ADMIN)robj.notes=cols._admin_notes||"";
     if(IS_ADMIN){var robj=DATA.registrations.find(function(x){return x.id===curRegId;});if(robj)robj.notes=cols._admin_notes||"";}
   }catch(e){console.error(e);ok=false;}
   isDirty=false;
@@ -848,7 +849,7 @@ function renderRegHead(){
     +(IS_ADMIN?"<th>Tags <span onclick=\"openColFilter('status',this.closest('th'),event)\" style=\"cursor:pointer\">"+filterIcon("status")+"</span></th>":"")
     +sh("Avg Score","avg_score",false)
     +(IS_ADMIN?""+sh("Blanks","blanks",false):"")
-    +(IS_ADMIN?"<th>Content</th>":"");
+    ;
   h+=custCols.map(function(col){
     if(col.col_type==="checkbox")return "<th class=\"sortable\" onclick=\"sortBy('"+col.col_key+"')\" style=\"position:relative\">"+esc(col.col_label)+sortIcon(col.col_key)+"</th>";
     return "<th style=\"position:relative\">"+esc(col.col_label)+"<span onclick=\"openColFilter('"+col.col_key+"',this.closest('th'),event)\" style=\"cursor:pointer\">"+filterIcon(col.col_key)+"</span></th>";
@@ -862,7 +863,6 @@ function getFiltered(){
   return DATA.registrations.filter(function(r){
     if(curFilter==="Team"&&r.final_type!=="Team")return false;
     if(curFilter==="Individual"&&r.final_type!=="Individual")return false;
-    if(curFilter==="thin"&&!r.thin_content)return false;
     if(curSearch){var q=curSearch.toLowerCase();if(![r.luma_name,r.project_name,r.team_name,IS_ADMIN?r.email:""].some(function(f){return (f||"").toLowerCase().indexOf(q)!==-1;}))return false;}
     for(var col in colFilters){if(!colFilters[col]||colFilters[col].size===0)continue;var v=String(getColVal(r,col));if(!colFilters[col].has(v))return false;}
     return true;
@@ -909,7 +909,7 @@ function renderRegs(){
     if(IS_ADMIN)row+="<td>"+renderTagPills(tags)+"</td>";
     row+="<td style=\"white-space:nowrap\">"+avgDisplay+"<br>"+myScore+"</td>";
     if(IS_ADMIN){row+="<td>"+(blanks>0?"<span class=\"thin-badge\" style=\"background:#f8d7da;color:#721c24;border-color:#f5c6cb\">"+blanks+"</span>":"<span style=\"color:var(--green)\">&#10003;</span>")+"</td>";}
-    if(IS_ADMIN){row+="<td>"+(r.thin_content?"<span class=\"thin-badge\">&#9888; Thin</span>":"<span style=\"color:var(--green)\">&#10003;</span>")+"</td>";}
+    
     row+=cc+"</tr>";
     return row;
   }).join("");
@@ -1017,7 +1017,7 @@ function openModal(id){
       +"<div class=\"field-row\"><span class=\"field-lbl\">Years exp</span>"+fv(r.years_exp)+"</div>"
       +"<div class=\"field-row\"><span class=\"field-lbl\">LinkedIn/GitHub</span>"+fvLink(r.linkedin)+"</div>"
       +(r.team_name?"<div class=\"field-row\"><span class=\"field-lbl\">Team name</span>"+fv(r.team_name)+"</div>":"")
-      +(r.notes?"<div class=\"field-row\"><span class=\"field-lbl\">Admin Notes</span><span class=\"field-val\" style=\"color:var(--accent)\">"+esc(r.notes)+"</span></div>":"");
+      +"<div class=\"field-row\" style=\"margin-top:6px\"><span class=\"field-lbl\">Admin Notes (editable)</span><input type=\"text\" id=\"modal-notes-input\" value=\""+esc(r.notes||"")+"\" oninput=\"markDirty()\" style=\"padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:12px;background:var(--surface);color:var(--text);width:100%\"/></div>";
     if(r.blank_fields.length)rh+="<div class=\"field-row\" style=\"margin-top:6px\"><span class=\"field-lbl\" style=\"color:var(--red)\">Missing ("+r.blank_fields.length+")</span><div class=\"missing-fields\" style=\"margin-top:4px;display:flex;flex-wrap:wrap;gap:5px\">"+r.blank_fields.map(function(f){return "<span style=\"font-size:11px;padding:2px 8px;background:#fff3cd;color:#856404;border-radius:20px\">"+esc(f)+"</span>";}).join("")+"</div></div>";
   } else {
     rh="<h4>Team / Applicant</h4>"

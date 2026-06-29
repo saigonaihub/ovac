@@ -363,9 +363,9 @@ const DATA = {
         "Real-world use case or industry": "Manufacturing",
         "What impact do you expect": "OneVoice Factory aims to reduce language barriers between Vietnamese workers and Mandarin-speaking supervisors, improving workplace communication, operational efficiency, and safety.\n\nThe solution can help organizations:\n\nReduce communication errors\nImprove productivity\nAccelerate onboarding of multilingual teams\nIncrease workplace safety\nEnable communication in offline environments\n\nThe long-term goal is to make multilingual collaboration more accessible across industrial sectors throughout Vietnam and Asia.",
         "How could your solution evolve into a real product or dep...": "Following the prototype phase, OneVoice Factory can evolve into a commercial hardware-software platform for industrial communication.\n\nFuture developments include:\n\nWearable badge form factor\nSmart earbuds for hands-free communication\nMulti-speaker conversation mode\nSupport for additional languages such as English and Korean\nEnterprise deployment dashboard\nIndustry-specific translation packages for manufacturing, logistics, healthcare, and construction\n\nThe product can be deployed through partnerships with factories, industrial parks, logistics providers, and multinational companies operating in Southeast Asia.",
-        "Upload your pitch deck": "nan",
+        "Upload your pitch deck": "https://drive.google.com/file/d/1tik0oRrfNa_0rdOjDIdLEcpf0sbYVbrl/view?usp=sharing",
         "Share a demo video or prototype link": "nan",
-        "Provide your GitHub or project repository link": "https://github.com/PhuongAnh2212/OneVoice_AIChallenge/blob/main/README.md"
+        "Provide your GitHub or project repository link": "https://github.com/PhuongAnh2212/OneVoice_AIChallenge"
       },
       "final_type": "Individual",
       "full_name": "Phạm Đoàn Phương Anh",
