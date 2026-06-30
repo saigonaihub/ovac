@@ -279,7 +279,7 @@ tbody td{padding:8px 10px;font-size:13px;vertical-align:middle}
           </div>
           <div style="overflow-x:auto">
             <table>
-              <thead><tr><th>#</th><th>Project</th><th>Type</th>+(IS_ADMIN?"<th>Tags</th>":"")<th style="text-align:center">&#x1F680; Innovation<br><span style="font-weight:400;font-size:10px">25%</span></th><th style="text-align:center">&#x2699;&#xFE0F; Technical<br><span style="font-weight:400;font-size:10px">50%</span></th><th style="text-align:center">&#x1F30D; Business<br><span style="font-weight:400;font-size:10px">25%</span></th><th style="text-align:center">Weighted<br>Avg</th><th>Judges scored</th></tr></thead>
+              <thead><tr><th>#</th><th>Project</th><th>Type</th><th id="lb-tags-th" style="display:none">Tags</th><th style="text-align:center">&#x1F680; Innovation<br><span style="font-weight:400;font-size:10px">25%</span></th><th style="text-align:center">&#x2699;&#xFE0F; Technical<br><span style="font-weight:400;font-size:10px">50%</span></th><th style="text-align:center">&#x1F30D; Business<br><span style="font-weight:400;font-size:10px">25%</span></th><th style="text-align:center">Weighted<br>Avg</th><th>Judges scored</th></tr></thead>
               <tbody id="lb-tbody"></tbody>
             </table>
           </div>
@@ -498,6 +498,7 @@ function buildNav(){
       +esc(item.label)+badge+"</div>";
   }).join("");
   // Role badge
+  var lbTagsTh=document.getElementById("lb-tags-th");if(lbTagsTh)lbTagsTh.style.display=IS_ADMIN?"":"none";
   var rb=document.getElementById("role-badge");
   if(rb){rb.textContent=IS_ADMIN?"Admin":"Judge: "+JUDGE_NAME;rb.className="role-badge "+(IS_ADMIN?"admin":"judge");}
   // Judge banner
@@ -1205,7 +1206,7 @@ function renderPdTable() {
       + "<td style=\"color:var(--text3);font-size:12px\">" + (i+1) + "</td>"
       + "<td><strong>" + esc(r.project_name||r.luma_team||r.luma_name) + "</strong><br><span style=\"font-size:11px;color:var(--text3)\">" + esc(r.luma_name) + "</span></td>"
       + "<td><span class=\"badge " + (r.final_type==="Team"?"badge-blue":"badge-gray") + "\">" + esc(r.final_type||"") + "</span></td>"
-      + "<td>" + renderTagPills(c.tags||[]) + "</td>"
+      + (IS_ADMIN?"<td>"+renderTagPills(c.tags||[])+"</td>":"")
       + "<td style=\"text-align:center\"><strong style=\"color:" + scoreColor(avg) + "\">" + (avg!=null?avg.toFixed(1):"&#8212;") + "</strong></td>"
       + "<td><span class=\"decision-badge " + d.decision + "\">" + d.decision + "</span></td>"
       + "<td style=\"font-size:11px;color:var(--text3)\">" + esc(d.decided_by||"&#8212;") + "</td>"
