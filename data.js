@@ -29,17 +29,54 @@ const DATA = {
         "Provide your GitHub or project repository link": "nan"
       },
       "final_type": "Team",
-      "full_name": "",
-      "location": "",
-      "org": "",
-      "role": "",
-      "expertise": "",
+      "full_name": "Huỳnh Ngọc Khoa",
+      "location": "Vietnam - Ho Chi Minh",
+      "org": "Ho Chi Minh University of Technology",
+      "role": "Leader",
+      "expertise": "NLP, OCR",
       "years_exp": "",
       "linkedin": "",
       "team_name": "TaIK",
       "status": "",
       "notes": "",
-      "members": [],
+      "members": [
+        {
+          "num": "1 (Lead)",
+          "name": "Huỳnh Ngọc Khoa",
+          "email": "huynhkhoa03012004@gmail.com",
+          "phone": "0932523714",
+          "location": "Vietnam - Ho Chi Minh",
+          "org": "Ho Chi Minh University of Technology",
+          "role": "Leader",
+          "expertise": "NLP, OCR",
+          "years": "",
+          "linkedin": ""
+        },
+        {
+          "num": "2",
+          "name": "Trần Đức Huy",
+          "email": "tdhuy1512@gmail.com",
+          "phone": "0795481812",
+          "location": "Vietnam - Da Nang",
+          "org": "Da Nang University of Science and Technology",
+          "role": "Engineer",
+          "expertise": "CV, OCR, Agentic AI",
+          "years": "",
+          "linkedin": ""
+        },
+        {
+          "num": "3",
+          "name": "Vũ Song Anh",
+          "email": "songanh204204@gmail.com",
+          "phone": "0342696565",
+          "location": "Vietnam - Ho Chi Minh",
+          "org": "Ho Chi Minh University of Technology",
+          "role": "Engineer",
+          "expertise": "OCR, CV",
+          "years": "",
+          "linkedin": ""
+        }
+      ],
       "advanced": false,
       "judge_notes": "",
       "thin_content": false
@@ -73,17 +110,54 @@ const DATA = {
         "Provide your GitHub or project repository link": "nan"
       },
       "final_type": "Team",
-      "full_name": "",
-      "location": "",
-      "org": "",
-      "role": "",
-      "expertise": "",
+      "full_name": "Kong Guanhua",
+      "location": "Singapore",
+      "org": "NUS",
+      "role": "Undergraduate student",
+      "expertise": "Computer Science",
       "years_exp": "",
       "linkedin": "",
       "team_name": "Francesca",
       "status": "",
       "notes": "",
-      "members": [],
+      "members": [
+        {
+          "num": "1 (Lead)",
+          "name": "Kong Guanhua",
+          "email": "kongguanhua@u.nus.edu",
+          "phone": "6589421633",
+          "location": "Singapore",
+          "org": "NUS",
+          "role": "Undergraduate student",
+          "expertise": "Computer Science",
+          "years": "",
+          "linkedin": ""
+        },
+        {
+          "num": "2",
+          "name": "Wang Xiheng",
+          "email": "mr.xiheng@gmail.com",
+          "phone": "6598952134",
+          "location": "Singapore",
+          "org": "NUS",
+          "role": "Undergraduate student",
+          "expertise": "Computer Science",
+          "years": "",
+          "linkedin": ""
+        },
+        {
+          "num": "3",
+          "name": "Wan Jiachi",
+          "email": "wanjiachi@u.nus.edu",
+          "phone": "6583001381",
+          "location": "Singapore",
+          "org": "NUS",
+          "role": "Undergraduate student",
+          "expertise": "Computer Science",
+          "years": "",
+          "linkedin": ""
+        }
+      ],
       "advanced": false,
       "judge_notes": "",
       "thin_content": false
@@ -9439,12 +9513,12 @@ const DATA = {
     "total": 118,
     "teams": 86,
     "individuals": 32,
-    "total_members_extracted": 345,
-    "est_participants": 377,
+    "total_members_extracted": 351,
+    "est_participants": 383,
     "avg_team_size": 4.0,
     "countries": {
-      "Vietnam": 319,
-      "Singapore": 6,
+      "Vietnam": 322,
+      "Singapore": 9,
       "Indonesia": 5,
       "Australia": 2,
       "UK": 1,
@@ -9454,14 +9528,14 @@ const DATA = {
     },
     "cities": {
       "Vietnam": {
-        "Ho Chi Minh City": 211,
+        "Ho Chi Minh City": 213,
         "Hanoi": 74,
         "Unspecified": 24,
-        "Da Nang": 8,
+        "Da Nang": 9,
         "Bac Ninh": 2
       },
       "Singapore": {
-        "Singapore": 6
+        "Singapore": 9
       },
       "UK": {
         "Belfast": 1
@@ -9485,13 +9559,13 @@ const DATA = {
         "Austria": 1
       }
     },
-    "total_located": 336,
+    "total_located": 342,
     "roles": {
-      "Student": 143,
-      "Engineer/Developer": 127,
-      "Other": 35,
+      "Student": 146,
+      "Engineer/Developer": 129,
+      "Other": 31,
       "Researcher": 24,
-      "Founder/Executive": 7,
+      "Founder/Executive": 12,
       "Designer": 5,
       "Lecturer/Academic": 3,
       "Product/Manager": 2
@@ -9503,7 +9577,7 @@ const DATA = {
       "10+ years": 8
     },
     "orgs": {
-      "HCMUS": 49,
+      "HCMUS": 50,
       "UIT": 34,
       "HCMUT": 26,
       "HUST": 14,
@@ -9511,18 +9585,18 @@ const DATA = {
       "Dai Nam Univ.": 9,
       "UTC": 8,
       "Apple Dev Academy": 6,
-      "PTIT": 4,
-      "NUS": 1
+      "NUS": 4,
+      "PTIT": 4
     },
     "expertise": {
-      "Other AI/Tech": 120,
-      "NLP/Speech/LLM": 92,
-      "AI/ML": 68,
+      "AI/ML": 105,
+      "NLP/Speech/LLM": 93,
+      "Other AI/Tech": 91,
       "Edge/Hardware": 33,
+      "Computer Vision": 30,
       "Data/Analytics": 28,
       "Product/UX": 25,
-      "Software/Cloud": 23,
-      "Computer Vision": 17
+      "Software/Cloud": 23
     },
     "team_sizes": {
       "2": 20,
