@@ -9717,10 +9717,11 @@ const DATA = {
       "Product/Manager": 2
     },
     "experience": {
-      "No exp yet": 12,
-      "1–3 years": 22,
-      "5–10 years": 4,
-      "10+ years": 8
+      "No exp yet": 31,
+      "1–3 years": 157,
+      "3–5 years": 22,
+      "5–10 years": 11,
+      "10+ years": 10
     },
     "orgs": {
       "HCMUS": 50,
