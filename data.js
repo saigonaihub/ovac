@@ -1,6 +1,156 @@
 const DATA = {
   "registrations": [
     {
+      "id": "gst-DE6d1JIMT6gv74Z",
+      "luma_name": "Aadrik Agarwal",
+      "email": "aadrikagarwal007@gmail.com",
+      "phone": "6598112513.0",
+      "registered_at": "2026-06-30",
+      "luma_type": "Team",
+      "luma_members": "2.0",
+      "luma_team": "Team X",
+      "project_name": "MindBridge",
+      "link": "https://docs.google.com/spreadsheets/d/1NTZzZOwAkjct0R4usVnUTsBMPoPVPm1_wVH_CdhOzWo/edit?usp=sharing",
+      "blank_fields": [],
+      "luma_answers": {
+        "Applicant type": "Team",
+        "Participant details link": "https://docs.google.com/spreadsheets/d/1NTZzZOwAkjct0R4usVnUTsBMPoPVPm1_wVH_CdhOzWo/edit?usp=sharing",
+        "Name of your project": "MindBridge",
+        "Briefly describe your proposed solution": "**MindBridge** is an AI-powered Communication Operating System that goes beyond real-time translation to ensure true understanding between people, regardless of language, expertise level, or role.  Unlike traditional translators that only convert words, MindBridge analyzes intent, context, risk, and user expertise to deliver instructions in the most understandable form for each listener. The system can detect confusion, verify comprehension through intelligent feedback loops, adapt explanations to different skill levels, and maintain a shared contextual memory across teams.  By transforming communication into actionable, verified understanding, MindBridge helps reduce workplace errors, improve safety, accelerate training, and enable seamless collaboration between multilingual teams, machines, and organizations—all while running on-device for low latency, privacy, and reliability.",
+        "What makes your solution innovative": "Most existing translation solutions focus on converting words from one language to another. MindBridge introduces a new approach: translating understanding, not just language.\n\nThe system analyzes the speaker's intent, context, risk level, and the listener's expertise to deliver information in the most effective way for that individual. It can identify whether a message is a warning, instruction, question, or emergency, adapt explanations based on technical knowledge, and verify comprehension through intelligent feedback rather than assuming understanding after translation.\n\nMindBridge also introduces an AI-powered Understanding Score that measures the likelihood that a message has been correctly understood. If confusion, hesitation, or misunderstanding is detected, the system automatically rephrases or simplifies the information. Additionally, it maintains a shared contextual memory across teams, allowing conversations, tasks, and critical information to persist beyond a single interaction.\n\nBy shifting the focus from language translation to verified understanding, MindBridge addresses one of the largest causes of workplace errors, safety incidents, and operational inefficiencies in multilingual environments.",
+        "Describe your technical approach": "MindBridge is designed as an on-device AI communication system optimized for low latency, privacy, and reliability. The solution leverages Qualcomm Snapdragon edge AI hardware to process speech, understanding, and translation locally without requiring a constant internet connection.\n\nThe system consists of five core AI layers:\n\nSpeech Recognition Layer – Converts spoken language into text using an optimized speech-to-text model capable of operating in noisy industrial environments.\nIntent & Risk Analysis Layer – A lightweight language model classifies conversations into categories such as instructions, warnings, questions, emergencies, or confirmations while simultaneously assessing potential safety risks.\nUnderstanding Engine – The core innovation of MindBridge. This module analyzes context, user role, and expertise level to transform information into the most understandable form for the listener. Rather than performing direct translation, it adapts explanations to reduce ambiguity and improve comprehension.\nTranslation & Response Layer – Generates multilingual responses using compact on-device language models and converts them back into natural speech through text-to-speech synthesis.\nComprehension Verification Layer – Uses semantic similarity models and conversational feedback to evaluate whether instructions were correctly understood. The system generates an Understanding Score and can automatically rephrase information when confidence is low.\n\nTo support team collaboration, MindBridge maintains a lightweight local contextual memory that stores active tasks, referenced equipment, previous instructions, and ongoing conversations. This allows the system to resolve ambiguous references and preserve continuity across interactions.\n\nThe overall architecture combines edge speech AI, natural language understanding, contextual memory, adaptive translation, and comprehension verification into a single Communication Operating System capable of delivering real-time, privacy-preserving, and understanding-driven communication in multilingual workplaces.",
+        "Expected language pair to support": "VN–EN, VN–CN, VN–KR",
+        "Project's current development phase": "Idea",
+        "Real-world use case or industry": "Manufacturing",
+        "What impact do you expect": "MindBridge aims to transform multilingual workplace communication by ensuring that critical information is not only translated, but genuinely understood. We expect the solution to reduce communication-related errors, improve workplace safety, and increase operational efficiency in environments where language barriers and varying expertise levels often lead to misunderstandings.\n\nBy verifying comprehension, adapting explanations to different skill levels, and preserving contextual knowledge across teams, MindBridge can help prevent costly mistakes, reduce downtime, accelerate employee onboarding, and improve collaboration between workers, supervisors, and technical experts.\n\nIn the long term, we envision MindBridge becoming a universal communication layer for global workforces, enabling safer and more productive collaboration across languages, cultures, and industries while making advanced AI-powered communication accessible through privacy-preserving, on-device technology.",
+        "How could your solution evolve into a real product or dep...": "MindBridge is designed with a clear path from competition prototype to enterprise deployment. The initial version focuses on on-device speech recognition, translation, intent analysis, and understanding verification for multilingual workplace communication. As the platform matures, it can be deployed through smartphones, rugged industrial devices, smart headsets, AR glasses, and wearable communication systems.\n\nFuture versions can integrate with enterprise software such as workforce management platforms, maintenance systems, safety compliance tools, and industrial IoT infrastructure. This would enable MindBridge to understand machine status, work orders, operating procedures, and safety protocols in real time, creating a seamless communication layer between workers, teams, and equipment.\n\nThe platform can be offered through a subscription-based enterprise model, providing organizations with communication analytics, safety insights, onboarding assistance, multilingual knowledge management, and workforce training support. Over time, MindBridge can evolve into a universal AI communication infrastructure for manufacturing, logistics, healthcare, construction, energy, and other industries where accurate understanding is critical to safety and performance.",
+        "Upload your pitch deck": "nan",
+        "Share a demo video or prototype link": "nan",
+        "Provide your GitHub or project repository link": "nan"
+      },
+      "final_type": "Team",
+      "full_name": "Agarwal Aadrik",
+      "location": "Singapore",
+      "org": "NTU",
+      "role": "Student",
+      "expertise": "Business",
+      "years_exp": "No exp yet",
+      "linkedin": "",
+      "team_name": "Team X",
+      "status": "",
+      "notes": "",
+      "members": [
+        {
+          "num": "1 (Lead)",
+          "name": "Agarwal Aadrik",
+          "email": "aadrik001@e.ntu.edu.sg",
+          "phone": "65-98112513",
+          "location": "Singapore",
+          "org": "NTU",
+          "role": "Student",
+          "expertise": "Business",
+          "years": "No exp yet",
+          "linkedin": ""
+        },
+        {
+          "num": "2",
+          "name": "Sonkiya Paarth",
+          "email": "paarth002@e.ntu.edu.sg",
+          "phone": "65-85850893",
+          "location": "Singapore",
+          "org": "NTU",
+          "role": "Student",
+          "expertise": "",
+          "years": "",
+          "linkedin": ""
+        }
+      ],
+      "advanced": false,
+      "judge_notes": "",
+      "thin_content": false
+    },
+    {
+      "id": "gst-UwMnNkeHDN0hsWD",
+      "luma_name": "Pham Van Manh",
+      "email": "manhp@actable.ai",
+      "phone": "84332302333.0",
+      "registered_at": "2026-06-30",
+      "luma_type": "Team",
+      "luma_members": "5.0",
+      "luma_team": "BLAZE AI",
+      "project_name": "Blaze Noter",
+      "link": "https://docs.google.com/spreadsheets/d/1KMQ97Gi3UZnCP5lgkiaT35pcLnid7zP8/edit?usp=sharing&ouid=100599806317854960097&rtpof=true&sd=true",
+      "blank_fields": [],
+      "luma_answers": {
+        "Applicant type": "Team",
+        "Participant details link": "https://docs.google.com/spreadsheets/d/1KMQ97Gi3UZnCP5lgkiaT35pcLnid7zP8/edit?usp=sharing&ouid=100599806317854960097&rtpof=true&sd=true",
+        "Name of your project": "Blaze Noter",
+        "Briefly describe your proposed solution": "Blaze Noter is an AI-powered voice intelligence platform that runs across cloud and edge devices, enabling real-time transcription, multilingual translation, AI-generated meeting notes, and action item extraction with low latency and enhanced privacy. By combining on-device AI with cloud-based large language models, Blaze Noter transforms conversations into structured, searchable business knowledge for enterprises.",
+        "What makes your solution innovative": "Blaze Noter combines Edge AI and cloud LLMs to deliver real-time voice intelligence with low latency, enhanced privacy, and reliable performance. Unlike conventional AI note-taking tools that rely entirely on cloud processing, Blaze Noter performs core speech AI tasks—including transcription, speaker diarization, and translation—on edge devices, while cloud LLMs generate summaries, action items, and enterprise knowledge insights. The platform also integrates with enterprise systems to transform conversations into structured, searchable business knowledge, making it suitable for meetings, customer service, field operations, and multilingual collaboration.",
+        "Describe your technical approach": "Blaze Noter adopts a hybrid Edge AI and Cloud AI architecture optimized for real-time voice intelligence. On edge devices, NVIDIA GPU-accelerated speech AI models perform automatic speech recognition (ASR), voice activity detection (VAD), speaker diarization, and multilingual translation with low latency while preserving user privacy. Cloud-hosted large language models (LLMs) generate meeting summaries, extract action items, identify key topics, and answer questions using Retrieval-Augmented Generation (RAG) over enterprise knowledge bases. The platform is built as a scalable microservices architecture with streaming inference, secure APIs, and GPU acceleration, enabling deployment across enterprise servers, edge devices, and telecom infrastructure while supporting multilingual collaboration and high-concurrency workloads.",
+        "Expected language pair to support": "VN–EN, VN–CN",
+        "Project's current development phase": "Advanced prototype",
+        "Real-world use case or industry": "Public Services",
+        "What impact do you expect": "Blaze Noter enables organizations to unlock the value of voice data by turning conversations into structured, searchable knowledge. We expect to improve operational efficiency, reduce manual documentation, enhance multilingual collaboration, and accelerate decision-making while providing privacy-preserving, low-latency AI through a hybrid Edge AI and cloud architecture.",
+        "How could your solution evolve into a real product or dep...": "Blaze Noter is already being deployed with enterprise customers and is designed to scale as a production-ready AI voice platform. In the future, we plan to expand from AI meeting assistance to a comprehensive enterprise voice intelligence platform supporting customer service, telecom operations, field inspections, healthcare, and education. By leveraging NVIDIA GPU acceleration and a hybrid Edge AI–Cloud architecture, Blaze Noter can be deployed across enterprise servers, telecom infrastructure, and edge devices. Future enhancements include industry-specific AI agents, multimodal understanding (voice, images, and documents), deeper enterprise integrations, and on-premises deployments for organizations with strict security and compliance requirements.",
+        "Upload your pitch deck": "https://drive.google.com/file/d/1RwSgqFj7znxlbxMIhfJVsvMd06_8Yp3Y/view?usp=sharing",
+        "Share a demo video or prototype link": "nan",
+        "Provide your GitHub or project repository link": "nan"
+      },
+      "final_type": "Team",
+      "full_name": "Pham Van Manh",
+      "location": "Vietnam - Hanoi",
+      "org": "Actable AI",
+      "role": "",
+      "expertise": "",
+      "years_exp": "",
+      "linkedin": "",
+      "team_name": "BLAZE AI",
+      "status": "",
+      "notes": "",
+      "members": [
+        {
+          "num": "1 (Lead)",
+          "name": "Pham Van Manh",
+          "email": "manhp@actable.ai",
+          "phone": "+84332302333",
+          "location": "Vietnam - Hanoi",
+          "org": "Actable AI",
+          "role": "",
+          "expertise": "",
+          "years": "",
+          "linkedin": ""
+        },
+        {
+          "num": "2",
+          "name": "Huynh Ly Thanh Trung",
+          "email": "trungh@actable.ai",
+          "phone": "+84966027933",
+          "location": "Vietnam - Hanoi",
+          "org": "Actable AI",
+          "role": "",
+          "expertise": "",
+          "years": "",
+          "linkedin": ""
+        },
+        {
+          "num": "3",
+          "name": "Pham Vu Hung",
+          "email": "hungp@actable.ai",
+          "phone": "+8498232213",
+          "location": "Vietnam - Hanoi",
+          "org": "Actable AI",
+          "role": "",
+          "expertise": "",
+          "years": "",
+          "linkedin": ""
+        }
+      ],
+      "advanced": false,
+      "judge_notes": "",
+      "thin_content": false
+    },
+    {
       "id": "gst-4uSQWYoyMMTQ3EI",
       "luma_name": "Huỳnh Ngọc Khoa",
       "email": "huynhkhoa03012004@gmail.com",
@@ -4543,26 +4693,23 @@ const DATA = {
       "luma_team": "2convit",
       "project_name": "duckducktrans",
       "link": "https://docs.google.com/spreadsheets/d/1L4lc7vOiovBdRgDQ3Xmw3hADomxThHa1zE_Lfi8TlvQ/edit?usp=drive_link",
-      "blank_fields": [
-        "What makes your solution innovative",
-        "Describe your technical approach",
-        "What impact do you expect"
-      ],
+      "blank_fields": [],
       "luma_answers": {
         "Applicant type": "Team",
         "Participant details link": "https://docs.google.com/spreadsheets/d/1L4lc7vOiovBdRgDQ3Xmw3hADomxThHa1zE_Lfi8TlvQ/edit?usp=drive_link",
         "Name of your project": "duckducktrans",
-        "Briefly describe your proposed solution": "duckducktrans is a standalone, hands-free Edge AI device for real-time Vietnamese↔English conversation on construction sites, focus on the latency optimization.",
-        "What makes your solution innovative": "TBD",
-        "Describe your technical approach": "TBD",
+        "Briefly describe your proposed solution": "We propose a native-first, fully offline speech-to-speech translation solution designed specifically for logistics, running directly on Snapdragon-powered mobile phones and small edge devices. By leveraging the device's built-in microphone paired with deep learning-based noise filtering, the system automatically detects the speaker to switch translation directions naturally — completely eliminating the need for push-to-talk buttons or clunky turn-based apps. To handle the complex logic, we fine-tune two lightweight language models (for translation and error-fixing) to act as a smart layer that instantly catches and preserves critical logistics attributes like quantities, locations, and industry terms. By employing rolling batch processing (translating speech chunks concurrently as the user speaks), the entire pipeline is locally hardware-accelerated to deliver a near-real-time, highly fluid, and private experience straight to the edge.",
+        "What makes your solution innovative": "Button-Free Conversation Flow: Instead of manual toggles or push-to-talk buttons, we use deep learning noise filtering to auto-detect who is speaking, enabling natural, hands-free, continuous conversation. Dual-LLM Domain Mastery: Two fine-tuned lightweight models (Translation + Error Fixing) accurately preserve technical terms, quantities, and locations — standard translators fail at logistics code-switching. Near-Real-Time Rolling Batching: The system translates audio chunks concurrently while the user is still speaking, offering near-instantaneous feedback completely offline. True Edge Orchestration: The entire pipeline from audio prep to model inference runs locally across the Snapdragon NPU and CPU.",
+        "Describe your technical approach": "Architecture leverages Qualcomm Snapdragon SoC via ONNX Runtime QNN Execution Provider. Smart audio handler: DeepFilter (deep learning noise model) strips warehouse noise; Audio Segmentation runs locally to identify speakers and switch translation directions. Dual-Model Translation & Correction: a lightweight quantized MT model for high-speed translation, plus a fine-tuned SLM acting as confidence-gated corrector that only triggers on low-confidence translations. Intelligent Hardware Partitioning: MT and SLM workloads run on Snapdragon NPU for power efficiency; CPU handles dynamic control flow and segmentation. Latency Strategy: rolling batch processing and clause-chunked streaming translate and synthesize audio chunks concurrently as the user speaks.",
         "Expected language pair to support": "VN–EN",
         "Project's current development phase": "Prototype",
         "Real-world use case or industry": "Logistics",
-        "What impact do you expect": "TBD",
+        "What impact do you expect": "Frictionless, Button-Free Communication: Enables natural, real-time dialogue flow for multilingual crews on the logistics floor. Rapid Scaling & Massive Cost Savings: Running entirely on small, low-power edge hardware eliminates cloud infrastructure costs and cuts integration time from months to days.",
         "How could your solution evolve into a real product or dep...": "nan",
         "Upload your pitch deck": "nan",
         "Share a demo video or prototype link": "nan",
-        "Provide your GitHub or project repository link": "nan"
+        "Provide your GitHub or project repository link": "nan",
+        "How could your solution evolve into a real product or deployment in the future?": "Real-World Data Enrichment: Capture actual warehouse ambient noise (forklifts, echo, machinery) and local slang to continuously enrich synthetic training datasets. Slow-and-Steady Mode & Smart Feedback: If the system detects low-confidence translation, it triggers deeper multi-pass processing for maximum accuracy. Users can provide simple voice feedback to flag errors, creating a flywheel for continuous improvement without compromising privacy."
       },
       "final_type": "Team",
       "full_name": "Email",
@@ -8316,18 +8463,17 @@ const DATA = {
         "Applicant type": "Individual",
         "Participant details link": "https://docs.google.com/spreadsheets/d/1GtadcKFfDdPLwXDxjQqn5wwBo_c9B8D-/edit?usp=sharing&ouid=115695075569832450580&rtpof=true&sd=true",
         "Name of your project": "AtalamoTrans",
-        "Briefly describe your proposed solution": "MakTransBridge là một ứng dụng dịch thuật đa ngôn ngữ hoạt động hoàn toàn trên điện thoại thông minh mà không cần kết nối Internet. Người dùng chỉ cần cài đặt một lần và có thể sử dụng như một \"thông dịch viên cá nhân\" trong các cuộc hội thoại trực tiếp giữa những người nói các ngôn ngữ khác nhau. Ứng dụng hỗ trợ: Dịch hội thoại hai chiều theo thời gian thực; Dịch một chiều phục vụ nghe hiểu; Hỗ trợ nhiều cặp ngôn ngữ khác nhau; Hoạt động trong môi trường không có mạng hoặc mạng yếu; Bảo vệ quyền riêng tư do toàn bộ dữ liệu được xử lý trực tiếp trên thiết bị. Mục tiêu của giải pháp là xóa bỏ rào cản ngôn ngữ trong giao tiếp hàng ngày, học tập, làm việc và hội nhập quốc tế.",
-        "What makes your solution innovative": "Điểm khác biệt lớn nhất nằm ở việc giải quyết các hạn chế mà ứng dụng dịch thuật hiện nay chưa xử lý hiệu quả: độ trễ cao do phụ thuộc internet, chất lượng dịch không đồng đều, khó dùng trong môi trường mạng yếu, chưa xử lý tốt hội thoại nhiều người/ngắt quãng. Giải pháp hướng tới 3 mục tiêu cốt lõi: (1) Độ trễ cực thấp — câu ngắn dịch và phát lại chỉ sau ~0.5s, câu dài ~1s; (2) Hiểu đúng ngữ cảnh hội thoại — xác định người nói, phân biệt tiếng ồn, hạn chế dịch nhầm câu chen ngang; (3) Linh hoạt theo nhu cầu — chế độ hội thoại hai chiều, nghe hiểu một chiều, học tập/theo dõi đa ngôn ngữ.",
-        "Describe your technical approach": "Nguyên mẫu được phát triển và thử nghiệm trên thiết bị Android có chip AI chuyên dụng, theo triết lý xử lý hoàn toàn trên thiết bị (không qua cloud). Kiến trúc 3 lớp: (1) Nhận diện lời nói — phát hiện start/end speech, tách tiếng ồn, chuyển giọng nói thành văn bản; (2) Chuyển đổi ngôn ngữ — dịch cục bộ trên điện thoại để giảm độ trễ và bảo vệ dữ liệu; (3) Tổng hợp giọng nói — phát lại bản dịch dưới dạng giọng nói tự nhiên. Benchmark thực tế: máy tính cấu hình thấp (core i5, không GPU) chạy hoàn toàn trên CPU cho latency <2s. Trên điện thoại không NPU/GPU, dùng nén dữ liệu + lượng tử hóa + streaming tối ưu đạt ~1s. Trên điện thoại có chip Hexagon AI/NPU, độ trễ giảm còn ~0.5s. Tối ưu hiệu năng gồm: xử lý audio theo luồng liên tục (streaming, không đợi hết câu), tận dụng AI accelerator chuyên dụng, tối ưu bộ nhớ cho hội thoại dài, giảm tiêu thụ năng lượng/quá nhiệt.",
+        "Briefly describe your proposed solution": "Dịch song song 2 ngôn ngữ tức thời bằng cách tự nhận dạng ngôn ngữ",
+        "What makes your solution innovative": "dịch đột trễ 0.5s, gần như tức thì, ngay khi người nói, không cần hết câu, tự nhận dạng ngôn ngữ",
+        "Describe your technical approach": "Fullstack",
         "Expected language pair to support": "VN–EN, VN–CN, VN–KR",
         "Project's current development phase": "Prototype",
         "Real-world use case or industry": "Manufacturing",
-        "What impact do you expect": "Tác động lớn nhất là dân chủ hóa khả năng giao tiếp đa ngôn ngữ cho hàng triệu học sinh, sinh viên, người lao động vốn học ngoại ngữ nhiều năm nhưng vẫn khó giao tiếp thực tế. Đối với giáo dục: tiếp cận bài giảng/podcast/khóa học quốc tế dễ dàng hơn, học xuyên biên giới không giới hạn bởi ngoại ngữ. Đối với việc làm: giao tiếp trực tiếp với chuyên gia nước ngoài, giảm phụ thuộc phiên dịch viên, mở rộng cơ hội nghề nghiệp. Đối với xã hội: thúc đẩy giao lưu văn hóa, tăng khả năng tiếp cận tri thức toàn cầu, thu hẹp khoảng cách ngôn ngữ giữa các quốc gia.",
+        "What impact do you expect": "dịch tức thời trong môi trường có tiếng ồn cả 2 phương thức dúng loa ngoài hoặc tai nghe qua điện thoại di động",
         "How could your solution evolve into a real product or dep...": "có thể tích hợp trên mọi thiết bị di động có sử dụng NPU, mở rộng thên thiết bị không phải điện thoại như các hộp dịch thuật gắn trong văn phòng, offline hoàn toàn, dùng cho các máy tính trong các cuộc hội thảo trực tuyến a ngôn ngữ",
-        "Upload your pitch deck": "https://drive.google.com/drive/folders/1pEhv7GbFfvSdjfO4LoXzdXHp8jkK6IRn?usp=sharing (PDF: Nghia pitching Instant_Offline_Translation_AI.pdf + screenshot)",
+        "Upload your pitch deck": "nan",
         "Share a demo video or prototype link": "nan",
-        "Provide your GitHub or project repository link": "nan",
-        "How could your solution evolve into a real product or deployment in the future?": "Lộ trình 3 giai đoạn: Giai đoạn 1 — hội thoại trực tiếp 1-1, dịch ngoại tuyến, tối ưu tốc độ phản hồi, trải nghiệm đơn giản. Giai đoạn 2 — mở rộng sang họp đa ngôn ngữ, làm việc nhóm quốc tế, môi trường nhiều tiếng ồn, dịch cho cuộc gọi từ xa. Giai đoạn 3 — phát triển thành nền tảng học tập/tiếp cận tri thức toàn cầu: dịch podcast, bài giảng, video, hỗ trợ học ngoại ngữ tương tác, hỗ trợ doanh nghiệp đa quốc gia. Giải pháp tận dụng xu hướng phát triển mạnh của chip AI trên điện thoại thế hệ mới, tạo nền tảng thuận lợi để mở rộng quy mô và thương mại hóa."
+        "Provide your GitHub or project repository link": "nan"
       },
       "final_type": "Individual",
       "full_name": "NGUYỄN TRỌNG NGHĨA",
@@ -9510,15 +9656,15 @@ const DATA = {
     }
   ],
   "demographics": {
-    "total": 118,
-    "teams": 86,
+    "total": 120,
+    "teams": 88,
     "individuals": 32,
-    "total_members_extracted": 351,
-    "est_participants": 383,
+    "total_members_extracted": 356,
+    "est_participants": 388,
     "avg_team_size": 4.0,
     "countries": {
-      "Vietnam": 322,
-      "Singapore": 9,
+      "Vietnam": 335,
+      "Singapore": 11,
       "Indonesia": 5,
       "Australia": 2,
       "UK": 1,
@@ -9529,13 +9675,13 @@ const DATA = {
     "cities": {
       "Vietnam": {
         "Ho Chi Minh City": 213,
-        "Hanoi": 74,
+        "Hanoi": 87,
         "Unspecified": 24,
         "Da Nang": 9,
         "Bac Ninh": 2
       },
       "Singapore": {
-        "Singapore": 9
+        "Singapore": 11
       },
       "UK": {
         "Belfast": 1
@@ -9559,9 +9705,9 @@ const DATA = {
         "Austria": 1
       }
     },
-    "total_located": 342,
+    "total_located": 357,
     "roles": {
-      "Student": 146,
+      "Student": 148,
       "Engineer/Developer": 129,
       "Other": 31,
       "Researcher": 24,
@@ -9589,9 +9735,9 @@ const DATA = {
       "PTIT": 4
     },
     "expertise": {
-      "AI/ML": 105,
+      "Other AI/Tech": 126,
       "NLP/Speech/LLM": 93,
-      "Other AI/Tech": 91,
+      "AI/ML": 77,
       "Edge/Hardware": 33,
       "Computer Vision": 30,
       "Data/Analytics": 28,
@@ -9599,10 +9745,10 @@ const DATA = {
       "Software/Cloud": 23
     },
     "team_sizes": {
-      "2": 20,
+      "2": 21,
       "3": 22,
       "4": 17,
-      "5": 8,
+      "5": 9,
       "6": 13,
       "7": 1,
       "8": 2,
@@ -9634,8 +9780,9 @@ const DATA = {
       "2026-06-24": 62,
       "2026-06-25": 4,
       "2026-06-26": 1,
-      "2026-06-29": 2
+      "2026-06-29": 2,
+      "2026-06-30": 2
     },
-    "last_updated": "Jun 30, 2026 18:42 GMT+7"
+    "last_updated": "Jul 1, 2026 08:27 GMT+7"
   }
 };
