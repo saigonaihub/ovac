@@ -155,20 +155,20 @@ tbody td{padding:8px 10px;font-size:13px;vertical-align:middle}
 .tag-add-form input[type=text]{padding:5px 9px;border:1px solid var(--border);border-radius:6px;font-size:12px;background:var(--surface);color:var(--text);flex:1;min-width:120px}
 .tag-add-form input[type=color]{width:32px;height:28px;border:1px solid var(--border);border-radius:5px;padding:1px;cursor:pointer;background:var(--surface)}
 .info-strip{background:#fff8f0;border:1px solid #ffd8b0;border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:12px;color:#7a4a00;display:flex;align-items:center;gap:10px}
-.phase-bar{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 18px;margin-bottom:16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.phase-bar-label{font-size:12px;font-weight:600;color:var(--text2);white-space:nowrap}
-.phase-select{padding:6px 12px;border:1px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg);color:var(--text);cursor:pointer;font-weight:500}
-.phase-select:focus{outline:none;border-color:var(--accent)}
-.phase-pool-note{font-size:11px;color:var(--text3);margin-left:4px}
-.decision-badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:600;white-space:nowrap}
-.decision-badge.Advanced{background:#d4edda;color:#155724;border:1px solid #c3e6cb}
-.decision-badge.Eliminated{background:#f8d7da;color:#721c24;border:1px solid #f5c6cb}
-.decision-badge.Pending{background:#fff3cd;color:#856404;border:1px solid #ffeeba}
+
+
+
+
+
+
+
+
+
 .info-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:16px}
 .info-card h3{font-size:14px;font-weight:600;margin-bottom:6px}
 .info-card p{font-size:13px;color:var(--text2);line-height:1.6}
-.info-card .step{display:flex;gap:10px;margin-top:10px;font-size:12px;color:var(--text2)}
-.info-card .step-num{width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0}
+
+
 .btn-green{background:var(--green);color:#fff}
 .btn-red{background:var(--red);color:#fff}
 .summary-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;cursor:pointer;transition:all .15s;display:flex;flex-direction:column;gap:6px}
@@ -345,24 +345,7 @@ tbody td{padding:8px 10px;font-size:13px;vertical-align:middle}
         <div style="overflow-x:auto"><table><thead><tr id="reg-thead"></tr></thead><tbody id="reg-tbody"></tbody></table></div>
       </div>
     </div>
-    <div class="page" id="page-decisions">
-      <div class="phase-bar"><span class="phase-bar-label">Active phase:</span><select class="phase-select" id="pd-phase" onchange="changePdPhase(this.value)"><option value="Phase 1 - Registration">Phase 1 - Registration</option><option value="Phase 2 - Technical Specification">Phase 2 - Technical Specification</option><option value="Phase 3 - Prototype Submission">Phase 3 - Prototype Submission</option><option value="Phase 4 - Field Testing">Phase 4 - Field Testing</option><option value="Phase 5 - Finale">Phase 5 - Finale</option></select><span class="phase-pool-note" id="pd-phase-note"></span></div>
-      <div class="info-card">
-        <h3>&#x1F4CB; Phase Decisions</h3>
-        <p>Mark each registrant as <span class="decision-badge Advanced">Advanced</span>, <span class="decision-badge Eliminated">Eliminated</span>, or <span class="decision-badge Pending">Pending</span> for the selected phase.</p>
-        <div class="step"><div class="step-num">1</div><div>Select the phase you are deciding on.</div></div>
-        <div class="step"><div class="step-num">2</div><div>Mark each team. Advanced teams form the pool for the next phase.</div></div>
-        <div class="step"><div class="step-num">3</div><div>Judges can see decisions but only Admin can make them.</div></div>
-      </div>
-      <div class="table-card">
-        <div class="table-toolbar"><span class="filter-count" id="pd-count">Loading...</span><button class="btn btn-secondary" style="font-size:11px" onclick="exportDecisionsCSV()">Export CSV</button><button class="btn btn-secondary" style="font-size:11px;margin-left:4px" onclick="loadPhaseDecisions()">&#8635; Refresh</button></div>
-        <div style="overflow-x:auto"><table><thead><tr>
-          <th>#</th><th>Project / Team</th><th>Type</th>
-          <th id="pd-tags-th" style="display:none">Tags</th>
-          <th style="text-align:center">Decision</th><th>Decided by</th><th id="pd-actions-header"></th>
-        </tr></thead><tbody id="pd-tbody"></tbody></table></div>
-      </div>
-    </div>
+    
     <div class="page" id="page-columns">
       <div class="table-card" style="padding:20px;margin-bottom:16px">
         <h3 style="font-size:15px;font-weight:600;margin-bottom:4px">Custom Columns</h3>
@@ -450,9 +433,8 @@ var ROLE=sessionStorage.getItem("ovac_role")||"";
 var JUDGE_NAME=sessionStorage.getItem("ovac_judge")||"";
 var IS_ADMIN=ROLE==="admin",IS_JUDGE=ROLE==="judge";
 var PHASES=['Phase 1 - Registration', 'Phase 2 - Technical Specification', 'Phase 3 - Prototype Submission', 'Phase 4 - Field Testing', 'Phase 5 - Finale'];
-var PHASE_PREV={"Phase 2 - Technical Specification":"Phase 1 - Registration","Phase 3 - Prototype Submission":"Phase 2 - Technical Specification","Phase 4 - Field Testing":"Phase 3 - Prototype Submission","Phase 5 - Finale":"Phase 4 - Field Testing"};
 var curFilter="all",curSearch="",curRegId=null;
-var custData={},custCols=[],globalTags=[],phaseDecisions={};
+var custData={},custCols=[],globalTags=[];
 var isDirty=false,apexT=null;
 var sortCol=null,sortDir=1,colFilters={},regNums={};
 var activePhase="Phase 1 - Registration";
@@ -474,10 +456,9 @@ var NAV_ITEMS=[
   {id:"summary",label:"Submission Overview",icon:"<circle cx='12' cy='12' r='10'/><line x1='12' y1='8' x2='12' y2='12'/><line x1='12' y1='16' x2='12.01' y2='16'/>",roles:["admin","judge"]},
   {id:"overview",label:"Demographics",icon:"<rect x='3' y='3' width='7' height='7'/><rect x='14' y='3' width='7' height='7'/><rect x='3' y='14' width='7' height='7'/><rect x='14' y='14' width='7' height='7'/>",roles:["admin","judge"]},
   {id:"registrations",label:"All Registrations",icon:"<path d='M17 21H7a2 2 0 01-2-2V5a2 2 0 012-2h7l5 5v11a2 2 0 01-2 2z'/><polyline points='17 3 17 8 12 8'/>",roles:["admin","judge"]},
-  {id:"decisions",label:"Phase Decisions",icon:"<path d='M9 11l3 3L22 4'/><path d='M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11'/>",roles:["admin","judge"]},
   {id:"columns",label:"Manage Columns",icon:"<line x1='8' y1='6' x2='21' y2='6'/><line x1='8' y1='12' x2='21' y2='12'/><line x1='8' y1='18' x2='21' y2='18'/><line x1='3' y1='6' x2='3.01' y2='6'/><line x1='3' y1='12' x2='3.01' y2='12'/><line x1='3' y1='18' x2='3.01' y2='18'/>",roles:["admin"]},
 ];
-var PAGE_TITLES={summary:"Submission Overview",overview:"Demographics",registrations:"All Registrations",decisions:"Phase Decisions",columns:"Manage Columns"};
+var PAGE_TITLES={summary:"Submission Overview",overview:"Demographics",registrations:"All Registrations",columns:"Manage Columns"};
 
 function buildNav(){
   var nav=document.getElementById("sidebar-nav");
@@ -508,7 +489,6 @@ function showPage(id){
   if(id==="summary")renderSummary();
   if(id==="overview")renderOverview();
   if(id==="registrations")renderRegs();
-  if(id==="decisions")loadPhaseDecisions();
   if(id==="columns")renderColMgr();
   closeSidebar();
 }
@@ -663,7 +643,6 @@ function getColVal(r,col){
   if(col==="tags")return(c.tags&&c.tags.length)?c.tags.map(tagLabel).join(", "):"";
   if(col==="date")return r.registered_at||"";
   if(col==="members")return parseInt(r.luma_members)||0;
-  if(col==="decision")return getDecision(r.email,activePhase);
   return c.custom_cols&&c.custom_cols[col]!=null?c.custom_cols[col]:"";
 }
 function openColFilter(col,el,event){
@@ -825,7 +804,7 @@ function renderOverview(){
   document.getElementById("last-updated").textContent=D.last_updated||"—";
   buildBarList("expertise-bars",D.expertise);
   buildBarList("role-bars",D.roles);
-  buildBarList("exp-bars",D.experience,["No exp yet","1\-3 years","3\-5 years","5\-10 years","10+ years"]);
+  buildBarList("exp-bars",D.experience,["No exp yet","1–3 years","3–5 years","5–10 years","10+ years"]);
   buildBarList("org-bars",D.orgs);
   buildBarList("country-bars",D.countries,null,20);
   if(D.cities&&D.cities["Vietnam"])buildBarList("city-bars",D.cities["Vietnam"],null,20);
@@ -833,88 +812,11 @@ function renderOverview(){
 }
 
 
-function getDecision(email,phase){
-  var ph=phase||activePhase;
-  return phaseDecisions[email]&&phaseDecisions[email][ph]?phaseDecisions[email][ph].decision:"Pending";
-}
-function getPhasePool(phase){
-  if(phase===PHASES[0])return DATA.registrations.slice();
-  var prev=PHASE_PREV[phase];if(!prev)return DATA.registrations.slice();
-  return DATA.registrations.filter(function(r){return getDecision(r.email,prev)==="Advanced";});
-}
-async function loadPhaseDecisions(){
-  try{
-    var res=await db.from("phase_decisions").select("*");
-    if(res.error)throw res.error;
-    phaseDecisions={};
-    (res.data||[]).forEach(function(d){
-      if(!phaseDecisions[d.email])phaseDecisions[d.email]={};
-      phaseDecisions[d.email][d.phase]={decision:d.decision,decided_by:d.decided_by||"",notes:d.notes||""};
-    });
-    renderPdTable();
-  }catch(e){console.error("decisions:",e);}
-}
-async function makeDecision(email,decision){
-  if(!IS_ADMIN){alert("Only Admin can make phase decisions.");return;}
-  setSyncStatus("syncing");
-  try{
-    var payload={email:email,phase:activePhase,decision:decision,decided_by:"Admin",decided_at:new Date().toISOString()};
-    var res=await db.from("phase_decisions").upsert(payload,{onConflict:"email,phase"});
-    if(res.error)throw res.error;
-    if(!phaseDecisions[email])phaseDecisions[email]={};
-    phaseDecisions[email][activePhase]={decision:decision,decided_by:"Admin",notes:""};
-    setSyncStatus("ok");renderPdTable();
-  }catch(e){console.error(e);setSyncStatus("error");alert("Failed: "+e.message);}
-}
-function renderPdTable(){
-  var pool=getPhasePool(activePhase);
-  var adv=pool.filter(function(r){return getDecision(r.email,activePhase)==="Advanced";}).length;
-  var elim=pool.filter(function(r){return getDecision(r.email,activePhase)==="Eliminated";}).length;
-  var pend=pool.filter(function(r){return getDecision(r.email,activePhase)==="Pending";}).length;
-  var el=document.getElementById("pd-count");
-  if(el)el.innerHTML=pool.length+" in pool &nbsp;&#183;&nbsp; <span style='color:var(--green);font-weight:600'>"+adv+" Advanced</span> &nbsp;&#183;&nbsp; <span style='color:var(--red);font-weight:600'>"+elim+" Eliminated</span> &nbsp;&#183;&nbsp; "+pend+" Pending";
-  var ah=document.getElementById("pd-actions-header");if(ah)ah.textContent=IS_ADMIN?"Actions":"";
-  var sorted=pool.slice().sort(function(a,b){return (a.project_name||a.luma_name).localeCompare(b.project_name||b.luma_name,"vi");});
-  var tbody=document.getElementById("pd-tbody");if(!tbody)return;
-  tbody.innerHTML=sorted.map(function(r,i){
-    var c=getCust(r.email);
-    var d=phaseDecisions[r.email]&&phaseDecisions[r.email][activePhase]||{decision:"Pending",decided_by:"",notes:""};
-    var tagsCell=IS_ADMIN?"<td>"+renderTagPills(c.tags||[])+"</td>":"";
-    var actions="";
-    if(IS_ADMIN){
-      actions="<td style='white-space:nowrap'>"
-        +(d.decision!=="Advanced"?"<button class='btn btn-green' style='font-size:11px;padding:3px 8px;margin-right:4px' onclick='event.stopPropagation();makeDecision(\""+r.email+"\",\"Advanced\")'>&#10003; Advance</button>":"")
-        +(d.decision!=="Eliminated"?"<button class='btn btn-red' style='font-size:11px;padding:3px 8px' onclick='event.stopPropagation();makeDecision(\""+r.email+"\",\"Eliminated\")'>&#10007; Eliminate</button>":"")
-        +(d.decision!=="Pending"?"<button class='btn btn-secondary' style='font-size:11px;padding:3px 8px;margin-left:4px' onclick='event.stopPropagation();makeDecision(\""+r.email+"\",\"Pending\")'>Reset</button>":"")
-        +"</td>";
-    }
-    return "<tr onclick='openModal(\""+r.id+"\")'>"
-      +"<td style='color:var(--text3);font-size:12px'>"+(i+1)+"</td>"
-      +"<td><strong>"+esc(r.project_name||r.luma_team||r.luma_name)+"</strong><br><span style='font-size:11px;color:var(--text3)'>"+esc(r.luma_name)+"</span></td>"
-      +"<td><span class='badge "+(r.final_type==="Team"?"badge-blue":"badge-gray")+"'>"+esc(r.final_type||"")+"</span></td>"
-      +tagsCell
-      +"<td><span class='decision-badge "+d.decision+"'>"+d.decision+"</span></td>"
-      +"<td style='font-size:11px;color:var(--text3)'>"+esc(d.decided_by||"—")+"</td>"
-      +actions+"</tr>";
-  }).join("");
-}
-function changePdPhase(phase){
-  activePhase=phase;
-  var note={"Phase 1 - Registration":"All 120 registrants","Phase 2 - Technical Specification":"Advanced from Phase 1","Phase 3 - Prototype Submission":"Advanced from Phase 2","Phase 4 - Field Testing":"Advanced from Phase 3","Phase 5 - Finale":"Advanced from Phase 4"}[phase]||"";
-  var el=document.getElementById("pd-phase-note");if(el)el.textContent=note?"• "+note:"";
-  loadPhaseDecisions();
-}
-function exportDecisionsCSV(){
-  var pool=getPhasePool(activePhase);
-  var sorted=pool.slice().sort(function(a,b){return (a.project_name||a.luma_name).localeCompare(b.project_name||b.luma_name);});
-  var lines=["Project,Name,Type,Decision,Decided By"];
-  sorted.forEach(function(r){
-    var d=phaseDecisions[r.email]&&phaseDecisions[r.email][activePhase]||{decision:"Pending",decided_by:""};
-    lines.push("\""+esc(r.project_name||r.luma_team||r.luma_name)+"\"," +"\""+esc(r.luma_name)+"\"," +"\""+esc(r.final_type||"")+"\"," +d.decision+","+esc(d.decided_by||""));
-  });
-  var blob=new Blob([lines.join("\n")],{type:"text/csv"});
-  var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="OVAC_"+activePhase.replace(/ /g,"_")+"_Decisions.csv";a.click();
-}
+
+
+
+
+
 
 
 function fv(v){var s=String(v||"").trim();return(s&&s!=="nan"&&s!=="None")?"<span class='field-val'>"+esc(s)+"</span>":"<span class='field-val empty'>—</span>";}
@@ -963,11 +865,6 @@ function openModal(id){
       +(r.luma_team||r.team_name?"<div class='field-row'><span class='field-lbl'>Team name</span>"+fv(r.team_name||r.luma_team)+"</div>":"")
       +"<div class='field-row'><span class='field-lbl'>Registered</span>"+fv(r.registered_at)+"</div>";
   }
-  // Phase decision in modal
-  var dec=getDecision(r.email,activePhase);
-  rh+="<div class='field-row' style='margin-top:8px'><span class='field-lbl'>Phase Decision</span>"
-    +"<span class='decision-badge "+dec+"'>"+dec+"</span>"
-    +(IS_ADMIN&&dec==="Pending"?" <button class='btn btn-secondary' style='font-size:11px;padding:2px 8px;margin-left:6px' onclick='makeDecision(\""+r.email+"\",\"Advanced\")'>&#10003; Advance</button>":"")+"</div>";
   document.getElementById("modal-right").innerHTML=rh;
   // Members
   var mw=document.getElementById("modal-members-wrap");
@@ -1246,7 +1143,6 @@ document.addEventListener("DOMContentLoaded", async function(){
   buildRegNums();
   await loadGlobalTags();
   await loadCustData();
-  await loadPhaseDecisions();
   renderSummary();
   renderOverview();
   var D=DATA.demographics;
